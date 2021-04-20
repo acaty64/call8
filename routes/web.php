@@ -22,7 +22,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-/////////////////// USER ROUTES //////////////////
+/////////////////// START USER ROUTES //////////////////
 Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
 
 	Route::get('/users/index', [
@@ -53,6 +53,34 @@ Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], fu
 	Route::delete('/user/destroy/{id}', [
 		'as' => 'user.destroy',
 		'uses' => 'UserController@destroy'
+	]);
+
+});
+
+/////////////////// END USER ROUTES //////////////////
+
+
+/////////////////// CALL ROUTES //////////////////
+Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
+
+	Route::get('/call', [
+		'as' => 'call.screen',
+		'uses' => 'CallController@screen'
+	]);
+
+	Route::get('/call/index', [
+		'as' => 'call.index',
+		'uses' => 'CallController@index'
+	]);
+
+	Route::post('/call/store', [
+		'as' => 'call.store',
+		'uses' => 'CallController@store'
+	]);
+
+	Route::post('/call/close', [
+		'as' => 'call.close',
+		'uses' => 'CallController@close'
 	]);
 
 });

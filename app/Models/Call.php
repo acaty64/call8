@@ -3,8 +3,8 @@
 namespace App\Models;
 
 
+use App\Models\Status;
 use App\Models\User;
-use App\Status;
 use Illuminate\Database\Eloquent\Model;
 
 class Call extends Model

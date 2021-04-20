@@ -1,0 +1,48 @@
+call8.readme
+
+************ Damos acceso a las carpetas
+$> sudo chown -R www-data:www-data public
+$> sudo chown -R www-data:www-data storage
+
+************ Generamos el APP_KEY
+$> php artisan key:generate
+
+************ Instalamos para ambiente con autorizacion
+$> composer require laravel/ui
+$> php artisan ui bootstrap
+$> php artisan ui vue
+
+$> php artisan ui bootstrap --auth
+
+**************** ACTUALIZACION DE NODEJS Y NPM
+https://maximilianofernandez.net/actualizar-node-js-en-ubuntu/
+
+* Actualizando NPM
+$> npm --version
+$> sudo npm install -g npm@latest
+$> sudo npm cache clean -f
+
+* Actualizando NODE.js
+$> sudo npm install -g n
+$> sudo n stable
+
+**************************
+$> npm install
+
+$> npm run dev
+
+*** Para corregir error
+https://stackoverflow.com/questions/65009751/laravel-vue-you-may-need-an-appropriate-loader-for-template-tags
+
+Cambiar en webpack.mix.js
+
+.js('resources/assets/js/app.js', 'public/js').vue()
+
+********************
+
+
+**** Cambiar en .env
+APP_PORT=80
+DB_HOST=mysql
+
+

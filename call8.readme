@@ -46,3 +46,10 @@ APP_PORT=80
 DB_HOST=mysql
 
 
+php artisan migrate:fresh --seed
+
+***************************
+
+Modificar config/database y phpunit.xml
+
+php artisan migrate:fresh --seed --database=mysql_tests

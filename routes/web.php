@@ -22,6 +22,13 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
+/////////////////// START TESTS ROUTES //////////////////
+Route::get('/tests', function () {
+    return view('tests.Pusher_test');
+});
+
+/////////////////// STOP TESTS ROUTES //////////////////
+
 /////////////////// START USER ROUTES //////////////////
 Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
 

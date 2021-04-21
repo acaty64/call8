@@ -16,7 +16,7 @@ services:
      - stydenet
   node:
     container_name: node
-    image: node:9.8
+    image: node:12.14
     restart: unless-stopped
     tty: true
     working_dir: /var/www/html

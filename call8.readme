@@ -53,3 +53,51 @@ php artisan migrate:fresh --seed
 Modificar config/database y phpunit.xml
 
 php artisan migrate:fresh --seed --database=mysql_tests
+
+
+***************************
+LARAVEL 8
+
+Modificar en routes:
+
+Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
+
+	(...)
+
+});
+***************************
+
+Instalar PUSHER
+
+* Poner en .env los parametros de Pusher
+
+composer require pusher/pusher-php-server
+
+npm install --save pusher-js
+
+npm install --save laravel-echo
+
+** Descomentar el Service Provider BroadcastServiceProvider en nuestro archivo config/app.php:
+
+App\Providers\BroadcastServiceProvider::class,
+
+** descomentar la configuración por defecto para Echo en resources/js/bootstrap.js:
+
+import Echo from 'laravel-echo';
+window.Pusher = require('pusher-js');
+window.Echo = new Echo({
+   broadcaster: 'pusher',
+   key: process.env.MIX_PUSHER_APP_KEY,
+   cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+   forceTLS: true
+});
+
+npm run watch
+
+
+* Agregar un route tests
+* Agregar el html de prueba que esta en la pagina de Pusher
+* Enviar un Event desde el debug de la pagina de Pusher
+
+***************************
+

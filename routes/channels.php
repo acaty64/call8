@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+
+////////////// TEST ///////////////////
+// Verifica si el usuario esta logueado (Private)
+Broadcast::channel('private-channel', function ($user) {
+     return true;
+});
+
+// Verifica si el usuario esta logueado (Presence)
+Broadcast::channel('presence-channel', function ($user) {
+     return $user;
+});

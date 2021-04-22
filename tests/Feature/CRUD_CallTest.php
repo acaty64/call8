@@ -25,11 +25,7 @@ class CRUD_CallTest extends TestCase
 
     public function test_store_a_new_call()
     {
-        $user = User::create([
-            'name' => 'Jane Doe',
-            'code' => '22222222222',
-            'email' => 'janed@gmail.com',
-        ]);
+        $user = User::findOrFail(3);
 
         $this->actingAs($user);
 
@@ -39,7 +35,7 @@ class CRUD_CallTest extends TestCase
 
         $this->assertDatabaseHas('calls', [
             'user_id' => $user->id,
-            // 'number' => 4,
+            'number' => json_decode($response->original)->number,
             'status_id' => $status->id,
         ]);
 

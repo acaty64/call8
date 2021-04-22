@@ -6,13 +6,16 @@ use App\Models\Call;
 use App\Models\Status;
 use App\Models\Trace;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 
 class CallController extends Controller
 {
+    use DatabaseTransactions;
+
     public function screen()
     {
-        return view('app.client-screen');
+        return view('app.client.screen');
     }
 
     public function index()

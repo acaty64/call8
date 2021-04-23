@@ -21,11 +21,21 @@
 		</div>
     </div>
 	<div class="container" align="center">
-		<h1>Video-chat</h1>
+		<h1>Client Video-chat Here</h1>
 	</div>
 	<div>
-		<button wire:click="call" class="btn btn-large btn-warning">Poner en Cola</button>
-		<button wire:click="connect" class="btn btn-large btn-success">Responder</button>
-		<button wire:click="disconnect" class="btn btn-large btn-danger">Colgar</button>
+		@if($status == '')
+			<button wire:click="wait" class="btn btn-large btn-warning">Poner en Cola</button>
+		@endif
+		@if($status == 'Llamando')
+			<button wire:click="connect" class="btn btn-large btn-success">Responder</button>
+		@endif
+		@if($status == 'Atendiendo')
+			<button wire:click="disconnect" class="btn btn-large btn-danger">Colgar</button>
+		@endif
+	</div>
+	<div>
+		Boton de prueba
+		<button wire:click="call" class="btn btn-large btn-success">Llamando</button>
 	</div>
 </div>

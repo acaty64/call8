@@ -15,21 +15,20 @@ class RingEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    // public $data;
+    public $data;
 
-    // public function __construct()
-    // {
-    //     $this->data = $data;
-    // }
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
 
-    // public function broadcastWith()
-    // // public function broadcastWith($data)
-    // {
-    //     // return ['Emitiendo'];
-    //     return [
-    //         'data' => $this->data
-    //     ];
-    // }
+    public function broadcastWith()
+    {
+        return [
+            'status' => $this->data['status'],
+            'host' => \Auth::user(),
+        ];
+    }
 
     public function broadcastOn()
     {

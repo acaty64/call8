@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Events\RingEvent;
 use Livewire\Component;
 
 class ClientScreen extends Component
@@ -23,10 +24,11 @@ class ClientScreen extends Component
         $this->status = "";
     }
 
-    public function ring()
+    public function ring($data)
     {
-        $this->status = 'Llamando';
-        session()->flash('message', 'Llamando ....');
+// dd($data['host']['name']);
+        $this->status = $data['status'];
+        session()->flash('message', $data['host']['name'] . ' está llamando.' );
     }
 
 
@@ -45,7 +47,8 @@ class ClientScreen extends Component
     public function call()
     {
         $this->status = 'Llamando';
-        $this->emit("ring");
+        // $this->emit("ring");
+        broadcast(new RingEvent(['status'=>'Llamando']));
         session()->flash('message', 'Llamando ....');
     }
 

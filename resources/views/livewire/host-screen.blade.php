@@ -9,6 +9,7 @@
             </div>
         @endif
     </div>
+    <audio src="/sounds/misc237.mp3" type="audio/mpeg" preload><p>Tu navegador no soporta HTML5</p></audio>
     <div class="row">
 		<div class=col-sm>
 			Estado: {{ $status }}

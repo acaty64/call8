@@ -33,8 +33,11 @@ class HostScreen extends Component
 
     public function call()
     {
+        $data = [
+            'status' => 'Llamando'
+        ];
         $this->status = 'Llamando';
-        broadcast(new RingEvent());
+        broadcast(new RingEvent($data));
 
         session()->flash('message', 'Llamando ....');
     }

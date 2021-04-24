@@ -33,8 +33,6 @@
 	</div>
 	<div>
 		Boton de prueba
-		<button wire:click="$emit('channel-ring')" class="btn btn-large btn-success">Llamando desde aqui</button>
-
 		<button wire:click="call" class="btn btn-large btn-success">Llamando desde controller</button>
 	</div>
 {{-- 	<script>

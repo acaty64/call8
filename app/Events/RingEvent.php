@@ -34,7 +34,7 @@ class RingEvent implements ShouldBroadcastNow
     public function broadcastOn()
     {
         // return 'channel-ring';
-        return new Channel('channel-ring');
+        return new PrivateChannel('channel-ring');
         // return new PrivateChannel('channel-name');
     }
 }

@@ -12,7 +12,7 @@ class ClientScreen extends Component
 
     // Special Syntax: ['echo:{channel},{event}' => '{method}']
     protected $listeners = [
-        'echo:channel-ring,RingEvent' => 'ring',
+        'echo-private:channel-ring,RingEvent' => 'ring',
         // 'channel-ring' => 'ring',
     ];
 

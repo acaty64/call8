@@ -18,6 +18,11 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 
+// Verifica si el usuario esta logueado (Private)
+Broadcast::channel('channel-ring', function ($user) {
+     return true;
+});
+
 ////////////// TEST ///////////////////
 // Verifica si el usuario esta logueado (Private)
 Broadcast::channel('private-channel', function ($user) {

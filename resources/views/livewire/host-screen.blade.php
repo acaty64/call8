@@ -1,6 +1,6 @@
 <div>
 	<div>
-    	View: resources/views/livewire/client.blade.php
+    	View: resources/views/livewire/host.blade.php
 	</div>
     <div>
         @if (session()->has('message'))
@@ -9,8 +9,6 @@
             </div>
         @endif
     </div>
-			status: {{ $status }}
-
     <div class="row">
 		<div class=col-sm>
 			Estado: {{ $status }}
@@ -26,9 +24,6 @@
 		<h1>Client Video-chat Here</h1>
 	</div>
 	<div>
-		@if($status == '')
-			<button wire:click="wait" class="btn btn-large btn-warning">Poner en Cola</button>
-		@endif
 		@if($status == 'Llamando')
 			<button wire:click="connect" class="btn btn-large btn-success">Responder</button>
 		@endif
@@ -36,4 +31,15 @@
 			<button wire:click="disconnect" class="btn btn-large btn-danger">Colgar</button>
 		@endif
 	</div>
+	<div>
+		Boton de prueba
+		<button wire:click="$emit('channel-ring')" class="btn btn-large btn-success">Llamando desde aqui</button>
+
+		<button wire:click="call" class="btn btn-large btn-success">Llamando desde controller</button>
+	</div>
+{{-- 	<script>
+		window.livewire.on("ring", function () {
+			$this->status = "Llamando";
+		});
+	</script> --}}
 </div>

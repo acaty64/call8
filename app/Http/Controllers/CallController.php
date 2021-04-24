@@ -13,9 +13,14 @@ class CallController extends Controller
 {
     use DatabaseTransactions;
 
-    public function screen()
+    public function client()
     {
         return view('app.client.screen');
+    }
+
+    public function host()
+    {
+        return view('app.host.screen');
     }
 
     public function index()

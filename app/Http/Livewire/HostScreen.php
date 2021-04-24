@@ -2,19 +2,15 @@
 
 namespace App\Http\Livewire;
 
+use App\Events\RingEvent;
 use Livewire\Component;
 
-class ClientScreen extends Component
+class HostScreen extends Component
 {
 	public $qcalls;
 	public $qwindows;
 	public $status;
 
-    // Special Syntax: ['echo:{channel},{event}' => '{method}']
-    protected $listeners = [
-        'echo:channel-ring,RingEvent' => 'ring',
-        // 'channel-ring' => 'ring',
-    ];
 
     public function mount()
     {
@@ -23,16 +19,9 @@ class ClientScreen extends Component
         $this->status = "";
     }
 
-    public function ring()
-    {
-        $this->status = 'Llamando';
-        session()->flash('message', 'Llamando ....');
-    }
-
-
     public function render()
     {
-        return view('livewire.client-screen');
+        return view('livewire.host-screen');
     }
 
     public function wait()
@@ -45,7 +34,8 @@ class ClientScreen extends Component
     public function call()
     {
         $this->status = 'Llamando';
-        $this->emit("ring");
+        broadcast(new RingEvent());
+
         session()->flash('message', 'Llamando ....');
     }
 
@@ -63,5 +53,6 @@ class ClientScreen extends Component
         $this->qwindows = $this->qwindows - 1;
     	session()->flash('message', 'Desconectando ....');
     }
+
 
 }

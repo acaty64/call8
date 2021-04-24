@@ -74,9 +74,14 @@ Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], fu
 /////////////////// CALL ROUTES //////////////////
 Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
 
-	Route::get('/call', [
-		'as' => 'call.screen',
-		'uses' => 'CallController@screen'
+	Route::get('/call/client', [
+		'as' => 'call.client',
+		'uses' => 'CallController@client'
+	]);
+
+	Route::get('/call/host', [
+		'as' => 'call.host',
+		'uses' => 'CallController@host'
 	]);
 
 	Route::get('/call/index', [

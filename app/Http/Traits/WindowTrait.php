@@ -71,20 +71,32 @@ trait WindowTrait {
 
     }
 
-
-
-
-    public function hang($array)
+    public function stop()
     {
-        $host_id = \Auth::user()->id;
+        $host = \Auth::user();
+        $host_id = $host->id;
+
+        $window = Window::findOrFail($host->window_id);
+        $call = Call::findOrFail($window->call_id)->first();
+
+        $status_close = Status::where('status', 'Cerrado')->first()->id;
+
+        $call->status_id = $status_close;
+        $call->save();
+
+        $trace = $window;
+
         $status_id = Status::where('status', 'En Pausa')->first()->id;
-        $window = Window::where('host_id', $host_id)->first();
+        $window->client_id = null;
+        $window->call_id = null;
         $window->status_id = $status_id;
         $window->save();
 
-        Trace::new_window($window);
+        $trace->status_id = $status_close;
+        Trace::new_window($trace);
 
         return $window;
+
     }
 
     public function close($request)

@@ -93,33 +93,6 @@ class Trait_WindowTest extends TestCase
 
     }
 
-    public function test_close_a_call()
-    {
-        $user = User::findOrFail(2);
-
-        $this->actingAs($user);
-
-        $status = Status::where('status', 'En Pausa')->first();
-
-        $array = [
-            'user_id' => $user->id,
-            'status_id' => $status->id,
-        ];
-
-        $response = $this->hang($array);
-
-        $this->assertDatabaseHas('windows', [
-            'host_id' => $user->id,
-            'status_id' => $status->id,
-        ]);
-
-        $this->assertDatabaseHas('traces', [
-            'user_id' => $user->id,
-            'window_id' => $response['id'],
-            'status_id' => $status->id
-        ]);
-    }
-
     public function test_start_a_call()
     {
         $status_paused = Status::where('status', 'En Pausa')->first()->id;
@@ -157,6 +130,49 @@ class Trait_WindowTest extends TestCase
             'window_id' => $window->id,
             'call_id' => $window->call_id,
             'status_id' => $status->id
+        ]);
+
+    }
+
+    public function test_stop_a_call()
+    {
+        $status_answer = Status::where('status', 'Atendiendo')->first()->id;
+        $call = Call::where('status_id', $status_answer)->first();
+
+        $host = User::findOrFail(1);
+
+        $this->actingAs($host);
+
+        $status_closed = Status::where('status', 'Cerrado')->first();
+        $status_paused = Status::where('status', 'En Pausa')->first();
+
+        $array = [
+            'user_id' => $host->id,
+            'window_id' => $host->window_id,
+            'status_id' => $status_closed,
+        ];
+
+        $response = $this->stop($array);
+
+        $window = Window::findOrFail($host->window_id);
+
+        $this->assertDatabaseHas('windows', [
+            'host_id' => $host->id,
+            'status_id' => $status_paused->id,
+            'client_id' => null,
+            'call_id' => null,
+        ]);
+
+        $this->assertDatabaseHas('calls', [
+            'user_id' => $call->user_id,
+            'status_id' => $status_closed->id,
+        ]);
+
+        $this->assertDatabaseHas('traces', [
+            'user_id' => $host->id,
+            'window_id' => $window->id,
+            'call_id' => $window->call_id,
+            'status_id' => $status_closed->id
         ]);
 
     }

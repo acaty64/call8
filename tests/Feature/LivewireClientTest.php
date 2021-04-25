@@ -2,18 +2,33 @@
 
 namespace Tests\Feature;
 
+use App\Http\Livewire\ClientScreen;
+use App\Models\Status;
 use App\Models\User;
+use App\Models\Window;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class LivewireClientTest extends TestCase
 {
     /** @test */
-    public function call_creation_page_contains_livewire_component()
+    public function client_creation_page_contains_livewire_component()
     {
-        $user = User::find(1);
-        $this->actingAs($user);
-        $this->get(route('call.client'))->assertSeeLivewire('client-screen');
+        $user = User::find(4);
+        Livewire::actingAs($user)
+            ->test(ClientScreen::class)
+            ->assertSeeHtml('Poner en Cola');
+    }
+
+    /** @test */
+    public function host_creation_page_contains_livewire_component()
+    {
+        $user = User::find(3);
+        Livewire::actingAs($user)
+            ->test(ClientScreen::class)
+            ->assertSeeHtml('Libre')
+            ->assertSeeHtml('Salir');
     }
 
     /** @test */
@@ -22,6 +37,35 @@ class LivewireClientTest extends TestCase
         $user = User::find(1);
         $this->actingAs($user);
         $this->get(route('call.client'))->assertDontSeeLivewire('host-screen');
+    }
+
+    /** @test */
+    public function a_host_can_open_a_new_window()
+    {
+        $status_id = Status::where('status', 'Cerrado')->first()->id;
+        $window = Window::find(3);
+        $window->host_id = null;
+        $window->status_id = $status_id;
+        $window->save();
+
+        $user = User::find(3);
+
+        Livewire::actingAs($user)
+            ->test(ClientScreen::class)
+            ->call('openWindow')
+            ->assertSeeHtml('Libre')
+            ->assertSeeHtml('Salir');
+    }
+
+    /** @test */
+    public function a_host_can_reopen_a_window()
+    {
+        $user = User::find(1);
+
+        Livewire::actingAs($user)
+            ->test(ClientScreen::class)
+            ->call('openWindow')
+            ->assertSeeHtml('Colgar');
     }
 
 }

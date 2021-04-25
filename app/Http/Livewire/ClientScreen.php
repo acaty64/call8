@@ -3,6 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Events\RingEvent;
+use App\Models\Status;
+use App\Models\Trace;
+use App\Models\Window;
 use Livewire\Component;
 
 class ClientScreen extends Component
@@ -10,6 +13,7 @@ class ClientScreen extends Component
 	public $qcalls;
 	public $qwindows;
 	public $status;
+    public $window;
 
     // Special Syntax: ['echo:{channel},{event}' => '{method}']
     protected $listeners = [
@@ -22,6 +26,10 @@ class ClientScreen extends Component
         $this->qcalls = 10;
         $this->qwindows = 3;
         $this->status = "";
+        if(\Auth::user()->is_host){
+            $this->openWindow();
+        }
+
     }
 
     public function ring($data)
@@ -65,6 +73,29 @@ class ClientScreen extends Component
         $this->status = 'Cerrado';
         $this->qwindows = $this->qwindows - 1;
     	session()->flash('message', 'Desconectando ....');
+    }
+
+    public function openWindow()
+    {
+        $host_id = \Auth::user()->id;
+
+        $status_id = Status::where('status', 'En Pausa')->first()->id;
+
+        $window = Window::where('host_id', $host_id)->first();
+        if(!$window)
+        {
+            $status_close = Status::where('status', 'Cerrado')->first()->id;
+            $window = Window::where('status_id', $status_close)->first();
+            $window->host_id = $host_id;
+            $window->status_id = $status_id;
+            $window->save();
+        }
+        Trace::new_window($window);
+
+        $this->status = $window->status->status;
+
+        return $window;
+
     }
 
 }

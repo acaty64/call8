@@ -30,7 +30,6 @@ class WindowController extends Controller
             $window->status_id = $status_id;
             $window->save();
         }
-
         Trace::new_window($window);
 
         return $window;

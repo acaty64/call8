@@ -32,7 +32,26 @@ trait CallTrait
         }
 
         return $call;
-        return $call->toJson();
+
+    }
+
+    public function answer($array)
+    {
+        $client = \Auth::user();
+        $status_answer = Status::where('status', 'Atendiendo')->first();
+
+        $call = Call::findOrFail($array['id']);
+        $window = Window::where('call_id', $call->id)->first();
+
+        $call ->status_id = $status_answer->id;
+        $call->save();
+
+        $window->status_id = $status_answer->id;
+        $window->save();
+
+        $check = Trace::new_call($call);
+
+        return $call;
 
     }
 
@@ -59,8 +78,6 @@ trait CallTrait
         if(!$check){
             return 'Error';
         }
-
-        return $call->toJson();
 
     }
 

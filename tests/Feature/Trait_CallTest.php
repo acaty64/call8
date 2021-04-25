@@ -41,6 +41,49 @@ class Trait_CallTest extends TestCase
 
     }
 
+    public function test_answer_the_call()
+    {
+        $client = User::findOrFail(6);
+        $call = Call::where('user_id', $client->id)->first();
+
+        $window = Window::find(3);
+        $window->client_id = $client->id;
+        $window->call_id = $call->id;
+        $window->save();
+
+        $this->actingAs($client);
+
+        $array = [
+            'id' => $call->id,
+            'user_id' => $call->user_id,
+            'number' => $call->number,
+            'status_id' => $call->status_id,
+        ];
+
+        $response = $this->answer($array);
+
+        $status_answer = Status::where('status', 'Atendiendo')->first();
+
+
+        $this->assertDatabaseHas('calls', [
+            'user_id' => $client->id,
+            'number' => $call->id,
+            'status_id' => $status_answer->id,
+        ]);
+
+        $this->assertDatabaseHas('windows', [
+            'client_id' => $client->id,
+            'call_id' => $call->id,
+            'status_id' => $status_answer->id,
+        ]);
+
+        $this->assertDatabaseHas('traces', [
+            'user_id' => $client->id,
+            'call_id' => $call->id,
+            'status_id' => $status_answer->id
+        ]);
+
+    }
 
     public function test_close_the_call()
     {

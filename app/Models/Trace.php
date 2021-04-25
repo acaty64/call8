@@ -48,7 +48,17 @@ class Trace extends Model
             'call_id' => $call->id,
             'status_id' => $call->status_id,
         ]);
+        return true;
+    }
 
+    public static function new_window($window)
+    {
+        Trace::create([
+            'user_id' => $window->host_id,
+            'call_id' => $window->call_id,
+            'window_id' => $window->id,
+            'status_id' => $window->status_id,
+        ]);
         return true;
     }
 

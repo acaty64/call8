@@ -13,7 +13,7 @@ class LivewireClientTest extends TestCase
     {
         $user = User::find(1);
         $this->actingAs($user);
-        $this->get(route('call.screen'))->assertSeeLivewire('client-screen');
+        $this->get(route('call.client'))->assertSeeLivewire('client-screen');
     }
 
     /** @test */
@@ -21,7 +21,7 @@ class LivewireClientTest extends TestCase
     {
         $user = User::find(1);
         $this->actingAs($user);
-        $this->get(route('call.screen'))->assertDontSeeLivewire('host-screen');
+        $this->get(route('call.client'))->assertDontSeeLivewire('host-screen');
     }
 
 }

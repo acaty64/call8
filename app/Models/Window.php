@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Window extends Model
 {
     protected $fillable = [
-        'window', 'host_id', 'client_id', 'status_id', 'link'
+        'window', 'host_id', 'client_id', 'status_id', 'call_id', 'link'
     ];
 
     public function client()

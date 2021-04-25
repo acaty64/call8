@@ -24,6 +24,10 @@ class CreateWindowsTable extends Migration
                 $table->foreign('client_id')
                             ->references('id')
                             ->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('call_id')->nullable();
+                $table->foreign('call_id')
+                            ->references('id')
+                            ->on('calls')->onDelete('cascade');
             $table->unsignedBigInteger('status_id')->nullable();
                 $table->foreign('status_id')
                             ->references('id')

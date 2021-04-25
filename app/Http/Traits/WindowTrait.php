@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits;
 
+use App\Models\Call;
 use App\Models\Status;
 use App\Models\Trace;
 use App\Models\Window;
@@ -30,6 +31,7 @@ trait WindowTrait {
 
     }
 
+
     public function free()
     {
         $host_id = \Auth::user()->id;
@@ -42,6 +44,35 @@ trait WindowTrait {
 
         return $window;
     }
+
+    public function start()
+    {
+        $host = \Auth::user();
+        $host_id = $host->id;
+
+        $status_paused = Status::where('status', 'En Pausa')->first()->id;
+        $call = Call::where('status_id', $status_paused)->first();
+
+        $status_id = Status::where('status', 'Llamando')->first()->id;
+
+        $call->status_id = $status_id;
+        $call->save();
+
+        $window = Window::findOrFail($host->window_id);
+        $window->status_id = $status_id;
+        $window->client_id = $call->user_id;
+        $window->call_id = $call->id;
+
+        $window->save();
+
+        Trace::new_window($window);
+
+        return $window;
+
+    }
+
+
+
 
     public function hang($array)
     {

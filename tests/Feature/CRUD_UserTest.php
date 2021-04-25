@@ -78,33 +78,33 @@ class CRUD_UserTest extends TestCase
     public function test_delete_a_user()
     {
 
-        $user = User::find(1);
-        $this->actingAs($user);
+        $host = User::find(1);
+        $this->actingAs($host);
 
-        $user = User::findOrFail(1);
+        $user = User::findOrFail(4);
         $response = $this->delete(route('user.destroy' , $user->id));
 
         $response->assertStatus(302);
 
         $this->assertDatabaseMissing('users', [
-                'id' => 1,
+                'id' => $user->id,
                 'name' => $user->name,
             ]);
 
         $this->assertDatabaseMissing('calls', [
-                'user_id' => 1,
+                'user_id' => $user->id,
             ]);
 
         $this->assertDatabaseMissing('windows', [
-                'host_id' => 1,
+                'host_id' => $user->id,
             ]);
 
         $this->assertDatabaseMissing('windows', [
-                'client_id' => 1,
+                'client_id' => $user->id,
             ]);
 
         $this->assertDatabaseMissing('traces', [
-                'user_id' => 1,
+                'user_id' => $user->id,
             ]);
 
     }

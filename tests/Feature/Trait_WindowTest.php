@@ -6,6 +6,7 @@ use App\Http\Traits\WindowTrait;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\User;
+use App\Models\Window;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -92,7 +93,7 @@ class Trait_WindowTest extends TestCase
 
     }
 
-    public function test_hangUp_a_call()
+    public function test_close_a_call()
     {
         $user = User::findOrFail(2);
 
@@ -117,6 +118,42 @@ class Trait_WindowTest extends TestCase
             'window_id' => $response['id'],
             'status_id' => $status->id
         ]);
+    }
+
+    public function test_start_a_call()
+    {
+        $status_paused = Status::where('status', 'En Pausa')->first()->id;
+        $call = Call::where('status_id', $status_paused)->first();
+
+        $user = User::findOrFail(3);
+
+        $this->actingAs($user);
+
+        $status = Status::where('status', 'Llamando')->first();
+
+        $array = [
+            'user_id' => $user->id,
+            'status_id' => $status->id,
+        ];
+
+        $response = $this->start($array);
+
+        $window = Window::findOrFail($user->window_id);
+
+        $this->assertDatabaseHas('windows', [
+            'host_id' => $user->id,
+            'status_id' => $status->id,
+            'client_id' => $call->user_id,
+            'call_id' => $call->id,
+        ]);
+
+        $this->assertDatabaseHas('traces', [
+            'user_id' => $user->id,
+            'window_id' => $window->id,
+            'call_id' => $window->call_id,
+            'status_id' => $status->id
+        ]);
+
     }
 
     public function test_close_a_window()

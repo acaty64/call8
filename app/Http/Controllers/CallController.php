@@ -6,21 +6,14 @@ use App\Models\Call;
 use App\Models\Status;
 use App\Models\Trace;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 
 class CallController extends Controller
 {
-    use DatabaseTransactions;
 
     public function client()
     {
         return view('app.client.screen');
-    }
-
-    public function host()
-    {
-        return view('app.host.screen');
     }
 
     public function index()
@@ -42,48 +35,6 @@ class CallController extends Controller
 
     public function store()
     {
-        $user = \Auth::user();
-
-        $status = Status::where('status', 'En Pausa')->first();
-
-        $call = Call::create([
-            'user_id' => $user->id,
-            'status_id' => $status->id,
-        ]);
-
-        $call->number = $call->number_today();
-        $call->save();
-
-        $check = Trace::new_call($call);
-
-        if(!$check){
-            return 'Error';
-        }
-
-        return $call->toJson();
-
-    }
-
-    public function close(Request $request)
-    {
-
-        $user = \Auth::user();
-
-        $status = Status::where('status', 'Cerrado')->first();
-
-        $call = Call::findOrFail($request->id);
-
-        $call->status_id = $status->id;
-
-        $call->save();
-
-        $check = Trace::new_call($call);
-
-        if(!$check){
-            return 'Error';
-        }
-
-        return $call->toJson();
 
     }
 

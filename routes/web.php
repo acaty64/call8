@@ -2,17 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -79,25 +68,11 @@ Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], fu
 		'uses' => 'CallController@client'
 	]);
 
-	Route::get('/call/host', [
-		'as' => 'call.host',
-		'uses' => 'CallController@host'
-	]);
-
 	Route::get('/call/index', [
 		'as' => 'call.index',
 		'uses' => 'CallController@index'
 	]);
 
-	Route::post('/call/store', [
-		'as' => 'call.store',
-		'uses' => 'CallController@store'
-	]);
-
-	Route::post('/call/close', [
-		'as' => 'call.close',
-		'uses' => 'CallController@close'
-	]);
 
 });
 /////////////////// END CALL ROUTES //////////////////

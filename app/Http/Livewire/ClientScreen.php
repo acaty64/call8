@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Events\RingEvent;
+use App\Http\Traits\WindowTrait;
 use App\Models\Status;
 use App\Models\Trace;
 use App\Models\Window;
@@ -10,6 +11,8 @@ use Livewire\Component;
 
 class ClientScreen extends Component
 {
+    use WindowTrait;
+
 	public $qcalls;
 	public $qwindows;
 	public $status;
@@ -77,20 +80,7 @@ class ClientScreen extends Component
 
     public function openWindow()
     {
-        $host_id = \Auth::user()->id;
-
-        $status_id = Status::where('status', 'En Pausa')->first()->id;
-
-        $window = Window::where('host_id', $host_id)->first();
-        if(!$window)
-        {
-            $status_close = Status::where('status', 'Cerrado')->first()->id;
-            $window = Window::where('status_id', $status_close)->first();
-            $window->host_id = $host_id;
-            $window->status_id = $status_id;
-            $window->save();
-        }
-        Trace::new_window($window);
+        $window = $this->open();
 
         $this->status = $window->status->status;
 

@@ -110,25 +110,6 @@ Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], fu
 		'uses' => 'WindowController@index'
 	]);
 
-	Route::post('/window/open', [
-		'as' => 'window.open',
-		'uses' => 'WindowController@open'
-	]);
-
-	Route::post('/window/free', [
-		'as' => 'window.free',
-		'uses' => 'WindowController@free'
-	]);
-
-	Route::post('/window/hang', [
-		'as' => 'window.hang',
-		'uses' => 'WindowController@hang'
-	]);
-
-	Route::post('/window/close', [
-		'as' => 'window.close',
-		'uses' => 'WindowController@close'
-	]);
 
 });
 /////////////////// END CALL ROUTES //////////////////

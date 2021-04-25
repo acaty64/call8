@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Http\Traits;
+
+use App\Models\Status;
+use App\Models\Trace;
+use App\Models\Window;
+
+
+trait WindowTrait {
+
+	public function open()
+    {
+        $host_id = \Auth::user()->id;
+
+        $status_id = Status::where('status', 'En Pausa')->first()->id;
+
+        $window = Window::where('host_id', $host_id)->first();
+        if(!$window)
+        {
+            $status_close = Status::where('status', 'Cerrado')->first()->id;
+            $window = Window::where('status_id', $status_close)->first();
+            $window->host_id = $host_id;
+            $window->status_id = $status_id;
+            $window->save();
+        }
+        Trace::new_window($window);
+
+        return $window;
+
+    }
+
+    public function free()
+    {
+        $host_id = \Auth::user()->id;
+        $status_id = Status::where('status', 'Libre')->first()->id;
+        $window = Window::where('host_id', $host_id)->first();
+        $window->status_id = $status_id;
+        $window->save();
+
+        Trace::new_window($window);
+
+        return $window;
+    }
+
+    public function hang($array)
+    {
+        $host_id = \Auth::user()->id;
+        $status_id = Status::where('status', 'En Pausa')->first()->id;
+        $window = Window::where('host_id', $host_id)->first();
+        $window->status_id = $status_id;
+        $window->save();
+
+        Trace::new_window($window);
+
+        return $window;
+    }
+
+    public function close($request)
+    {
+        $host_id = \Auth::user()->id;
+        $status_id = Status::where('status', 'Cerrado')->first()->id;
+        $window = Window::where('host_id', $host_id)->first();
+        $window->host_id = null;
+        $window->client_id = null;
+        $window->status_id = $status_id;
+        $window->save();
+
+        $trace = $window;
+        $trace->host_id = $host_id;
+        Trace::new_window($trace);
+
+        return $window;
+    }
+
+}

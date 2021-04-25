@@ -147,6 +147,11 @@ class Trait_WindowTest extends TestCase
             'call_id' => $call->id,
         ]);
 
+        $this->assertDatabaseHas('calls', [
+            'user_id' => $call->user_id,
+            'status_id' => $status->id,
+        ]);
+
         $this->assertDatabaseHas('traces', [
             'user_id' => $user->id,
             'window_id' => $window->id,

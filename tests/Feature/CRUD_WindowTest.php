@@ -47,6 +47,36 @@ class CRUD_WindowTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_reopen_a_window()
+    {
+        $user = User::findOrFail(4);
+        $this->actingAs($user);
+        $response = $this->post(route('window.open'));
+
+        $first_id = $response['id'];
+
+        $status = Status::where('status', 'En Pausa')->first();
+
+        $this->assertDatabaseHas('windows', [
+            'host_id' => $user->id,
+            'status_id' => $status->id,
+        ]);
+
+        $this->assertDatabaseHas('traces', [
+            'user_id' => $user->id,
+            'window_id' => $response['id'],
+            'status_id' => $status->id
+        ]);
+
+        $response = $this->post(route('window.open'));
+        $response->assertStatus(200);
+
+        $second_id = $response['id'];
+
+        $this->assertTrue($first_id == $second_id);
+
+    }
+
     public function test_set_free_a_window()
     {
         $user = User::findOrFail(3);

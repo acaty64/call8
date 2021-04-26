@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Livewire\ClientScreen;
+use App\Models\Call;
 use App\Models\Status;
 use App\Models\User;
 use App\Models\Window;
@@ -25,25 +26,6 @@ class LivewireClientTest extends TestCase
     }
 
     /** @test */
-    public function host_creation_page_contains_livewire_component()
-    {
-        $status_paused = Status::where('status', 'En Pausa')->first()->id;
-        $host = User::find(3);
-//        $window = Window::where('host_id', $user->id)->first();
-//        $window->status_id = $status_paused;
-//        $window->save();
-        Livewire::actingAs($host)
-            ->test(ClientScreen::class)
-            ->assertSeeHtml('Libre')
-            ->assertSeeHtml('Salir');
-
-        $this->assertDatabaseHas('windows', [
-            'host_id' => $host->id,
-            'status_id' => $status_paused,
-        ]);
-    }
-
-    /** @test */
     public function call_creation_page_doesnt_contain_livewire_component()
     {
         $user = User::find(1);
@@ -52,32 +34,110 @@ class LivewireClientTest extends TestCase
     }
 
     /** @test */
-    public function a_host_can_open_a_new_window()
+    public function client_click_poner_en_cola()
     {
-        $status_id = Status::where('status', 'Cerrado')->first()->id;
-        $window = Window::find(3);
-        $window->host_id = null;
-        $window->status_id = $status_id;
-        $window->save();
-
-        $user = User::find(3);
-
+        $user = User::find(6);
         Livewire::actingAs($user)
             ->test(ClientScreen::class)
-            ->call('openWindow')
-            ->assertSeeHtml('Libre')
-            ->assertSeeHtml('Salir');
+            ->call('call_open');
+
+        $status_paused = Status::where('status', 'En Pausa')->first();
+
+        $this->assertDatabaseHas('calls', [
+            'user_id' => $user->id,
+            'status_id' => $status_paused->id,
+        ]);
+
+        $this->assertDatabaseHas('traces', [
+            'user_id' => $user->id,
+            'status_id' => $status_paused->id
+        ]);
+
     }
 
     /** @test */
-    public function a_host_can_reopen_a_window()
+    public function client_click_responder()
     {
-        $user = User::find(1);
+        $client = User::find(6);
+        $call = Call::where('user_id', $client->id)->first();
 
-        Livewire::actingAs($user)
+        $window = Window::find(3);
+        $window->client_id = $client->id;
+        $window->call_id = $call->id;
+        $window->save();
+
+        $array = [
+            'id' => $call->id,
+            'user_id' => $call->user_id,
+            'number' => $call->number,
+            'status_id' => $call->status_id,
+        ];
+
+        Livewire::actingAs($client)
             ->test(ClientScreen::class)
-            ->call('openWindow')
-            ->assertSeeHtml('Colgar');
+            ->call('answer', $array);
+
+        $status_answer = Status::where('status', 'Atendiendo')->first();
+
+        $this->assertDatabaseHas('windows', [
+            'client_id' => $client->id,
+            'status_id' => $status_answer->id,
+        ]);
+
+        $this->assertDatabaseHas('calls', [
+            'user_id' => $client->id,
+            'status_id' => $status_answer->id,
+        ]);
+
+        $this->assertDatabaseHas('traces', [
+            'user_id' => $client->id,
+            'status_id' => $status_answer->id
+        ]);
+
     }
+
+    /** @test */
+    public function client_click_colgar()
+    {
+        $client = User::find(6);
+        $call = Call::where('user_id', $client->id)->first();
+
+        $window = Window::find(3);
+        $window->client_id = $client->id;
+        $window->call_id = $call->id;
+        $window->save();
+
+        $array = [
+            'id' => $call->id,
+            'user_id' => $call->user_id,
+            'number' => $call->number,
+            'status_id' => $call->status_id,
+        ];
+
+        Livewire::actingAs($client)
+            ->test(ClientScreen::class)
+            ->call('call_close', $array);
+
+        $status_closed = Status::where('status', 'Cerrado')->first();
+
+        $status_paused = Status::where('status', 'En Pausa')->first();
+
+        $this->assertDatabaseHas('windows', [
+            'id' => $window->id,
+            'status_id' => $status_paused->id,
+        ]);
+
+        $this->assertDatabaseHas('calls', [
+            'user_id' => $client->id,
+            'status_id' => $status_closed->id,
+        ]);
+
+        $this->assertDatabaseHas('traces', [
+            'user_id' => $client->id,
+            'status_id' => $status_closed->id
+        ]);
+
+    }
+
 
 }

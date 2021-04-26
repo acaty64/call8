@@ -11,7 +11,7 @@ use App\Models\Window;
 trait CallTrait
 {
 
-    public function open()
+    public function call_open()
     {
         $user = \Auth::user();
 
@@ -55,7 +55,7 @@ trait CallTrait
 
     }
 
-    public function close($array)
+    public function call_close($array)
     {
 
         $user = \Auth::user();

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Events\RingEvent;
+use App\Http\Traits\CallTrait;
 use App\Http\Traits\WindowTrait;
 use App\Models\Status;
 use App\Models\Trace;
@@ -12,11 +13,13 @@ use Livewire\Component;
 class ClientScreen extends Component
 {
     use WindowTrait;
+    use CallTrait;
 
 	public $qcalls;
 	public $qwindows;
 	public $status;
     public $window;
+    public $data_test;
 
     // Special Syntax: ['echo:{channel},{event}' => '{method}']
     protected $listeners = [
@@ -26,20 +29,30 @@ class ClientScreen extends Component
 
     public function mount()
     {
+        $this->data_test = "";
         $this->qcalls = 10;
         $this->qwindows = 3;
         $this->status = "";
         if(\Auth::user()->is_host){
             $this->openWindow();
         }
-
     }
 
     public function ring($data)
     {
 // dd($data['host']['name']);
+        $response = $this->start();
+// dd($response);
         $this->status = $data['status'];
         session()->flash('message', $data['host']['name'] . ' está llamando.' );
+    }
+
+    public function free()
+    {
+        $response = $this->window_free();
+// dd($response['status']);
+        $this->status = $response['status'];
+        session()->flash('message', ' está llamando.' );
     }
 
 
@@ -80,11 +93,11 @@ class ClientScreen extends Component
 
     public function openWindow()
     {
-        $window = $this->open();
+        $window = $this->window_open();
+
+        $this->data_test = $window;
 
         $this->status = $window->status->status;
-
-        return $window;
 
     }
 

@@ -25,15 +25,15 @@ class WindowSeeder extends Seeder
         Window::create([
         	'window' => 'A2',
         	'host_id' => 2,
-            'client_id' => 5,
-        	'status_id' => 4,
-            'call_id' => 2,
+            'client_id' => null,
+        	'status_id' => 5,
+            'call_id' => null,
         ]);
         Window::create([
         	'window' => 'A3',
-        	'host_id' => 3,
+        	'host_id' => null,
             'client_id' => null,
-        	'status_id' => 5,
+        	'status_id' => null,
             'call_id' => null,
         ]);
         Window::create([

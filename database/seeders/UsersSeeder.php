@@ -26,6 +26,29 @@ class UsersSeeder extends Seeder
     	]);
 
         User::factory(5)->create();
+
+        $user = User::find(2);
+        $user->email = 'host2@gmail.com';
+        $user->save();
+
+        $user = User::find(3);
+        $user->email = 'host3@gmail.com';
+        $user->save();
+
+        $user = User::find(4);
+        $user->email = 'client1@gmail.com';
+        $user->save();
+
+        $user = User::find(5);
+        $user->email = 'client2@gmail.com';
+        $user->save();
+
+        $user = User::find(6);
+        $user->email = 'client3@gmail.com';
+        $user->save();
+
+
+
         // factory(User::class, 5)->create();
     }
 }

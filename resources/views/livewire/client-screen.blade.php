@@ -16,7 +16,9 @@
     <div>
 			user: {{ \Auth::user() }}
     </div>
-
+    <div>
+    	data_test: {{ $data_test }}
+    </div>
     <div class="row">
 		<div class=col-sm>
 			Estado: {{ $status }}
@@ -44,14 +46,19 @@
 			@endif
 		@endif
 		@if(\Auth::user()->is_host)
+			@if($status == 'Cerrado')
+				<button wire:click="free" class="btn btn-large btn-success">Libre</button>
+				<button wire:click="pause" class="btn btn-large btn-warning">En Pausa</button>
+				<button wire:click="out" class="btn btn-large btn-danger">Salir</button>
+			@endif
 			@if($status == 'En Pausa')
-				<button wire:click="call" class="btn btn-large btn-success">Libre</button>
+				<button wire:click="free" class="btn btn-large btn-success">Libre</button>
 				<button wire:click="disconnect" class="btn btn-large btn-danger">Salir</button>
 			@endif
 			@if($status == 'Libre')
 				<button wire:click="call" class="btn btn-large btn-success">Llamar</button>
 				<button wire:click="call" class="btn btn-large btn-warning">En Pausa</button>
-				<button wire:click="disconnect" class="btn btn-large btn-danger">Salir</button>
+				<button wire:click="stop" class="btn btn-large btn-danger">Salir</button>
 			@endif
 			@if($status == 'Llamando' || $status == 'Atendiendo' )
 				<button wire:click="call" class="btn btn-large btn-danger">Colgar</button>

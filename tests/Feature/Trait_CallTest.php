@@ -25,11 +25,11 @@ class Trait_CallTest extends TestCase
 
         $status = Status::where('status', 'En Pausa')->first();
 
-        $response = $this->open();
+        $response = $this->call_open();
 
         $this->assertDatabaseHas('calls', [
             'user_id' => $user->id,
-            'number' => $response->number,
+            'number' => $response['number'],
             'status_id' => $status->id,
         ]);
 
@@ -105,7 +105,7 @@ class Trait_CallTest extends TestCase
 
         $window = Window::where('client_id', $user->id)->first();
 
-        $response = $this->close($array);
+        $response = $this->call_close($array);
 
         $this->assertDatabaseHas('calls', [
             'user_id' => $user->id,

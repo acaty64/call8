@@ -57,23 +57,32 @@ class User extends Authenticatable
 
     public function getIsHostAttribute()
     {
-        $window = Window::where('host_id', $this->id)->get();
-        if($window->count() == 0){
+        if($this->id < 4){
+            return true;
+        }else{
             return false;
         }
-        return true;
+        // $window = Window::where('host_id', $this->id)->get();
+        // if($window->count() == 0){
+        //     return false;
+        // }
+        // return true;
     }
 
     public function getIsClientAttribute()
     {
-
-        $status = Status::where('status', 'Cerrado')->first();
-
-        $users = Call::where('user_id', $this->id)->where('status_id', '!=', $status->id)->get();
-        if($users->count() == 0){
+        if($this->id > 3){
+            return true;
+        }else{
             return false;
         }
-        return true;
+        // $status = Status::where('status', 'Cerrado')->first();
+
+        // $users = Call::where('user_id', $this->id)->where('status_id', '!=', $status->id)->get();
+        // if($users->count() == 0){
+        //     return false;
+        // }
+        // return true;
     }
 
     public function getIsFreeAttribute()

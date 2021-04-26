@@ -10,7 +10,7 @@ use App\Models\Window;
 
 trait WindowTrait {
 
-	public function open()
+	public function window_open()
     {
         $host_id = \Auth::user()->id;
 
@@ -31,10 +31,10 @@ trait WindowTrait {
 
     }
 
-
-    public function free()
+    public function window_free()
     {
         $host_id = \Auth::user()->id;
+
         $status_id = Status::where('status', 'Libre')->first()->id;
         $window = Window::where('host_id', $host_id)->first();
         $window->status_id = $status_id;
@@ -71,7 +71,7 @@ trait WindowTrait {
 
     }
 
-    public function stop()
+    public function window_stop()
     {
         $host = \Auth::user();
         $host_id = $host->id;
@@ -99,7 +99,7 @@ trait WindowTrait {
 
     }
 
-    public function close($request)
+    public function window_close($request)
     {
         $host_id = \Auth::user()->id;
         $status_id = Status::where('status', 'Cerrado')->first()->id;

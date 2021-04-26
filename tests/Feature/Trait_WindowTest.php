@@ -20,13 +20,13 @@ class Trait_WindowTest extends TestCase
 
     public function test_open_a_new_window()
     {
-        $user = User::findOrFail(4);
+        $user = User::findOrFail(3);
 
         $this->actingAs($user);
 
         $status = Status::where('status', 'En Pausa')->first();
 
-        $response = $this->open();
+        $response = $this->window_open();
 
         $this->assertDatabaseHas('windows', [
             'host_id' => $user->id,
@@ -45,7 +45,7 @@ class Trait_WindowTest extends TestCase
     {
         $user = User::findOrFail(4);
         $this->actingAs($user);
-        $response = $this->open();
+        $response = $this->window_open();
 
         $first_id = $response['id'];
 
@@ -62,7 +62,7 @@ class Trait_WindowTest extends TestCase
             'status_id' => $status->id
         ]);
 
-        $response = $this->open();
+        $response = $this->window_open();
 
         $second_id = $response['id'];
 
@@ -74,21 +74,27 @@ class Trait_WindowTest extends TestCase
     {
         $user = User::findOrFail(3);
 
+
+        $status_free = Status::where('status', 'Libre')->first();
+        $status_closed = Status::where('status', 'Cerrado')->first();
+
+        $window = Window::where('host_id', null)->first();
+        $window->host_id = $user->id;
+        $window->status_id = $status_closed->id;
+        $window->save();
+
         $this->actingAs($user);
-
-        $status = Status::where('status', 'Libre')->first();
-
-        $response = $this->free();
+        $response = $this->window_free();
 
         $this->assertDatabaseHas('windows', [
             'host_id' => $user->id,
-            'status_id' => $status->id,
+            'status_id' => $status_free->id,
         ]);
 
         $this->assertDatabaseHas('traces', [
             'user_id' => $user->id,
             'window_id' => $response['id'],
-            'status_id' => $status->id
+            'status_id' => $status_free->id
         ]);
 
     }
@@ -109,6 +115,7 @@ class Trait_WindowTest extends TestCase
             'status_id' => $status->id,
         ];
 
+        $response = $this->window_open();
         $response = $this->start($array);
 
         $window = Window::findOrFail($user->window_id);
@@ -152,7 +159,7 @@ class Trait_WindowTest extends TestCase
             'status_id' => $status_closed,
         ];
 
-        $response = $this->stop($array);
+        $response = $this->window_stop($array);
 
         $window = Window::findOrFail($host->window_id);
 
@@ -190,7 +197,7 @@ class Trait_WindowTest extends TestCase
             'status_id' => $status->id,
         ];
 
-        $response = $this->close($array);
+        $response = $this->window_close($array);
 
         $this->assertDatabaseHas('windows', [
             'id' => $response['id'],

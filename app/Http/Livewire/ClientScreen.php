@@ -50,9 +50,40 @@ class ClientScreen extends Component
     public function free()
     {
         $response = $this->window_free();
-// dd($response['status']);
-        $this->status = $response['status'];
+        $this->status = $response['status']->status;
         session()->flash('message', ' está llamando.' );
+    }
+
+    public function stopWindow()
+    {
+        $response = $this->window_stop();
+        $this->status = $response['status']->status;
+        $this->qwindows = $this->qwindows - 1;
+        session()->flash('message', 'Desconectando ....');
+    }
+
+    public function pauseWindow()
+    {
+        $response = $this->window_paused();
+        $this->status = $response['status']->status;
+        $this->qwindows = $this->qwindows - 1;
+        session()->flash('message', 'En Pausa ....');
+    }
+
+    public function startWindow()
+    {
+        $response = $this->window_start();
+        $this->status = $response['status']->status;
+        $this->qwindows = $this->qwindows + 1;
+        session()->flash('message', 'Llamando ....');
+    }
+
+    public function outWindow()
+    {
+        $response = $this->window_out();
+        $this->status = $response['status']->status;
+        $this->qwindows = $this->qwindows - 1;
+        session()->flash('message', 'Desconectado ....');
     }
 
 

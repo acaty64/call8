@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Livewire\ClientScreen;
+use App\Models\Call;
 use App\Models\Status;
 use App\Models\User;
 use App\Models\Window;
@@ -20,9 +21,7 @@ class LivewireHostTest extends TestCase
     {
         $status_paused = Status::where('status', 'En Pausa')->first()->id;
         $host = User::find(3);
-//        $window = Window::where('host_id', $user->id)->first();
-//        $window->status_id = $status_paused;
-//        $window->save();
+
         Livewire::actingAs($host)
             ->test(ClientScreen::class)
             ->assertSeeHtml('Libre')
@@ -70,5 +69,73 @@ class LivewireHostTest extends TestCase
             ->call('openWindow')
             ->assertSeeHtml('Colgar');
     }
+
+    /** @test */
+    public function when_host_click_Libre()
+    {
+
+        // $status_paused = Status::where('status', 'En Pausa')->first()->id;
+
+        $host = User::find(1);
+
+        Livewire::actingAs($host)
+            ->test(ClientScreen::class)
+            ->call('free')
+            ->assertSeeHtml('Llamar')
+            ->assertSeeHtml('Salir');
+    }
+
+    /** @test */
+    public function when_host_click_Llamar()
+    {
+        $host = User::find(1);
+
+        Livewire::actingAs($host)
+            ->test(ClientScreen::class)
+            ->call('startWindow')
+            ->assertSeeHtml('Colgar');
+    }
+
+    /** @test */
+    public function when_host_click_Colgar()
+    {
+        $host = User::find(1);
+
+        Livewire::actingAs($host)
+            ->test(ClientScreen::class)
+            ->call('stopWindow')
+            ->assertSeeHtml('En Pausa')
+            ->assertSeeHtml('Salir');
+    }
+
+    /** @test */
+    public function when_host_click_En_Pausa()
+    {
+        $host = User::find(1);
+
+        Livewire::actingAs($host)
+            ->test(ClientScreen::class)
+            ->call('pauseWindow')
+            ->assertSeeHtml('Libre')
+            ->assertSeeHtml('Salir');
+    }
+
+    /** @test */
+    public function when_host_click_Salir()
+    {
+        $host = User::find(1);
+
+        Livewire::actingAs($host)
+            ->test(ClientScreen::class)
+            ->call('outWindow')
+            ->assertSeeHtml('Cerrado');
+    }
+
+
+
+
+
+
+
 
 }

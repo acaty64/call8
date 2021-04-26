@@ -45,7 +45,7 @@ trait WindowTrait {
         return $window;
     }
 
-    public function start()
+    public function window_start()
     {
         $host = \Auth::user();
         $host_id = $host->id;
@@ -99,7 +99,21 @@ trait WindowTrait {
 
     }
 
-    public function window_close($request)
+    public function window_paused()
+    {
+        $host_id = \Auth::user()->id;
+        $status_id = Status::where('status', 'En Pausa')->first()->id;
+        $window = Window::where('host_id', $host_id)->first();
+        $window->client_id = null;
+        $window->status_id = $status_id;
+        $window->save();
+
+        Trace::new_window($window);
+
+        return $window;
+    }
+
+    public function window_out()
     {
         $host_id = \Auth::user()->id;
         $status_id = Status::where('status', 'Cerrado')->first()->id;

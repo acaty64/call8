@@ -116,7 +116,7 @@ class Trait_WindowTest extends TestCase
         ];
 
         $response = $this->window_open();
-        $response = $this->start($array);
+        $response = $this->window_start($array);
 
         $window = Window::findOrFail($user->window_id);
 
@@ -184,6 +184,31 @@ class Trait_WindowTest extends TestCase
 
     }
 
+    public function test_paused_a_window()
+    {
+        $user = User::findOrFail(1);
+
+        $this->actingAs($user);
+
+        $status = Status::where('status', 'En Pausa')->first();
+
+        $response = $this->window_paused();
+
+        $this->assertDatabaseHas('windows', [
+            'id' => $response['id'],
+            'host_id' => $user->id,
+            'client_id' => null,
+            'status_id' => $status->id,
+        ]);
+
+        $this->assertDatabaseHas('traces', [
+            'user_id' => $user->id,
+            'window_id' => $response['id'],
+            'status_id' => $status->id
+        ]);
+
+    }
+
     public function test_close_a_window()
     {
         $user = User::findOrFail(1);
@@ -197,7 +222,7 @@ class Trait_WindowTest extends TestCase
             'status_id' => $status->id,
         ];
 
-        $response = $this->window_close($array);
+        $response = $this->window_out($array);
 
         $this->assertDatabaseHas('windows', [
             'id' => $response['id'],

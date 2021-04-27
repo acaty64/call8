@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Http\Livewire\ClientScreen;
+use App\Http\Livewire\HostScreen;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\User;
@@ -23,7 +23,7 @@ class LivewireHostTest extends TestCase
         $host = User::find(3);
 
         Livewire::actingAs($host)
-            ->test(ClientScreen::class)
+            ->test(HostScreen::class)
             ->assertSeeHtml('Libre')
             ->assertSeeHtml('Salir');
 
@@ -53,7 +53,7 @@ class LivewireHostTest extends TestCase
         $user = User::find(3);
 
         Livewire::actingAs($user)
-            ->test(ClientScreen::class)
+            ->test(HostScreen::class)
             ->call('openWindow')
             ->assertSeeHtml('Libre')
             ->assertSeeHtml('Salir');
@@ -65,7 +65,7 @@ class LivewireHostTest extends TestCase
         $user = User::find(1);
 
         Livewire::actingAs($user)
-            ->test(ClientScreen::class)
+            ->test(HostScreen::class)
             ->call('openWindow')
             ->assertSeeHtml('Colgar');
     }
@@ -79,7 +79,7 @@ class LivewireHostTest extends TestCase
         $host = User::find(1);
 
         Livewire::actingAs($host)
-            ->test(ClientScreen::class)
+            ->test(HostScreen::class)
             ->call('free')
             ->assertSeeHtml('Llamar')
             ->assertSeeHtml('Salir');
@@ -91,7 +91,7 @@ class LivewireHostTest extends TestCase
         $host = User::find(1);
 
         Livewire::actingAs($host)
-            ->test(ClientScreen::class)
+            ->test(HostScreen::class)
             ->call('startWindow')
             ->assertSeeHtml('Colgar');
     }
@@ -102,7 +102,7 @@ class LivewireHostTest extends TestCase
         $host = User::find(1);
 
         Livewire::actingAs($host)
-            ->test(ClientScreen::class)
+            ->test(HostScreen::class)
             ->call('stopWindow')
             ->assertSeeHtml('En Pausa')
             ->assertSeeHtml('Salir');
@@ -114,7 +114,7 @@ class LivewireHostTest extends TestCase
         $host = User::find(1);
 
         Livewire::actingAs($host)
-            ->test(ClientScreen::class)
+            ->test(HostScreen::class)
             ->call('pauseWindow')
             ->assertSeeHtml('Libre')
             ->assertSeeHtml('Salir');
@@ -126,7 +126,7 @@ class LivewireHostTest extends TestCase
         $host = User::find(1);
 
         Livewire::actingAs($host)
-            ->test(ClientScreen::class)
+            ->test(HostScreen::class)
             ->call('outWindow')
             ->assertSeeHtml('Cerrado');
     }

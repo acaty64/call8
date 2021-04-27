@@ -68,6 +68,11 @@ Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], fu
 		'uses' => 'CallController@client'
 	]);
 
+	Route::get('/call/host', [
+		'as' => 'call.host',
+		'uses' => 'CallController@host'
+	]);
+
 	Route::get('/call/index', [
 		'as' => 'call.index',
 		'uses' => 'CallController@index'

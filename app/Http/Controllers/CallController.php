@@ -16,6 +16,11 @@ class CallController extends Controller
         return view('app.client.screen');
     }
 
+    public function host()
+    {
+        return view('app.host.screen');
+    }
+
     public function index()
     {
         $calls = Call::all()->sortByDesc('id');

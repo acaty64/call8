@@ -20,8 +20,7 @@ class HostScreen extends Component
 
     // Special Syntax: ['echo:{channel},{event}' => '{method}']
     protected $listeners = [
-        'echo-private:channel-ring,RingEvent' => 'ring',
-        // 'channel-ring' => 'ring',
+        'echo:channel-ring,RingEvent' => 'ring',
     ];
 
     public function mount()
@@ -46,7 +45,6 @@ class HostScreen extends Component
         $this->data_test = 'function openWindow';
         $window = $this->window_open();
 
-        // $this->data_test = ['function' => 'openWindow', 'window' => $window];
         $this->status = $window->status->status;
 
     }
@@ -63,14 +61,13 @@ class HostScreen extends Component
         $this->qwindows = $this->qwindows + 1;
     }
 
-    // public function ring($data)
-    // {
-    //     $this->data_test = 'ring';
-    //     $this->status = $data->status;
-    //     $this->link = $data->link;
-    //     return true;
-    //     session()->flash('message', $data->host->name . ' está llamando.' );
-    // }
+    public function ring($data)
+    {
+        $this->status = $data['status'];
+        $this->link = $data['link'];
+        // $this->data_test = $data;
+        session()->flash('message', ' Atendiendo a ' . $data['client']);
+    }
 
     public function free()
     {

@@ -21,9 +21,9 @@ class Trait_CallTest extends TestCase
     {
         $user = User::findOrFail(3);
 
-        $this->actingAs($user);
-
         $status = Status::where('status', 'En Pausa')->first();
+
+        $this->actingAs($user);
 
         $response = $this->call_open();
 
@@ -43,7 +43,7 @@ class Trait_CallTest extends TestCase
 
     public function test_answer_the_call()
     {
-        $client = User::findOrFail(6);
+        $client = User::findOrFail(4);
         $call = Call::where('user_id', $client->id)->first();
 
         $window = Window::find(3);
@@ -53,14 +53,7 @@ class Trait_CallTest extends TestCase
 
         $this->actingAs($client);
 
-        $array = [
-            'id' => $call->id,
-            'user_id' => $call->user_id,
-            'number' => $call->number,
-            'status_id' => $call->status_id,
-        ];
-
-        $response = $this->answer($array);
+        $response = $this->answer($call->id);
 
         $status_answer = Status::where('status', 'Atendiendo')->first();
 

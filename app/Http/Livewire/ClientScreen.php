@@ -19,6 +19,7 @@ class ClientScreen extends Component
 	public $status;
     public $window;
     public $data_test;
+    public $call_id;
 
     // Special Syntax: ['echo:{channel},{event}' => '{method}']
     protected $listeners = [
@@ -32,6 +33,7 @@ class ClientScreen extends Component
         $this->qcalls = 10;
         $this->qwindows = 3;
         $this->status = "";
+        $this->call_id = "";
     }
 
     public function render()
@@ -41,16 +43,16 @@ class ClientScreen extends Component
 
     public function ring($data)
     {
- // dd('ClientScreen - ring');
         $this->status = $data['status'];
-        // session()->flash('message', $data->host->name . ' está llamando.' );
-        // $this->data_test = $data;
-        session()->flash('message', $data['host'] . ' Está llamando.');
+        // session()->flash('message', $data['host'] . ' Está llamando.');
+        session()->flash('message', $this->status);
     }
 
     public function wait()
     {
         $this->status = 'En Pausa';
+        $response = $this->call_open();
+        $this->call_id = $response['id'];
         $this->qcalls = $this->qcalls + 1;
     	session()->flash('message', 'Esta en cola');
     }
@@ -58,6 +60,7 @@ class ClientScreen extends Component
     public function connect()
     {
         $this->status = 'Atendiendo';
+        $response = $this->answer($this->call_id);
         $this->qcalls = $this->qcalls - 1;
         $this->qwindows = $this->qwindows + 1;
         session()->flash('message', 'Conectando ....');
@@ -66,6 +69,7 @@ class ClientScreen extends Component
     public function disconnect()
     {
         $this->status = 'Cerrado';
+        $response = $this->call_close();
         $this->qwindows = $this->qwindows - 1;
     	session()->flash('message', 'Desconectando ....');
     }

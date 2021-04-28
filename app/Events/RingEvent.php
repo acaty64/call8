@@ -22,6 +22,8 @@ class RingEvent implements ShouldBroadcastNow
         return [
             'status' => $window->status->status,
             'host' => $window->host->name,
+            'host_id' => $window->host_id,
+            'client' => $window->client->name,
             'client_id' => $window->client_id,
             'link' => $window->link,
         ];

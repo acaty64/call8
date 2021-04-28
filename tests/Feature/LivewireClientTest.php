@@ -39,7 +39,7 @@ class LivewireClientTest extends TestCase
         $user = User::find(6);
         Livewire::actingAs($user)
             ->test(ClientScreen::class)
-            ->call('call_open');
+            ->call('wait');
 
         $status_paused = Status::where('status', 'En Pausa')->first();
 
@@ -58,24 +58,22 @@ class LivewireClientTest extends TestCase
     /** @test */
     public function client_click_responder()
     {
+        $status_paused = Status::where('status', 'En Pausa')->first()->id;
         $client = User::find(6);
         $call = Call::where('user_id', $client->id)->first();
+        $call->status_id = $status_paused;
+        $call->save();
 
         $window = Window::find(3);
+        $window->host_id = 3;
         $window->client_id = $client->id;
         $window->call_id = $call->id;
         $window->save();
 
-        $array = [
-            'id' => $call->id,
-            'user_id' => $call->user_id,
-            'number' => $call->number,
-            'status_id' => $call->status_id,
-        ];
-
         Livewire::actingAs($client)
             ->test(ClientScreen::class)
-            ->call('answer', $array);
+            ->set('call_id', $call->id)
+            ->call('connect');
 
         $status_answer = Status::where('status', 'Atendiendo')->first();
 
@@ -99,24 +97,18 @@ class LivewireClientTest extends TestCase
     /** @test */
     public function client_click_colgar()
     {
-        $client = User::find(6);
+        $client = User::find(4);
         $call = Call::where('user_id', $client->id)->first();
 
-        $window = Window::find(3);
+        $window = Window::find(1);
         $window->client_id = $client->id;
         $window->call_id = $call->id;
         $window->save();
 
-        $array = [
-            'id' => $call->id,
-            'user_id' => $call->user_id,
-            'number' => $call->number,
-            'status_id' => $call->status_id,
-        ];
-
         Livewire::actingAs($client)
             ->test(ClientScreen::class)
-            ->call('call_close', $array);
+            ->set('call_id', $call->id)
+            ->call('disconnect');
 
         $status_closed = Status::where('status', 'Cerrado')->first();
 
@@ -124,15 +116,18 @@ class LivewireClientTest extends TestCase
 
         $this->assertDatabaseHas('windows', [
             'id' => $window->id,
+            'call_id' => null,
             'status_id' => $status_paused->id,
         ]);
 
         $this->assertDatabaseHas('calls', [
+            'id' => $call->id,
             'user_id' => $client->id,
             'status_id' => $status_closed->id,
         ]);
 
         $this->assertDatabaseHas('traces', [
+            'call_id' => $call->id,
             'user_id' => $client->id,
             'status_id' => $status_closed->id
         ]);

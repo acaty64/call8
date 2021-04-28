@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits;
 
+use App\Events\RingEvent;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\Trace;
@@ -13,17 +14,22 @@ trait CallTrait
 
     public function call_open()
     {
-        $user = \Auth::user();
+        $client = \Auth::user();
 
         $status = Status::where('status', 'En Pausa')->first();
 
-        $call = Call::create([
-            'user_id' => $user->id,
-            'status_id' => $status->id,
-        ]);
+        $call = Call::where('user_id', $client->id)
+                ->where('status_id', $status->id)
+                ->first();
+        if(!$call){
+            $call = Call::create([
+                'user_id' => $client->id,
+                'status_id' => $status->id,
+            ]);
 
-        $call->number = $call->number_today();
-        $call->save();
+            $call->number = $call->number_today();
+            $call->save();
+        }
 
         $check = Trace::new_call($call);
 
@@ -35,15 +41,16 @@ trait CallTrait
 
     }
 
-    public function answer($array)
+    public function answer($call_id)
     {
         $client = \Auth::user();
+
         $status_answer = Status::where('status', 'Atendiendo')->first();
 
-        $call = Call::findOrFail($array['id']);
+        $call = Call::findOrFail($call_id);
         $window = Window::where('call_id', $call->id)->first();
 
-        $call ->status_id = $status_answer->id;
+        $call->status_id = $status_answer->id;
         $call->save();
 
         $window->status_id = $status_answer->id;
@@ -51,23 +58,25 @@ trait CallTrait
 
         $check = Trace::new_call($call);
 
+        $response = broadcast(new RingEvent());
+
         return $call;
 
     }
 
-    public function call_close($array)
+    public function call_close()
     {
 
-        $user = \Auth::user();
+        $client = \Auth::user();
 
         $status_closed = Status::where('status', 'Cerrado')->first();
         $status_paused = Status::where('status', 'En Pausa')->first();
 
-        $call = Call::findOrFail($array['id']);
+        $call = Call::findOrFail($client->window->call_id)->first();
         $call->status_id = $status_closed->id;
         $call->save();
 
-        $window = Window::where('client_id', $user->id)->first();
+        $window = Window::where('client_id', $client->id)->first();
         $window->status_id = $status_paused->id;
         $window->client_id = null;
         $window->call_id = null;

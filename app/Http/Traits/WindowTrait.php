@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits;
 
+use App\Events\RingEvent;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\Trace;
@@ -52,6 +53,11 @@ trait WindowTrait {
 
         $status_paused = Status::where('status', 'En Pausa')->first()->id;
         $call = Call::where('status_id', $status_paused)->first();
+        if(!$call){
+            $window = $host->window;
+            $window->link = 'No hay llamada en espera. status ' . $status_paused;
+            return $window;
+        }
 
         $status_id = Status::where('status', 'Llamando')->first()->id;
 
@@ -62,8 +68,9 @@ trait WindowTrait {
         $window->status_id = $status_id;
         $window->client_id = $call->user_id;
         $window->call_id = $call->id;
-
         $window->save();
+
+        $response = broadcast(new RingEvent());
 
         Trace::new_window($window);
 

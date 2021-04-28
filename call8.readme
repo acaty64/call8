@@ -101,3 +101,5 @@ npm run watch
 
 ***************************
 
+phpunit broadcast test
+<server name="BROADCAST_DRIVER" value="log"/>

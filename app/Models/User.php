@@ -43,9 +43,20 @@ class User extends Authenticatable
     ];
 
 
-    protected $appends = ['window_id', 'is_host', 'is_client', 'is_paused', 'is_free', 'is_busy', 'is_calling'];
+    protected $appends = ['window_id', 'is_host', 'is_client', 'is_paused', 'is_free', 'is_busy', 'is_calling', 'window'];
 
-
+    public function getWindowAttribute()
+    {
+        if($this->is_host){
+            $window = Window::where('host_id', $this->id)->first();
+            return $window;
+        }
+        if($this->is_client){
+            $window = Window::where('client_id', $this->id)->first();
+            return $window;
+        }
+        return null;
+    }
     public function getWindowIdAttribute()
     {
         $window = Window::where('host_id', $this->id)->first();

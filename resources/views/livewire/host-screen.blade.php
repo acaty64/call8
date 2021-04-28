@@ -9,16 +9,21 @@
             </div>
         @endif
     </div>
+    <div>*************************************</div>
     <div>
 			status: {{ $status }}
     </div>
 
     <div>
-			user: {{ \Auth::user() }}
+			user: {{ \Auth::user()->name }}
     </div>
     <div>
     	data_test: {{ $data_test }}
     </div>
+    <div>
+    	link: {{ $link }}
+    </div>
+    <div>*************************************</div>
     <div class="row">
 		<div class=col-sm>
 			Estado: {{ $status }}

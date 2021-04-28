@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Window;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,25 +16,19 @@ class RingEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $data;
-
-    public function __construct($data)
-    {
-        $this->data = $data;
-    }
-
     public function broadcastWith()
     {
+        $window = \Auth::user()->window;
         return [
-            'status' => $this->data['status'],
-            'host' => \Auth::user(),
+            'status' => $window->status->status,
+            'host' => $window->host->name,
+            'client_id' => $window->client_id,
+            'link' => $window->link,
         ];
     }
 
     public function broadcastOn()
     {
-        // return 'channel-ring';
-        return new PrivateChannel('channel-ring');
-        // return new PrivateChannel('channel-name');
+        return new Channel('channel-ring');
     }
 }

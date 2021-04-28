@@ -33,7 +33,7 @@ class WindowSeeder extends Seeder
         	'window' => 'A3',
         	'host_id' => null,
             'client_id' => null,
-        	'status_id' => null,
+        	'status_id' => 1,
             'call_id' => null,
         ]);
         Window::create([

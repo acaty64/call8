@@ -14,7 +14,8 @@ class ClientScreen extends Component
 {
     use CallTrait;
 
-	public $qcalls;
+	public $message;
+    public $qcalls;
 	public $qwindows;
 	public $status;
     public $window;
@@ -43,9 +44,13 @@ class ClientScreen extends Component
 
     public function ring($data)
     {
-        $this->status = $data['status'];
-        // session()->flash('message', $data['host'] . ' Está llamando.');
-        session()->flash('message', $this->status);
+        if($data['status']){
+            $this->status = $data['status'];
+        }
+        $this->message = $data['message'];
+        $this->qcalls = $data['qclients'];
+        $this->qwindows = $data['qwindows'];
+        session()->flash('message', $data['message']);
     }
 
     public function wait()

@@ -44,6 +44,7 @@ trait WindowTrait {
         Trace::new_window($window);
 
         return $window;
+        
     }
 
     public function window_start()
@@ -55,7 +56,7 @@ trait WindowTrait {
         $call = Call::where('status_id', $status_paused)->first();
         if(!$call){
             $window = $host->window;
-            $window->link = 'No hay llamada en espera. status ' . $status_paused;
+            $window->link = 'No hay llamadas en espera. status ' . $status_paused;
             return $window;
         }
 
@@ -70,9 +71,9 @@ trait WindowTrait {
         $window->call_id = $call->id;
         $window->save();
 
-        $response = broadcast(new RingEvent());
-
         Trace::new_window($window);
+
+        $response = broadcast(new RingEvent('Llamando.'));
 
         return $window;
 
@@ -102,13 +103,17 @@ trait WindowTrait {
         $trace->status_id = $status_close;
         Trace::new_window($trace);
 
+        $response = broadcast(new RingEvent('Llamada terminada por operador ' . $host->name));
+
         return $window;
 
     }
 
     public function window_paused()
     {
-        $host_id = \Auth::user()->id;
+        $host = \Auth::user();
+        $host_id = $host->id;
+
         $status_id = Status::where('status', 'En Pausa')->first()->id;
         $window = Window::where('host_id', $host_id)->first();
         $window->client_id = null;
@@ -118,11 +123,13 @@ trait WindowTrait {
         Trace::new_window($window);
 
         return $window;
+
     }
 
     public function window_out()
     {
-        $host_id = \Auth::user()->id;
+        $host = \Auth::user();
+        $host_id = $host->id;
         $status_id = Status::where('status', 'Cerrado')->first()->id;
         $window = Window::where('host_id', $host_id)->first();
         $window->host_id = null;
@@ -135,6 +142,7 @@ trait WindowTrait {
         Trace::new_window($trace);
 
         return $window;
+
     }
 
 }

@@ -33,6 +33,8 @@ trait CallTrait
 
         $check = Trace::new_call($call);
 
+        $response = broadcast(new RingEvent('Usuario en Espera.'));
+
         if(!$check){
             return 'Error';
         }
@@ -58,7 +60,7 @@ trait CallTrait
 
         $check = Trace::new_call($call);
 
-        $response = broadcast(new RingEvent());
+        $response = broadcast(new RingEvent('Respondiendo llamada.'));
 
         return $call;
 
@@ -81,6 +83,8 @@ trait CallTrait
         $window->client_id = null;
         $window->call_id = null;
         $window->save();
+
+        $response = broadcast(new RingEvent('Llamada terminada por usuario ' . $client->name));
 
         $check = Trace::new_call($call);
 

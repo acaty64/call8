@@ -47,6 +47,7 @@ class HostScreen extends Component
 
         $this->status = $window->status->status;
 
+        session()->flash('message', 'Operador disponible');
     }
 
     public function startWindow()
@@ -56,17 +57,21 @@ class HostScreen extends Component
         $this->status = $response->status->status;
         $this->link = $response->link;
 
-        session()->flash('message', 'Llamando .... desde startWindow');
 
         $this->qwindows = $this->qwindows + 1;
     }
 
     public function ring($data)
     {
-        $this->status = $data['status'];
+        if($data['status']){
+            $this->status = $data['status'];
+        }
         $this->link = $data['link'];
-        // $this->data_test = $data;
-        session()->flash('message', ' Atendiendo a ' . $data['client']);
+        $this->message = $data['message'];
+        $this->qcalls = $data['qclients'];
+        $this->qwindows = $data['qwindows'];
+
+        session()->flash('message', $data['message']);
     }
 
     public function free()
@@ -85,7 +90,7 @@ class HostScreen extends Component
         $this->status = $response->status->status;
         $this->link = $response->link;
         $this->qwindows = $this->qwindows - 1;
-        session()->flash('message', 'Desconectando ....');
+        // session()->flash('message', 'Desconectando ....');
     }
 
     public function pauseWindow()

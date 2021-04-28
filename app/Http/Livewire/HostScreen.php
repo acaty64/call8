@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Events\RingEvent;
 use App\Http\Traits\WindowTrait;
+use App\Models\Window;
 use Livewire\Component;
 
 class HostScreen extends Component
@@ -25,14 +26,13 @@ class HostScreen extends Component
 
     public function mount()
     {
+        $window = Window::find(1);
         $this->data_test = "";
-        $this->qcalls = 10;
-        $this->qwindows = 3;
+        $this->qcalls = $window->qclients;
+        $this->qwindows = $window->qwindows;
         $this->status = "";
         $this->link = "";
-        if(\Auth::user()->is_host){
-            $this->openWindow();
-        }
+        $this->openWindow();
     }
 
     public function render()

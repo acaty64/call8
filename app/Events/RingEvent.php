@@ -27,12 +27,9 @@ class RingEvent implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        $status_paused = Status::where('status', 'En Pausa')->first();
-        $qwindows = Window::where('host_id', '!=', null)->count();
-        $status_paused = Status::where('status', 'En Pausa')->first();
-        $qclients = Call::where('status_id', $status_paused->id)->count();
         $window = \Auth::user()->window;
         if(!$window){
+            $window = Window::find(1);
             return [
                 'status' => null,
                 'host' => null,
@@ -41,8 +38,8 @@ class RingEvent implements ShouldBroadcastNow
                 'client_id' => null,
                 'link' => null,
                 'message' => $this->message,
-                'qclients' => $qclients,
-                'qwindows' => $qwindows,
+                'qclients' => $window->qclients,
+                'qwindows' => $window->qwindows,
             ];
         }
         return [
@@ -53,8 +50,8 @@ class RingEvent implements ShouldBroadcastNow
             'client_id' => is_null($window->client) ? '' : $window->client_id,
             'link' => $window->link,
             'message' => $this->message,
-            'qclients' => $qclients,
-            'qwindows' => $qwindows,
+            'qclients' => $window->qclients,
+            'qwindows' => $window->qwindows,
         ];
     }
 

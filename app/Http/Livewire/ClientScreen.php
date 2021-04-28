@@ -30,9 +30,10 @@ class ClientScreen extends Component
 
     public function mount()
     {
+        $window = Window::find(1);
         $this->data_test = "";
-        $this->qcalls = 10;
-        $this->qwindows = 3;
+        $this->qcalls = $window->qclients;
+        $this->qwindows = $window->qwindows;
         $this->status = "";
         $this->call_id = "";
     }
@@ -58,7 +59,6 @@ class ClientScreen extends Component
         $this->status = 'En Pausa';
         $response = $this->call_open();
         $this->call_id = $response['id'];
-        $this->qcalls = $this->qcalls + 1;
     	session()->flash('message', 'Esta en cola');
     }
 
@@ -66,8 +66,6 @@ class ClientScreen extends Component
     {
         $this->status = 'Atendiendo';
         $response = $this->answer($this->call_id);
-        $this->qcalls = $this->qcalls - 1;
-        $this->qwindows = $this->qwindows + 1;
         session()->flash('message', 'Conectando ....');
     }
 
@@ -75,7 +73,6 @@ class ClientScreen extends Component
     {
         $this->status = 'Cerrado';
         $response = $this->call_close();
-        $this->qwindows = $this->qwindows - 1;
     	session()->flash('message', 'Desconectando ....');
     }
 

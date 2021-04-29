@@ -2,10 +2,15 @@
 
 @section('content')
 <div class="container">
+        {{-- class="mt-4 bg-white rounded-lg shadow-md p-6" --}}
+        {{-- x-data="{{ json_encode(['messages' => $messages, 'messageBody' => '']) }}" --}}
+                    {{-- .listen('MessageSentEvent', (e) => { --}}
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Tests</div>
+                <div class="card-header">User: {{\Auth::user()->name}}</div>
+                <div class="card-header">User_id: {{\Auth::user()->id}}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -15,6 +20,18 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                </div>
+                <div class="card-body">
+                    <h1>Prueba Livewire Channel</h1>
+                    @livewire('test1-screen')
+                </div>
+                <div class="card-body">
+                    <h1>Prueba Livewire Private Channel</h1>
+                    @livewire('test2-screen')
+                </div>
+                <div class="card-body">
+                    <h1>Prueba Livewire Presence Channel</h1>
+                    @livewire('test3-screen')
                 </div>
                 <div class="card-body">
                     <h1>Prueba Channel</h1>
@@ -33,3 +50,11 @@
     </div>
 </div>
 @endsection
+{{-- @section('script')
+    <script>
+        Livewire.on('Test3Event', data => {
+            console.log('A post was added with the id of: ' + data['id']);
+        })
+    </script>
+@endsection --}}
+@section('view','app/tests/tests.blade.php')

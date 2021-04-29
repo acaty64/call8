@@ -74,7 +74,7 @@ class User extends Authenticatable
             return false;
         }
         // $window = Window::where('host_id', $this->id)->get();
-        // if($window->count() == 0){
+        // if(!$window){
         //     return false;
         // }
         // return true;
@@ -98,16 +98,28 @@ class User extends Authenticatable
 
     public function getIsFreeAttribute()
     {
-        $status = Status::where('status', 'Libre')->first();
-        $window = Window::where([
-                'host_id' => $this->id,
-                'status_id' => $status->id,
-            ])->get();
-
-        if($window->count() == 0){
+        if($this->is_host)
+        {
+            $status = Status::where('status', 'Libre')->first();
+            $window = Window::where([
+                    'host_id' => $this->id,
+                    'status_id' => $status->id,
+                ])->first();
+            if(!$window){
+                return false;
+            }
+            return true;
+        }
+        if($this->is_client)
+        {
+            $window = Window::where([
+                    'client_id' => $this->id,
+                ])->first();
+            if(!$window){
+                return true;
+            }
             return false;
         }
-        return true;
     }
 
     public function getIsCallingAttribute()

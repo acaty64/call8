@@ -82,5 +82,6 @@
         @include('layouts.partials.footer')
     </div>
     @livewireScripts
+    {{-- @yield('script') --}}
 </body>
 </html>

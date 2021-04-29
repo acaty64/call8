@@ -12,26 +12,30 @@ class HostScreen extends Component
 
     use WindowTrait;
 
-	public $qcalls;
 	public $qwindows;
+    public $qclients;
 	public $status;
     public $window;
     public $link;
     public $data_test;
+    public $message;
 
     // Special Syntax: ['echo:{channel},{event}' => '{method}']
     protected $listeners = [
-        'echo:channel-ring,RingEvent' => 'ring',
+        'echo-private:channel-ring,Ring2Event' => 'ring',
+        // 'echo:channel-ring,RingEvent' => 'ring',
     ];
 
     public function mount()
     {
         $window = Window::find(1);
         $this->data_test = "";
-        $this->qcalls = $window->qclients;
+        $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;
         $this->status = "";
         $this->link = "";
+        $this->message = "";
+        $this->window = [];
         $this->openWindow();
     }
 
@@ -40,77 +44,83 @@ class HostScreen extends Component
         return view('livewire.host-screen');
     }
 
+    public function ring($data)
+    {
+        $window = Window::find(\Auth::user()->id);
+        $this->window = $window;
+        $this->link = $window->link;
+        $this->qclients = $window->qclients;
+        $this->qwindows = $window->qwindows;
+        $this->status = $window->status->status;
+        $this->message = $data['message'];
+    }
+
     public function openWindow()
     {
         $this->data_test = 'function openWindow';
         $window = $this->window_open();
+        $this->window = $window;
 
         $this->status = $window->status->status;
 
-        session()->flash('message', 'Operador disponible');
+        $this->message = $this->status;
+
     }
 
     public function startWindow()
     {
         $this->data_test = 'function startWindow';
         $response = $this->window_start();
+        $this->window = $response;
         $this->status = $response->status->status;
         $this->link = $response->link;
-
-
-        $this->qwindows = $this->qwindows + 1;
-    }
-
-    public function ring($data)
-    {
-        if($data['status']){
-            $this->status = $data['status'];
+        if(!$response->client_id){
+            $this->message = $response->link;
+        }else{
+            $this->message = "Llamando a " . $response->client->name;
         }
-        $this->link = $data['link'];
-        $this->message = $data['message'];
-        $this->qcalls = $data['qclients'];
-        $this->qwindows = $data['qwindows'];
-
-        session()->flash('message', $data['message']);
     }
 
     public function free()
     {
         $this->data_test = 'function free';
         $response = $this->window_free();
+        $this->window = $response;
         $this->status = $response->status->status;
         $this->link = $response->link;
-        session()->flash('message', 'Esta libre.' );
+        $this->message = $this->status;
     }
 
     public function stopWindow()
     {
+        $this->message = 'Desconectando ....';
         $this->data_test = 'function stopWindow';
         $response = $this->window_stop();
+        $this->window = $response;
         $this->status = $response->status->status;
         $this->link = $response->link;
-        $this->qwindows = $this->qwindows - 1;
-        // session()->flash('message', 'Desconectando ....');
+        $this->message = $this->status;
     }
 
     public function pauseWindow()
     {
         $this->data_test = 'function pausepWindow';
         $response = $this->window_paused();
+        $this->window = $response;
         $this->status = $response->status->status;
         $this->link = $response->link;
-        $this->qwindows = $this->qwindows - 1;
-        session()->flash('message', 'En Pausa ....');
+        $this->message = $this->status;
     }
 
     public function outWindow()
     {
+        $this->message = 'Saliendo ....';
         $this->data_test = 'function outWindow';
         $response = $this->window_out();
+        $this->window = $response;
         $this->status = $response->status->status;
         $this->link = $response->link;
-        $this->qwindows = $this->qwindows - 1;
-        session()->flash('message', 'Desconectado ....');
+        $this->message = $this->status;
     }
 
 

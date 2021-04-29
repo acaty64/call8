@@ -3,12 +3,14 @@
     	View: resources/views/livewire/client-screen.blade.php
 	</div>
     <div>
-        @if (session()->has('message'))
+        {{-- @if (session()->has('message')) --}}
+        @if ($message)
             <div class="alert alert-warning">
-                {{ session('message') }}
+                {{ $message }}
             </div>
         @endif
     </div>
+    @if(env('APP_DEBUG'))
     <div>*********************************************</div>
 
     <div>
@@ -25,17 +27,20 @@
     	call_id: {{ $call_id }}
     </div>
     <div>*********************************************</div>
-    <div class="row">
-		<div class=col-sm>
-			Estado: {{ $status }}
-		</div>
-		<div class=col-sm>
-			Esperando: {{ $qcalls }}
-		</div>
-		<div class=col-sm>
-			Atendiendo: {{ $qwindows }}
-		</div>
-    </div>
+    @endif
+    <div class="container">
+	    <div class="row">
+			<div class=col-sm>
+				Estado: {{ $status }}
+			</div>
+			<div class=col-sm>
+				Esperando: {{ $qclients }}
+			</div>
+			<div class=col-sm>
+				Atendiendo: {{ $qwindows }}
+			</div>
+	    </div>
+	</div>
 	<div class="container" align="center">
 		<h1>Client Video-chat Here</h1>
 	</div>

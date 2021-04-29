@@ -2,7 +2,7 @@
 
 namespace App\Http\Traits;
 
-use App\Events\RingEvent;
+use App\Events\Ring2Event;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\Trace;
@@ -33,7 +33,7 @@ trait CallTrait
 
         $check = Trace::new_call($call);
 
-        $response = broadcast(new RingEvent('Usuario en Espera.'));
+        $response = broadcast(new Ring2Event('Usuario en Espera.'));
 
         if(!$check){
             return 'Error';
@@ -60,7 +60,7 @@ trait CallTrait
 
         $check = Trace::new_call($call);
 
-        $response = broadcast(new RingEvent('Respondiendo llamada.'));
+        $response = broadcast(new Ring2Event('Respondiendo llamada.'));
 
         return $call;
 
@@ -84,7 +84,7 @@ trait CallTrait
         $window->call_id = null;
         $window->save();
 
-        $response = broadcast(new RingEvent('Llamada terminada por usuario ' . $client->name));
+        $response = broadcast(new Ring2Event('Llamada terminada por usuario ' . $client->name));
 
         $check = Trace::new_call($call);
 

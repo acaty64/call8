@@ -29,7 +29,7 @@ class Ring2Event implements ShouldBroadcastNow
     {
         $window = \Auth::user()->window;
         if(!$window){
-            $window = Window::find(1);
+            $window = new Window;
             return [
                 'status' => null,
                 'host' => null,
@@ -37,6 +37,7 @@ class Ring2Event implements ShouldBroadcastNow
                 'client' => null,
                 'client_id' => null,
                 'link' => null,
+                'call_id' => null,
                 'message' => $this->message,
                 'qclients' => $window->qclients,
                 'qwindows' => $window->qwindows,
@@ -49,9 +50,10 @@ class Ring2Event implements ShouldBroadcastNow
             'client' => is_null($window->client) ? '' : $window->client->name,
             'client_id' => is_null($window->client) ? '' : $window->client_id,
             'link' => $window->link,
-            'message' => $this->message,
+            'message' => $window->message,
             'qclients' => $window->qclients,
             'qwindows' => $window->qwindows,
+            'call_id' => $window->call_id,
         ];
     }
 

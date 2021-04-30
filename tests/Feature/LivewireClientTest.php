@@ -19,9 +19,14 @@ class LivewireClientTest extends TestCase
     /** @test */
     public function client_creation_page_contains_livewire_component()
     {
-        $user = User::find(4);
+        $call = Call::where('user_id', 6)->first();
+        $call->status_id = 1;
+        $call->save();
+
+        $user = User::find(6);
         Livewire::actingAs($user)
             ->test(ClientScreen::class)
+            ->assertSeeHtml('Bienvenido')
             ->assertSeeHtml('Poner en Cola');
     }
 
@@ -116,7 +121,7 @@ class LivewireClientTest extends TestCase
 
         $this->assertDatabaseHas('windows', [
             'id' => $window->id,
-            'call_id' => null,
+            'client_id' => null,
             'status_id' => $status_paused->id,
         ]);
 

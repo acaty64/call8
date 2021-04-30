@@ -54,7 +54,9 @@
 			<button wire:click="outWindow" class="btn btn-large btn-danger">Salir</button>
 		@endif
 		@if($status == 'Libre')
-			<button wire:click="startWindow" class="btn btn-large btn-success">Llamar</button>
+			@if($qclients > 0)
+				<button wire:click="startWindow" class="btn btn-large btn-success">Llamar</button>
+			@endif
 			<button wire:click="pauseWindow" class="btn btn-large btn-warning">En Pausa</button>
 			<button wire:click="outWindow" class="btn btn-large btn-danger">Salir</button>
 		@endif

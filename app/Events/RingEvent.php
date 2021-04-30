@@ -49,7 +49,8 @@ class RingEvent implements ShouldBroadcastNow
             'client' => is_null($window->client) ? '' : $window->client->name,
             'client_id' => is_null($window->client) ? '' : $window->client_id,
             'link' => $window->link,
-            'message' => $this->message,
+            'message' => $window->mensaje,
+            // 'message' => $this->message,
             'qclients' => $window->qclients,
             'qwindows' => $window->qwindows,
         ];

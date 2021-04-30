@@ -48,11 +48,13 @@ class HostScreen extends Component
     {
         $window = Window::find(\Auth::user()->id);
         $this->window = $window;
-        $this->link = $window->link;
         $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;
         $this->status = $window->status->status;
-        $this->message = $data['message'];
+        // if($data['host_id'] == \Auth::user()->id){
+            $this->message = $window->mensaje;
+            $this->link = $window->link;
+        // }
     }
 
     public function openWindow()

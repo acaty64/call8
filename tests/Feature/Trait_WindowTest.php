@@ -167,7 +167,7 @@ class Trait_WindowTest extends TestCase
             'host_id' => $host->id,
             'status_id' => $status_paused->id,
             'client_id' => null,
-            'call_id' => null,
+            // 'call_id' => null,
         ]);
 
         $this->assertDatabaseHas('calls', [

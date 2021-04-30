@@ -18,7 +18,7 @@
     </div>
 
     <div>
-			user: {{ \Auth::user()->name }}
+			user: {{ \Auth::user()->name }} - id: {{ \Auth::user()->id }}
     </div>
     <div>
     	data_test: {{ $data_test }}

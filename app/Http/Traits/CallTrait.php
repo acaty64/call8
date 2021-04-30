@@ -56,6 +56,7 @@ trait CallTrait
         $call->save();
 
         $window->status_id = $status_answer->id;
+        $window->mensaje = 'Respondiendo llamada.';
         $window->save();
 
         $check = Trace::new_call($call);
@@ -74,13 +75,14 @@ trait CallTrait
         $status_closed = Status::where('status', 'Cerrado')->first();
         $status_paused = Status::where('status', 'En Pausa')->first();
 
-        $call = Call::findOrFail($client->window->call_id)->first();
+        $call = Call::findOrFail($client->window->call_id);
         $call->status_id = $status_closed->id;
         $call->save();
 
         $window = Window::where('client_id', $client->id)->first();
         $window->status_id = $status_paused->id;
         $window->client_id = null;
+        $window->mensaje = 'Llamada terminada por usuario ' . $client->name;
         $window->call_id = null;
         $window->save();
 

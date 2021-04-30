@@ -24,6 +24,7 @@ trait WindowTrait {
             $window = Window::where('status_id', $status_close)->first();
             $window->host_id = $host_id;
             $window->status_id = $status_id;
+            $window->mensaje = 'Módulo abierto';
             $window->save();
         }
         Trace::new_window($window);
@@ -39,6 +40,7 @@ trait WindowTrait {
         $status_id = Status::where('status', 'Libre')->first()->id;
         $window = Window::where('host_id', $host_id)->first();
         $window->status_id = $status_id;
+        $window->mensaje = 'Operador Libre';
         $window->save();
 
         Trace::new_window($window);
@@ -55,7 +57,7 @@ trait WindowTrait {
         $call = Call::where('status_id', $status_paused)->first();
         if(!$call){
             $window = $host->window;
-            $window->link = 'No hay llamadas en espera. status ' . $status_paused;
+            $window->mensaje = 'No hay llamadas en espera.' ;
             $window->save();
             return $window;
         }
@@ -69,6 +71,7 @@ trait WindowTrait {
         $window->status_id = $status_id;
         $window->client_id = $call->user_id;
         $window->call_id = $call->id;
+        $window->mensaje = 'Llamando a ' . $window->client->name ;
         $window->save();
 
         Trace::new_window($window);
@@ -85,25 +88,28 @@ trait WindowTrait {
         $host_id = $host->id;
 
         $window = Window::findOrFail($host->window_id);
-        $call = Call::findOrFail($window->call_id)->first();
+        $call = Call::findOrFail($window->call_id);
 
-        $status_close = Status::where('status', 'Cerrado')->first()->id;
+        $status_close = Status::where('status', 'Cerrado')->first();
 
-        $call->status_id = $status_close;
+        $call->status_id = $status_close->id;
         $call->save();
 
         $trace = $window;
 
-        $status_id = Status::where('status', 'En Pausa')->first()->id;
-        $window->client_id = null;
-        $window->call_id = null;
-        $window->status_id = $status_id;
+        $status_paused = Status::where('status', 'En Pausa')->first();
+        $window->status_id = $status_paused->id;
+        $window->mensaje = 'Llamada terminada por operador ' . $host->name;
         $window->save();
 
-        $trace->status_id = $status_close;
+        $trace->status_id = $status_close->id;
         Trace::new_window($trace);
 
         $response = broadcast(new Ring2Event('Llamada terminada por operador ' . $host->name));
+
+        $window = Window::findOrFail($host->window_id);
+        $window->client_id = null;
+        $window->save();
 
         return $window;
 

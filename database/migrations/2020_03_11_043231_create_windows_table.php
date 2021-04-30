@@ -32,6 +32,7 @@ class CreateWindowsTable extends Migration
                 $table->foreign('status_id')
                             ->references('id')
                             ->on('statuses');
+            $table->string('mensaje')->nullable();
             $table->string('link')->nullable();
             $table->timestamps();
         });

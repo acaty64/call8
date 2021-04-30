@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Events\RingEvent;
 use App\Http\Traits\CallTrait;
 use App\Http\Traits\WindowTrait;
+use App\Models\Call;
 use App\Models\Status;
 use App\Models\Trace;
 use App\Models\Window;
@@ -31,12 +32,11 @@ class ClientScreen extends Component
 
     public function mount()
     {
-        $window = Window::find(1);
         $this->data_test = "";
-        $this->qclients = $window->qclients;
-        $this->qwindows = $window->qwindows;
         $this->status = "";
-        $this->call_id = "";
+        $this->message = "Bienvenido.";
+        $this->call_id = null;
+        $this->start();
     }
 
     public function render()
@@ -44,15 +44,40 @@ class ClientScreen extends Component
         return view('livewire.client-screen');
     }
 
+    public function start()
+    {
+        $window = new Window;
+        $this->qclients = $window->qclients;
+        $this->qwindows = $window->qwindows;
+        $call = Call::where('user_id', \Auth::user()->id)->where('status_id', '>', 1)->first();
+        if($call){
+            $this->call_id = $call->id;
+            if($call->window){
+                $this->message = $call->window->mensaje;
+                $this->status = $call->window->status->status;
+            }else{
+                $status = Status::find($call->status_id);
+                $this->status = $status->status;
+                $this->message = $status->status;
+            }
+        }
+
+    }
+
     public function ring($data)
     {
-        if($data['status']){
-            $this->status = $data['status'];
-        }
-        $this->message = $data['message'];
         $this->qcalls = $data['qclients'];
         $this->qwindows = $data['qwindows'];
 
+        if($this->call_id > 0){
+            $call = Call::find($this->call_id);
+            $this->status = $call->status->status;
+        }
+
+        if($data['call_id'] == $this->call_id && !is_null($data['call_id'])){
+            // $this->message = $data['message'];
+            $this->message = $call->window->mensaje;
+        }
         // session()->flash('message', $data['message']);
         // session()->flash('message', $data['message']);
     }
@@ -79,6 +104,7 @@ class ClientScreen extends Component
         $this->message = 'Desconectando ....';
         $response = $this->call_close();
         $this->status = 'Cerrado';
+        $this->message = 'Desconectado';
     	// session()->flash('message', 'Desconectando ....');
     }
 

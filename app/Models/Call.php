@@ -5,6 +5,7 @@ namespace App\Models;
 
 use App\Models\Status;
 use App\Models\User;
+use App\Models\Window;
 use Illuminate\Database\Eloquent\Model;
 
 class Call extends Model
@@ -15,7 +16,7 @@ class Call extends Model
         'status_id',
     ];
 
-    // protected $appends = ['user', 'status', 'number_today'];
+    protected $appends = ['window'];
 
     public function user()
     {
@@ -33,6 +34,12 @@ class Call extends Model
         $number_yesterday = 0;
         $number_today = $this->id - $number_yesterday;
         return $number_today;
+    }
+
+    public function getWindowAttribute()
+    {
+        $window = Window::where('call_id', $this->id)->first();
+        return $window;
     }
 
 }

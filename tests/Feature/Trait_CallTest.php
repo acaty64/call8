@@ -109,7 +109,7 @@ class Trait_CallTest extends TestCase
         $this->assertDatabaseHas('windows', [
             'id' => $window->id,
             'client_id' => null,
-            'call_id' => null,
+            // 'call_id' => null,
             'status_id' => $status_paused->id,
         ]);
 

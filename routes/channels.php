@@ -23,6 +23,11 @@ Broadcast::channel('channel-ring', function ($user) {
      return true;
 });
 
+// Verifica si el usuario esta logueado (Presence)
+Broadcast::channel('presence-ring', function ($user) {
+     return $user;
+});
+
 ////////////// TEST ///////////////////
 // Verifica si el usuario esta logueado (Private)
 Broadcast::channel('private-channel', function ($user) {

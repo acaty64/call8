@@ -11,8 +11,7 @@ class WindowController extends Controller
 {
     public function index()
     {
-        $data = Window::all();
-        return view('app.window.index')->with('data', $data);
+        return view('app.window.index');
     }
 
     public function create()

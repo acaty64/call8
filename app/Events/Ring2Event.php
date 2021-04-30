@@ -39,8 +39,8 @@ class Ring2Event implements ShouldBroadcastNow
                 'link' => null,
                 'call_id' => null,
                 'message' => $this->message,
-                'qclients' => $window->qclients,
-                'qwindows' => $window->qwindows,
+                // 'qclients' => $window->qclients,
+                // 'qwindows' => $window->qwindows,
             ];
         }
         return [
@@ -51,8 +51,8 @@ class Ring2Event implements ShouldBroadcastNow
             'client_id' => is_null($window->client) ? '' : $window->client_id,
             'link' => $window->link,
             'message' => $window->message,
-            'qclients' => $window->qclients,
-            'qwindows' => $window->qwindows,
+            // 'qclients' => $window->qclients,
+            // 'qwindows' => $window->qwindows,
             'call_id' => $window->call_id,
         ];
     }

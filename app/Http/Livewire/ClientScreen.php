@@ -23,11 +23,11 @@ class ClientScreen extends Component
     public $data_test;
     public $call_id;
 
-    // Special Syntax: ['echo:{channel},{event}' => '{method}']
     protected $listeners = [
-        // 'echo:channel-ring,RingEvent' => 'ring',
         'echo-private:channel-ring,Ring2Event' => 'ring',
-        // 'channel-ring' => 'ring',
+        'echo-presence:presence-ring,here' => 'here',
+        'echo-presence:presence-ring,joining' => 'joining',
+        'echo-presence:presence-ring,leaving' => 'leaving',
     ];
 
     public function mount()
@@ -44,11 +44,33 @@ class ClientScreen extends Component
         return view('livewire.client-screen');
     }
 
-    public function start()
+    public function here()
     {
         $window = new Window;
         $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;
+    }
+
+    public function joining()
+    {
+        $window = new Window;
+        $this->qclients = $window->qclients;
+        $this->qwindows = $window->qwindows;
+    }
+
+    public function leaving($data)
+    {
+// dd($data);
+        $window = new Window;
+        $this->qclients = $window->qclients;
+        $this->qwindows = $window->qwindows;
+    }
+
+    public function start()
+    {
+        // $window = new Window;
+        // $this->qclients = $window->qclients;
+        // $this->qwindows = $window->qwindows;
         $call = Call::where('user_id', \Auth::user()->id)->where('status_id', '>', 1)->first();
         if($call){
             $this->call_id = $call->id;
@@ -66,8 +88,8 @@ class ClientScreen extends Component
 
     public function ring($data)
     {
-        $this->qcalls = $data['qclients'];
-        $this->qwindows = $data['qwindows'];
+        // $this->qcalls = $data['qclients'];
+        // $this->qwindows = $data['qwindows'];
 
         if($this->call_id > 0){
             $call = Call::find($this->call_id);

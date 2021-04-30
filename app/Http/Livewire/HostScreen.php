@@ -20,10 +20,12 @@ class HostScreen extends Component
     public $data_test;
     public $message;
 
-    // Special Syntax: ['echo:{channel},{event}' => '{method}']
     protected $listeners = [
+
         'echo-private:channel-ring,Ring2Event' => 'ring',
-        // 'echo:channel-ring,RingEvent' => 'ring',
+        'echo-presence:presence-ring,here' => 'here',
+        'echo-presence:presence-ring,joining' => 'joining',
+        'echo-presence:presence-ring,leaving' => 'leaving',
     ];
 
     public function mount()
@@ -44,17 +46,35 @@ class HostScreen extends Component
         return view('livewire.host-screen');
     }
 
+    public function here()
+    {
+        // $this->message = 'here';
+    }
+
+    public function joining()
+    {
+        $window = new Window;
+        $this->qclients = $window->qclients;
+        $this->qwindows = $window->qwindows;
+    }
+
+    public function leaving($data)
+    {
+// dd($data);
+        $window = new Window;
+        $this->qclients = $window->qclients;
+        $this->qwindows = $window->qwindows;
+    }
+
     public function ring($data)
     {
         $window = Window::find(\Auth::user()->id);
         $this->window = $window;
+        $this->status = $window->status->status;
+        $this->message = $window->mensaje;
+        $this->link = $window->link;
         $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;
-        $this->status = $window->status->status;
-        // if($data['host_id'] == \Auth::user()->id){
-            $this->message = $window->mensaje;
-            $this->link = $window->link;
-        // }
     }
 
     public function openWindow()

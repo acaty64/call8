@@ -22,6 +22,8 @@ class ClientScreen extends Component
     public $window;
     public $data_test;
     public $call_id;
+    public $user;
+    public $others;
 
     protected $listeners = [
         'echo-private:channel-ring,Ring2Event' => 'ring',
@@ -118,6 +120,14 @@ class ClientScreen extends Component
         $this->message = 'Conectando ....';
         $response = $this->answer($this->call_id);
         $this->status = $response['status'];
+
+        $user = \Auth::user();
+        $others = \App\Models\User::where('id', '!=', $user->id)->pluck('name', 'id');
+        return view('livewire.index-chat')->with([
+            'user' => collect($this->user->only(['id', 'name'])),
+            'other' => $others->first()
+        ]);
+
         // session()->flash('message', 'Conectando ....');
     }
 

@@ -43,6 +43,7 @@
 	</div>
 	<div class="container" align="center">
 		<h1>Client Video-chat Here</h1>
+		
 	</div>
 	<div>
 		@if($status == '')

@@ -38,3 +38,10 @@ Broadcast::channel('private-channel', function ($user) {
 Broadcast::channel('presence-channel', function ($user) {
      return $user;
 });
+
+/////////// Channel for video-chat ???????
+Broadcast::channel('user.{userId}', function ($user, $userId) {
+  if ($user->id === $userId) {
+    return array('name' => $user->name);
+  }
+});

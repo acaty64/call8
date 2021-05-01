@@ -111,3 +111,6 @@ phpunit broadcast test
 <div wire:offline>
     You are now offline.
 </div>
+***************************
+
+npm install simple-peer@9.8.0

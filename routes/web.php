@@ -10,6 +10,21 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+/////////////////// START VIDEO-CHAT ROUTES //////////////////
+Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
+	Route::get('/video_chat', [
+		'as' => 'video_chat',
+		'uses' => 'VideoChatController@index'
+	]);
+
+	Route::post('/auth/video_chat', [
+		'as' => 'auth.video-chat',
+		'uses' => 'VideoChatController@auth'
+	]);
+});
+/////////////////// STOP VIDEO-CHAT ROUTES //////////////////
+
+
 
 /////////////////// START TESTS ROUTES //////////////////
 Route::get('/tests', function () {

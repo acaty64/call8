@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <h1 class="text-center">Laravel Video Chat</h1>
+    <h1 class="text-center">Video Chat</h1>
+
     <div class="video-container" ref="video-container">
       <video class="video-here" ref="video-here" autoplay></video>
       <video class="video-there" ref="video-there" autoplay></video>
-      <div class="text-right" v-for="(name,userId) in others" :key="userId">
-        <button @click="startVideoChat(userId)" v-text="`Talk with ${name}`"/>
-      </div>
+
+      <button @click="startVideoChat(other.id)" v-text="`Conectar con ${other.name}`"/>
     </div>
   </div>
 </template>
@@ -14,20 +14,38 @@
 import Pusher from 'pusher-js';
 import Peer from 'simple-peer';
 export default {
-  props: ['user', 'others', 'pusherKey', 'pusherCluster'],
+  props: ['user', 'other','pusherKey', 'pusherCluster'],
   data() {
     return {
       channel: null,
       stream: null,
-      peers: {}
+      peers: {},
+      start: false,
     }
   },
-  mounted() {
-    this.getPermissions();
-    this.setupVideoChat();
+  async mounted() {
+    await this.getPermissions();
+    await this.setupVideoChat();
+    // this.startVideoChat(this.other.id);
   },
+//   watch: {
+//     start: function (val) {
+//       if(val == true){
+// console.log('conectando: ', this.other.id);
+//           this.connect(this.other.id);
+//       };
+//     },
+//     // this.peers[userId]
+//     // stream: function (val) {
+//     //   if(val[this.user.id] === undefined){
+//     //       this.start = false;
+//     //   };
+//     //   this.start = true;
+//     // },
+//   },
   methods: {
     getPermissions() {
+// console.log('getPermissions');
       return new Promise((res, rej) => {
         navigator.mediaDevices.getUserMedia({video: true, audio: true})
         .then((stream) => {
@@ -37,6 +55,11 @@ export default {
           throw new Error('Unable to fetch stream ${err}');
         })
       });
+    },
+    connect(userId) {
+// console.log('startVideoChat', userId);
+      this.getPeer(userId, true);
+console.log('Conectado: ', userId);
     },
     startVideoChat(userId) {
 // console.log('startVideoChat', userId);
@@ -80,13 +103,14 @@ export default {
       videoHere.srcObject = stream;
       this.stream = stream;
       const pusher = this.getPusherInstance();
-//console.log('setupVideoChat: ', pusher);
+// console.log('setupVideoChat: ', pusher);
       this.channel = pusher.subscribe('presence-video-chat');
       this.channel.bind(`client-signal-${this.user.id}`, (signal) =>
       {
         const peer = this.getPeer(signal.userId, false);
         peer.signal(signal.data);
       });
+      this.start = true;
     },
     getPusherInstance() {
       return new Pusher(this.pusherKey, {

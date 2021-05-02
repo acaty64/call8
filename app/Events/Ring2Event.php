@@ -50,7 +50,7 @@ class Ring2Event implements ShouldBroadcastNow
             'client' => is_null($window->client) ? '' : $window->client->name,
             'client_id' => is_null($window->client) ? '' : $window->client_id,
             'link' => $window->link,
-            'message' => $window->message,
+            'message' => $window->mensaje,
             // 'qclients' => $window->qclients,
             // 'qwindows' => $window->qwindows,
             'call_id' => $window->call_id,

@@ -78,7 +78,7 @@ class LivewireClientTest extends TestCase
         Livewire::actingAs($client)
             ->test(ClientScreen::class)
             ->set('call_id', $call->id)
-            ->call('connect');
+            ->call('answer');
 
         $status_answer = Status::where('status', 'Atendiendo')->first();
 
@@ -113,7 +113,7 @@ class LivewireClientTest extends TestCase
         Livewire::actingAs($client)
             ->test(ClientScreen::class)
             ->set('call_id', $call->id)
-            ->call('disconnect');
+            ->call('stop');
 
         $status_closed = Status::where('status', 'Cerrado')->first();
 

@@ -42,18 +42,19 @@
 	    </div>
 	</div>
 	<div class="container" align="center">
+		@if($status == 'Atendiendo')
 		<h1>Client Video-chat Here</h1>
-		
+		@endif
 	</div>
 	<div>
 		@if($status == '')
 			<button wire:click="wait" class="btn btn-large btn-warning">Poner en Cola</button>
 		@endif
 		@if($status == 'Llamando')
-			<button wire:click="connect" class="btn btn-large btn-success">Responder</button>
+			<button wire:click="answer" class="btn btn-large btn-success">Responder</button>
 		@endif
 		@if($status == 'Atendiendo')
-			<button wire:click="disconnect" class="btn btn-large btn-danger">Colgar</button>
+			<button wire:click="stop" class="btn btn-large btn-danger">Colgar</button>
 		@endif
 	</div>
 </div>

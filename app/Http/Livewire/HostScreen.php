@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Events\Ring2Event;
 use App\Events\RingEvent;
 use App\Http\Traits\WindowTrait;
+use App\Models\User;
 use App\Models\Window;
 use Livewire\Component;
 
@@ -19,6 +21,8 @@ class HostScreen extends Component
     public $link;
     public $data_test;
     public $message;
+    public $client;
+    public $host;
 
     protected $listeners = [
 
@@ -30,7 +34,7 @@ class HostScreen extends Component
 
     public function mount()
     {
-        $window = Window::find(1);
+        $window = new Window;
         $this->data_test = "";
         $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;
@@ -43,12 +47,29 @@ class HostScreen extends Component
 
     public function render()
     {
+        $this->host = \Auth::user();
         return view('livewire.host-screen');
     }
 
     public function here()
     {
         // $this->message = 'here';
+    }
+
+    public function connect()
+    {
+        $window = Window::find($this->host->window->id);
+        $window->mensaje = 'Connecting';
+        $window->save();
+
+        broadcast(new Ring2Event('Connecting'));
+
+        $this->client = $this->host->window->client;
+        $data = [
+            'user' => $this->host,
+            'other' => $this->client,
+        ];
+        return redirect('/livewire1/video_chat/' . $data['user']->id . '/' . $data['other']->id);
     }
 
     public function joining()
@@ -100,6 +121,7 @@ class HostScreen extends Component
             $this->message = $response->link;
         }else{
             $this->message = "Llamando a " . $response->client->name;
+            $this->client = User::find($response->client->id);
         }
     }
 

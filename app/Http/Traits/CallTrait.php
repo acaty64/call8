@@ -43,7 +43,7 @@ trait CallTrait
 
     }
 
-    public function answer($call_id)
+    public function call_answer($call_id)
     {
         $client = \Auth::user();
 

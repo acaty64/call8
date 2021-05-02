@@ -41,9 +41,14 @@
 	    </div>
     </div>
 	<div class="container" align="center">
-		<h1>Client Video-chat Here</h1>
+		@if($status == 'Llamando')
+			<h1>Client Video-chat Here</h1>
+		@endif
 	</div>
 	<div>
+		<p>****************</p>
+			<button wire:click="connect" class="btn btn-large btn-success">Conectar</button>
+		<p>****************</p>
 		@if($status == 'Cerrado')
 			<button wire:click="free" class="btn btn-large btn-success">Libre</button>
 			<button wire:click="pauseWindow" class="btn btn-large btn-warning">En Pausa</button>

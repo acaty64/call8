@@ -29,7 +29,7 @@ class RingEvent implements ShouldBroadcastNow
     {
         $window = \Auth::user()->window;
         if(!$window){
-            $window = Window::find(1);
+            $window = new Window;
             return [
                 'status' => null,
                 'host' => null,

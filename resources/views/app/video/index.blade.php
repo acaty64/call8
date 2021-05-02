@@ -2,7 +2,7 @@
 @section('content')
 
 <div>
-	<h1>Livewire index-chat.blade.php</h1>
+	<h1>Livewire test index-chat.blade.php</h1>
 	<div>user: {{ $user }}</div>
 	<div>other: {{ $other }}</div>
     <video-chat 

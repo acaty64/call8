@@ -26,23 +26,7 @@ export default {
   async mounted() {
     await this.getPermissions();
     await this.setupVideoChat();
-    // this.startVideoChat(this.other.id);
   },
-//   watch: {
-//     start: function (val) {
-//       if(val == true){
-// console.log('conectando: ', this.other.id);
-//           this.connect(this.other.id);
-//       };
-//     },
-//     // this.peers[userId]
-//     // stream: function (val) {
-//     //   if(val[this.user.id] === undefined){
-//     //       this.start = false;
-//     //   };
-//     //   this.start = true;
-//     // },
-//   },
   methods: {
     getPermissions() {
 // console.log('getPermissions');

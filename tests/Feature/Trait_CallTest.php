@@ -53,7 +53,7 @@ class Trait_CallTest extends TestCase
 
         $this->actingAs($client);
 
-        $response = $this->answer($call->id);
+        $response = $this->call_answer($call->id);
 
         $status_answer = Status::where('status', 'Atendiendo')->first();
 

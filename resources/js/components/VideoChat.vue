@@ -5,8 +5,9 @@
     <div class="video-container" ref="video-container">
       <video class="video-here" ref="video-here" autoplay></video>
       <video class="video-there" ref="video-there" autoplay></video>
-
-      <button @click="startVideoChat(other.id)" v-text="`Conectar con ${other.name}`"/>
+      <div v-if="is_host">
+        <button @click="startVideoChat(other.id)" v-text="`Conectar con ${other.name}`"/>
+      </div>
     </div>
   </div>
 </template>
@@ -21,13 +22,39 @@ export default {
       stream: null,
       peers: {},
       start: false,
+      is_host: this.user.is_host,
     }
   },
   async mounted() {
     await this.getPermissions();
     await this.setupVideoChat();
+    // await this.getListeners();
+    // console.log('user.is_host', this.user.is_host);
+  },
+  watch: {
+    channel: {
+      deep: true,
+      handler(){
+        if(this.channel != null){
+          console.log('watch channel this.channel not null');
+          console.log('watch channel members count', this.channel.members.count);
+          console.log('watch channel member [user]', this.channel.members.get(this.user.id));
+          console.log('watch channel members [other]', this.channel.members.get(this.other.id));
+        }else{
+          console.log('watch channel this.channel not exist');
+        }
+      }
+      // console.log('watch channel members', this.channel['members'].members);
+    }
   },
   methods: {
+    getListeners(){
+      window.Echo.private("presence-video-chat").listen("video-chat", e => {
+        console.log('getListeners Pusher', e);
+        console.log('getListeners members.members', this.members.members);
+        // this.start = true;
+      });
+    },
     getPermissions() {
 // console.log('getPermissions');
       return new Promise((res, rej) => {
@@ -87,14 +114,13 @@ console.log('Conectado: ', userId);
       videoHere.srcObject = stream;
       this.stream = stream;
       const pusher = this.getPusherInstance();
-// console.log('setupVideoChat: ', pusher);
       this.channel = pusher.subscribe('presence-video-chat');
       this.channel.bind(`client-signal-${this.user.id}`, (signal) =>
       {
         const peer = this.getPeer(signal.userId, false);
         peer.signal(signal.data);
       });
-      this.start = true;
+console.log('setupVideoChat this.channel.members: ', this.channel.members);
     },
     getPusherInstance() {
       return new Pusher(this.pusherKey, {

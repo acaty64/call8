@@ -96,7 +96,7 @@ class ClientScreen extends Component
                 'user' => $this->client,
                 'other' => $this->host,
             ];
-            return redirect('/livewire1/video_chat/' . $data['user']->id . '/' . $data['other']->id);
+            return redirect('/video_chat/' . $data['user']->id . '/' . $data['other']->id);
         }
 
         if($this->call_id > 0){

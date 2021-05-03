@@ -7,22 +7,12 @@ use Pusher\Pusher;
 class VideoChatController extends Controller
 {
 
-    public function index(Request $request) {
-        $user = $request->user;
-
-        $others = User::where('id', '!=', $user->id)->pluck('name', 'id');
-
-        if(\Auth::user()->id == 1){
-            $other = User::find($request->other->id);
-        }
-
-        if(\Auth::user()->id == 2){
-            $other = User::find(1);
-        }
+    public function index($user_id, $other_id) {
+        $user = User::find($user_id);
+        $other = User::find($other_id);
 
         return view('app.video.index')->with([
-            'user' => collect($request->user()->only(['id', 'name'])),
-            'others' => $others,
+            'user' => $user,
             'other' => $other,
         ]);
     }

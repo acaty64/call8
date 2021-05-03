@@ -13,9 +13,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 /////////////////// START VIDEO-CHAT ROUTES //////////////////
 Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
 
-	Route::get('/livewire1/video_chat/{user_id}/{other_id}', [
-		'as' => 'livewire.video_chat',
-		'uses' => 'VideoChatController@index1'
+	Route::get('/video_chat/{user_id}/{other_id}', [
+		'as' => 'app.video_chat',
+		'uses' => 'VideoChatController@index'
 	]);
 
 	Route::post('/auth/video_chat', [

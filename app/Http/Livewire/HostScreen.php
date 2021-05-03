@@ -69,7 +69,7 @@ class HostScreen extends Component
             'user' => $this->host,
             'other' => $this->client,
         ];
-        return redirect('/livewire1/video_chat/' . $data['user']->id . '/' . $data['other']->id);
+        return redirect('/video_chat/' . $data['user']->id . '/' . $data['other']->id);
     }
 
     public function joining()

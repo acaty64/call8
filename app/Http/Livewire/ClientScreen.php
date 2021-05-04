@@ -8,6 +8,7 @@ use App\Http\Traits\WindowTrait;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\Trace;
+use App\Models\User;
 use App\Models\Window;
 use Livewire\Component;
 
@@ -22,6 +23,7 @@ class ClientScreen extends Component
     public $window;
     public $data_test;
     public $call_id;
+    public $host_id;
     public $user;
     public $others;
     public $client;
@@ -90,8 +92,8 @@ class ClientScreen extends Component
 
     public function ring($data)
     {
-
         if($data['message'] == 'Connecting'){
+            $this->host = User::find($data['host_id']);
             $data = [
                 'user' => $this->client,
                 'other' => $this->host,

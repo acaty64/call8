@@ -43,7 +43,7 @@
 	</div>
 	<div class="container" align="center">
 		@if($status == 'Atendiendo')
-		<h1>Client Video-chat Here</h1>
+			<h1>Espere, conectándose ....</h1>
 		@endif
 	</div>
 	<div>

@@ -1,12 +1,29 @@
 <template>
   <div class="container">
     <h1 class="text-center">Video Chat</h1>
-
-    <div class="video-container" ref="video-container">
-      <video class="video-here" ref="video-here" autoplay></video>
-      <video class="video-there" ref="video-there" autoplay></video>
-      <div v-if="is_host">
-        <button @click="startVideoChat(other.id)" v-text="`Conectar con ${other.name}`"/>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card">
+            <div>Window: {{window}}</div>
+            <div>is_host: {{is_host}}</div>
+            <div>is_connected: {{is_connected}}</div>
+          </div>
+          <div class="card">
+            <div class="video-container" ref="video-container">
+              <video class="video-here" ref="video-here" autoplay></video>
+              <video class="video-there" ref="video-there" autoplay></video>
+            </div>
+          </div>
+          <div class="card">
+            <div class="row justify-content-center">
+              <div v-if="is_host && is_connected">
+                <button @click="startVideoChat(other.id)" v-text="`Conectar con ${other.name}`" class="btn btn-large btn-success"/>
+                <button @click="stopWindow()" class="btn btn-large btn-danger">Colgar</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -15,7 +32,7 @@
 import Pusher from 'pusher-js';
 import Peer from 'simple-peer';
 export default {
-  props: ['user', 'other','pusherKey', 'pusherCluster'],
+  props: ['user', 'other', 'call', 'pusherKey', 'pusherCluster'],
   data() {
     return {
       channel: null,
@@ -23,37 +40,65 @@ export default {
       peers: {},
       start: false,
       is_host: this.user.is_host,
+      is_connected: false,
+      window: this.user.window,
+      call_id: null,
     }
   },
-  async mounted() {
-    await this.getPermissions();
-    await this.setupVideoChat();
-    // await this.getListeners();
-    // console.log('user.is_host', this.user.is_host);
+  mounted() {
+    this.getPermissions();
+    this.setupVideoChat();
+    this.getListeners();
+    this.call_id = this.call.id;
   },
   watch: {
     channel: {
       deep: true,
       handler(){
-        if(this.channel != null){
-          console.log('watch channel this.channel not null');
-          console.log('watch channel members count', this.channel.members.count);
-          console.log('watch channel member [user]', this.channel.members.get(this.user.id));
-          console.log('watch channel members [other]', this.channel.members.get(this.other.id));
+        if(this.channel.members.get(this.other.id) != null){
+          this.is_connected = true;
         }else{
           console.log('watch channel this.channel not exist');
         }
       }
-      // console.log('watch channel members', this.channel['members'].members);
     }
   },
   methods: {
+
+    stopWindow(){
+      var URLdomain = window.location.host;
+      var protocol = window.location.protocol;
+      var url = protocol+'//'+URLdomain+'/api/stop-window/' + this.window.id;
+      console.log('url: ', url);
+      axios.get(url)
+        .then((response) => {
+            var url2 = protocol+'//'+URLdomain+'/api/send-stop';
+            console.log('url2: ', url2);
+            axios.get(url2)
+              .then((resp) => {
+                console.log('stopWindow send-stop');
+
+              })
+              .catch(function (err) {
+                console.log('err stopWindow 2', err)
+              });
+            console.log('Get Data received:', response.data);
+            window.location.href = '/call/host';
+          })
+          .catch(function (error) {
+              console.log('error stopWindow', error);
+          });
+    },
     getListeners(){
-      window.Echo.private("presence-video-chat").listen("video-chat", e => {
-        console.log('getListeners Pusher', e);
-        console.log('getListeners members.members', this.members.members);
-        // this.start = true;
-      });
+      if(!this.is_host){
+        window.Echo.private("channel-ring").listen("Ring2Event", e => {
+          console.log('getListeners Pusher', e);
+            if(!e.call){
+              window.location.href = '/call/client';
+            }
+          // this.start = true;
+        });
+      }
     },
     getPermissions() {
 // console.log('getPermissions');

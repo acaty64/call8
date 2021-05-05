@@ -62,14 +62,20 @@ class HostScreen extends Component
         $window->mensaje = 'Connecting';
         $window->save();
 
-        broadcast(new Ring2Event('Connecting'));
+        broadcast(new Ring2Event([
+            'window_id'=> $window->id,
+            'host_id' => $window->host_id,
+            'client_id' => $window->client_id,
+            'call_id' => $window->call_id,
+            'message' => 'Connecting'
+        ]));
 
         $this->client = $this->host->window->client;
-        $data = [
+        $users = [
             'user' => $this->host,
             'other' => $this->client,
         ];
-        return redirect('/video_chat/' . $data['user']->id . '/' . $data['other']->id);
+        return redirect('/video_chat/' . $users['user']->id . '/' . $users['other']->id . '/' . $window->call_id);
     }
 
     public function joining()

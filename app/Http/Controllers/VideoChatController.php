@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Call;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Pusher\Pusher;
@@ -7,13 +8,15 @@ use Pusher\Pusher;
 class VideoChatController extends Controller
 {
 
-    public function index($user_id, $other_id) {
+    public function index($user_id, $other_id, $call_id) {
         $user = User::find($user_id);
         $other = User::find($other_id);
+        $call = Call::find($call_id);
 
         return view('app.video.index')->with([
             'user' => $user,
             'other' => $other,
+            'call' => $call,
         ]);
     }
 

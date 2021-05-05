@@ -13,7 +13,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 /////////////////// START VIDEO-CHAT ROUTES //////////////////
 Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
 
-	Route::get('/video_chat/{user_id}/{other_id}', [
+	Route::get('/video_chat/{user_id}/{other_id}/{call_id}', [
 		'as' => 'app.video_chat',
 		'uses' => 'VideoChatController@index'
 	]);

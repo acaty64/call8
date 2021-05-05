@@ -18,6 +18,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['namespace' => 'App\Http\Controllers'], function(){
+
+	Route::get('/stop-window/{window_id}', [
+		'as' => 'api.stop.window',
+		'uses' => 'ApiController@stopWindow'
+	]);
+
+	Route::get('/send-stop', [
+		'as' => 'api.send.stop',
+		'uses' => 'ApiController@sendStop'
+	]);
+
+});
+
+//////////////// TEST ////////////////////
 
 Route::group(['namespace' => 'App\Http\Controllers\Tests'], function(){
 

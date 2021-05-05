@@ -76,18 +76,30 @@ trait WindowTrait {
 
         Trace::new_window($window);
 
-        $response = broadcast(new Ring2Event('Llamando a ' . $window->client->name));
+        $response = broadcast(new Ring2Event([
+            'window_id' => $window->id,
+            'host_id' => $window->host_id,
+            'client_id' => $window->client_id,
+            'call_id' => $window->call_id,
+            'message' => 'Llamando a ' . $window->client->name
+        ]));
 
         return $window;
 
     }
 
-    public function window_stop()
+    public function window_stop($window_id = '')
     {
         $host = \Auth::user();
+        if(!$host)
+        {
+            $host = Window::find($window_id)->host;
+        }
+
         $host_id = $host->id;
 
         $window = Window::findOrFail($host->window_id);
+
         $call = Call::findOrFail($window->call_id);
 
         $status_close = Status::where('status', 'Cerrado')->first();
@@ -105,12 +117,17 @@ trait WindowTrait {
         $trace->status_id = $status_close->id;
         Trace::new_window($trace);
 
-        $response = broadcast(new Ring2Event('Llamada terminada por operador ' . $host->name));
+        $response = broadcast(new Ring2Event([
+                'window_id' => $window->id,
+                'host_id' => $window->host_id,
+                'client_id' => $window->client_id,
+                'call_id' => $window->call_id,
+                'message' => 'Llamada terminada por operador ' . $host->name
+            ]));
 
         $window = Window::findOrFail($host->window_id);
         $window->client_id = null;
         $window->save();
-
         return $window;
 
     }

@@ -92,13 +92,15 @@ class ClientScreen extends Component
 
     public function ring($data)
     {
-        if($data['message'] == 'Connecting'){
-            $this->host = User::find($data['host_id']);
-            $data = [
-                'user' => $this->client,
-                'other' => $this->host,
-            ];
-            return redirect('/video_chat/' . $data['user']->id . '/' . $data['other']->id);
+        if($data['message']){
+            if($data['message'] == 'Connecting'){
+                $this->host = User::find($data['host_id']);
+                $users = [
+                    'user' => $this->client,
+                    'other' => $this->host,
+                ];
+                return redirect('/video_chat/' . $users['user']->id . '/' . $users['other']->id . '/'. $data['call_id']);
+            }
         }
 
         if($this->call_id > 0){
@@ -109,6 +111,9 @@ class ClientScreen extends Component
         if($data['call_id'] == $this->call_id && !is_null($data['call_id'])){
             $this->message = $call->window->mensaje;
         }
+        $window = new Window;
+        $this->qclients = $window->qclients;
+        $this->qwindows = $window->qwindows;
 
     }
 

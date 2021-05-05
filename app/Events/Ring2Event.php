@@ -5,11 +5,8 @@ namespace App\Events;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\Window;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -18,18 +15,20 @@ class Ring2Event implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public $data;
 
-    public function __construct($message)
+    public function __construct($data)
     {
-        $this->message = $message;
+        $this->window_id = $data['window_id'];
+        $this->host_id = $data['host_id'];
+        $this->client_id = $data['client_id'];
+        $this->call_id = $data['call_id'];
+        $this->message = $data['message'];
     }
 
     public function broadcastWith()
     {
-        $window = \Auth::user()->window;
-        if(!$window){
-            $window = new Window;
+        if(!$this->window_id){
             return [
                 'status' => null,
                 'host' => null,
@@ -39,10 +38,10 @@ class Ring2Event implements ShouldBroadcastNow
                 'link' => null,
                 'call_id' => null,
                 'message' => $this->message,
-                // 'qclients' => $window->qclients,
-                // 'qwindows' => $window->qwindows,
+                'window' => null,
             ];
         }
+        $window = Window::find($this->window_id);
         return [
             'status' => $window->status->status,
             'host' => $window->host->name,
@@ -51,9 +50,8 @@ class Ring2Event implements ShouldBroadcastNow
             'client_id' => is_null($window->client) ? '' : $window->client_id,
             'link' => $window->link,
             'message' => $window->mensaje,
-            // 'qclients' => $window->qclients,
-            // 'qwindows' => $window->qwindows,
             'call_id' => $window->call_id,
+            'window' => $window,
         ];
     }
 

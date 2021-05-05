@@ -18,7 +18,7 @@ class ApiController extends Controller
     	return $response;
     }
 
-    public function sendStop()
+    public function sendStop($window_id)
     {
     	$response = $this->window_stop($window_id);
     	return $response;

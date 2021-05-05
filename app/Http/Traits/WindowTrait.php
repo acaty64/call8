@@ -99,6 +99,7 @@ trait WindowTrait {
         $host_id = $host->id;
 
         $window = Window::findOrFail($host->window_id);
+        $trace = $window;
 
         $call = Call::findOrFail($window->call_id);
 
@@ -107,7 +108,6 @@ trait WindowTrait {
         $call->status_id = $status_close->id;
         $call->save();
 
-        $trace = $window;
 
         $status_paused = Status::where('status', 'En Pausa')->first();
         $window->status_id = $status_paused->id;

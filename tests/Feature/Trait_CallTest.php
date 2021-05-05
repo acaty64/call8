@@ -43,10 +43,13 @@ class Trait_CallTest extends TestCase
 
     public function test_answer_the_call()
     {
-        $client = User::findOrFail(4);
+        $host = User::findOrFail(1);
+
+        $client = User::findOrFail(5);
         $call = Call::where('user_id', $client->id)->first();
 
-        $window = Window::find(3);
+        $window = $host->window;
+        $window->host_id = $host->id;
         $window->client_id = $client->id;
         $window->call_id = $call->id;
         $window->save();
@@ -56,7 +59,6 @@ class Trait_CallTest extends TestCase
         $response = $this->call_answer($call->id);
 
         $status_answer = Status::where('status', 'Atendiendo')->first();
-
 
         $this->assertDatabaseHas('calls', [
             'user_id' => $client->id,
@@ -80,28 +82,31 @@ class Trait_CallTest extends TestCase
 
     public function test_close_the_call()
     {
-        $user = User::findOrFail(4);
+        $host = User::findOrFail(3);
+        $client = User::findOrFail(4);
 
-        $call = Call::where('user_id', $user->id)->first();
+        $status_answer = Status::where('status', 'Atendiendo')->first();
 
-        $this->actingAs($user);
+        $call = Call::where('user_id', $client->id)->first();
+        $call->status_id = $status_answer->id;
+        $call->save();
+
+        $window = Window::find($host->id);
+        $window->host_id = $host->id;
+        $window->status_id = $status_answer->id;
+        $window->client_id = $client->id;
+        $window->call_id = $call->id;
+        $window->save();
+
+        $this->actingAs($client);
 
         $status_closed = Status::where('status', 'Cerrado')->first();
         $status_paused = Status::where('status', 'En Pausa')->first();
 
-        $array = [
-            'id' => $call->id,
-            'user_id' => $call->user_id,
-            'number' => $call->number,
-            'status_id' => $call->status_id,
-        ];
-
-        $window = Window::where('client_id', $user->id)->first();
-
-        $response = $this->call_close($array);
+        $response = $this->call_close();
 
         $this->assertDatabaseHas('calls', [
-            'user_id' => $user->id,
+            'user_id' => $client->id,
             'number' => $call->id,
             'status_id' => $status_closed->id,
         ]);
@@ -114,7 +119,7 @@ class Trait_CallTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('traces', [
-            'user_id' => $user->id,
+            'user_id' => $client->id,
             'call_id' => $call->id,
             'status_id' => $status_closed->id
         ]);

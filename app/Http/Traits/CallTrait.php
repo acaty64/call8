@@ -56,6 +56,7 @@ trait CallTrait
         $status_answer = Status::where('status', 'Atendiendo')->first();
 
         $call = Call::findOrFail($call_id);
+
         $window = Window::where('call_id', $call->id)->first();
 
         $call->status_id = $status_answer->id;

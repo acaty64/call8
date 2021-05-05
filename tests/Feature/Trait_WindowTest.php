@@ -144,22 +144,22 @@ class Trait_WindowTest extends TestCase
     public function test_stop_a_call()
     {
         $status_answer = Status::where('status', 'Atendiendo')->first()->id;
+
         $call = Call::where('status_id', $status_answer)->first();
 
-        $host = User::findOrFail(1);
+        $host = User::findOrFail(2);
 
-        $this->actingAs($host);
+        $window = Window::find($host->window_id);
+        $window->status_id = $status_answer;
+        $window->client_id = $call->user_id;
+        $window->call_id = $call->id;
+        $window->save();
 
         $status_closed = Status::where('status', 'Cerrado')->first();
         $status_paused = Status::where('status', 'En Pausa')->first();
 
-        $array = [
-            'user_id' => $host->id,
-            'window_id' => $host->window_id,
-            'status_id' => $status_closed,
-        ];
-
-        $response = $this->window_stop($array);
+        $this->actingAs($host);
+        $response = $this->window_stop($host->window_id);
 
         $window = Window::findOrFail($host->window_id);
 

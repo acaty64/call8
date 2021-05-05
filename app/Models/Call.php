@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Status;
 use App\Models\User;
 use App\Models\Window;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Call extends Model
@@ -16,7 +17,23 @@ class Call extends Model
         'status_id',
     ];
 
-    protected $appends = ['window'];
+    protected $appends = [
+        'window',
+        'time_paused'
+    ];
+
+    public function getTimePausedAttribute()
+    {
+        $status = Status::where('status', 'En Pausa')->first();
+        if($this->status_id == $status->id){
+            $startTime = Carbon::parse($this->updated_at);
+            $finishTime = Carbon::parse(date('Y-m-d H:i:s'));
+            $totalDuration = $finishTime->diffInSeconds($startTime);
+            return gmdate('H:i:s', $totalDuration);
+        }
+        return "";
+    }
+
 
     public function user()
     {

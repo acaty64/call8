@@ -12,9 +12,33 @@ use Illuminate\Database\Eloquent\Model;
 class Window extends Model
 {
     protected $fillable = [
-        'window', 'host_id', 'client_id', 'status_id', 'call_id', 'link', 'qclients', 'qwindows', 'time_busy', 'time_paused'
+        'window',
+        'host_id',
+        'client_id',
+        'status_id',
+        'call_id',
+        'link',
     ];
 
+    protected $appends = [
+        'qclients',
+        'qwindows',
+        'time_busy',
+        'time_paused',
+        'time_free',
+    ];
+
+    public function getTimeFreeAttribute()
+    {
+        $status = Status::where('status', 'Libre')->first();
+        if($this->status_id == $status->id){
+            $startTime = Carbon::parse($this->updated_at);
+            $finishTime = Carbon::parse(date('Y-m-d H:i:s'));
+            $totalDuration = $finishTime->diffInSeconds($startTime);
+            return gmdate('H:i:s', $totalDuration);
+        }
+        return "";
+    }
 
     public function getTimeBusyAttribute()
     {

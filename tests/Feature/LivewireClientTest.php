@@ -19,7 +19,7 @@ class LivewireClientTest extends TestCase
     /** @test */
     public function client_creation_page_contains_livewire_component()
     {
-        $call = Call::where('user_id', 6)->first();
+        $call = Call::where('client_id', 6)->first();
         $call->status_id = 1;
         $call->save();
 
@@ -49,12 +49,12 @@ class LivewireClientTest extends TestCase
         $status_paused = Status::where('status', 'En Pausa')->first();
 
         $this->assertDatabaseHas('calls', [
-            'user_id' => $user->id,
+            'client_id' => $user->id,
             'status_id' => $status_paused->id,
         ]);
 
         $this->assertDatabaseHas('traces', [
-            'user_id' => $user->id,
+            'client_id' => $user->id,
             'status_id' => $status_paused->id
         ]);
 
@@ -65,7 +65,7 @@ class LivewireClientTest extends TestCase
     {
         $status_paused = Status::where('status', 'En Pausa')->first()->id;
         $client = User::find(6);
-        $call = Call::where('user_id', $client->id)->first();
+        $call = Call::where('client_id', $client->id)->first();
         $call->status_id = $status_paused;
         $call->save();
 
@@ -88,12 +88,12 @@ class LivewireClientTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('calls', [
-            'user_id' => $client->id,
+            'client_id' => $client->id,
             'status_id' => $status_answer->id,
         ]);
 
         $this->assertDatabaseHas('traces', [
-            'user_id' => $client->id,
+            'client_id' => $client->id,
             'status_id' => $status_answer->id
         ]);
 
@@ -103,7 +103,7 @@ class LivewireClientTest extends TestCase
     public function client_click_colgar()
     {
         $client = User::find(4);
-        $call = Call::where('user_id', $client->id)->first();
+        $call = Call::where('client_id', $client->id)->first();
 
         $window = Window::find(1);
         $window->client_id = $client->id;
@@ -127,13 +127,13 @@ class LivewireClientTest extends TestCase
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
-            'user_id' => $client->id,
+            'client_id' => $client->id,
             'status_id' => $status_closed->id,
         ]);
 
         $this->assertDatabaseHas('traces', [
             'call_id' => $call->id,
-            'user_id' => $client->id,
+            'client_id' => $client->id,
             'status_id' => $status_closed->id
         ]);
 

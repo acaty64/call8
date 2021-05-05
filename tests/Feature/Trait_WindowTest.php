@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Http\Traits\WindowTrait;
 use App\Models\Call;
 use App\Models\Status;
+use App\Models\Trace;
 use App\Models\User;
 use App\Models\Window;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -34,7 +35,7 @@ class Trait_WindowTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('traces', [
-            'user_id' => $user->id,
+            'host_id' => $user->id,
             'window_id' => $response['id'],
             'status_id' => $status->id
         ]);
@@ -57,7 +58,7 @@ class Trait_WindowTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('traces', [
-            'user_id' => $user->id,
+            'host_id' => $user->id,
             'window_id' => $response['id'],
             'status_id' => $status->id
         ]);
@@ -92,7 +93,7 @@ class Trait_WindowTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('traces', [
-            'user_id' => $user->id,
+            'host_id' => $user->id,
             'window_id' => $response['id'],
             'status_id' => $status_free->id
         ]);
@@ -123,17 +124,18 @@ class Trait_WindowTest extends TestCase
         $this->assertDatabaseHas('windows', [
             'host_id' => $user->id,
             'status_id' => $status->id,
-            'client_id' => $call->user_id,
+            'client_id' => $call->client_id,
             'call_id' => $call->id,
         ]);
 
         $this->assertDatabaseHas('calls', [
-            'user_id' => $call->user_id,
+            'client_id' => $call->client_id,
             'status_id' => $status->id,
         ]);
 
         $this->assertDatabaseHas('traces', [
-            'user_id' => $user->id,
+            'host_id' => $user->id,
+            'client_id' => $call->client_id,
             'window_id' => $window->id,
             'call_id' => $window->call_id,
             'status_id' => $status->id
@@ -151,7 +153,7 @@ class Trait_WindowTest extends TestCase
 
         $window = Window::find($host->window_id);
         $window->status_id = $status_answer;
-        $window->client_id = $call->user_id;
+        $window->client_id = $call->client_id;
         $window->call_id = $call->id;
         $window->save();
 
@@ -171,12 +173,13 @@ class Trait_WindowTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('calls', [
-            'user_id' => $call->user_id,
+            'client_id' => $call->client_id,
             'status_id' => $status_closed->id,
         ]);
 
         $this->assertDatabaseHas('traces', [
-            'user_id' => $host->id,
+            'host_id' => $host->id,
+            'client_id' => $call->client_id,
             'window_id' => $window->id,
             'call_id' => $window->call_id,
             'status_id' => $status_closed->id
@@ -202,7 +205,7 @@ class Trait_WindowTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('traces', [
-            'user_id' => $user->id,
+            'host_id' => $user->id,
             'window_id' => $response['id'],
             'status_id' => $status->id
         ]);
@@ -218,7 +221,7 @@ class Trait_WindowTest extends TestCase
         $status = Status::where('status', 'Cerrado')->first();
 
         $array = [
-            'user_id' => $user->id,
+            'host_id' => $user->id,
             'status_id' => $status->id,
         ];
 
@@ -232,7 +235,7 @@ class Trait_WindowTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('traces', [
-            'user_id' => $user->id,
+            'host_id' => $user->id,
             'window_id' => $response['id'],
             'status_id' => $status->id
         ]);

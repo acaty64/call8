@@ -12,7 +12,7 @@ class Call extends Model
 {
     protected $fillable = [
         'number',
-        'user_id',
+        'client_id',
         'status_id',
     ];
 
@@ -20,7 +20,7 @@ class Call extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'client_id', 'id');
     }
 
     public function status()

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Trace extends Model
 {
     protected $fillable = [
-        'user_id', 'call_id', 'window_id', 'status_id'
+        'host_id', 'client_id', 'call_id', 'window_id', 'status_id'
     ];
 
     public function getUserAttribute()
@@ -44,7 +44,7 @@ class Trace extends Model
     public static function new_call($call)
     {
         Trace::create([
-            'user_id' => $call->user_id,
+            'client_id' => $call->client_id,
             'call_id' => $call->id,
             'status_id' => $call->status_id,
         ]);
@@ -54,7 +54,8 @@ class Trace extends Model
     public static function new_window($window)
     {
         Trace::create([
-            'user_id' => $window->host_id,
+            'host_id' => $window->host_id,
+            'client_id' => $window->client_id,
             'call_id' => $window->call_id,
             'window_id' => $window->id,
             'status_id' => $window->status_id,

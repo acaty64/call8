@@ -15,8 +15,12 @@ class CreateTracesTable extends Migration
     {
         Schema::create('traces', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-                $table->foreign('user_id')
+            $table->unsignedBigInteger('host_id')->nullable();
+                $table->foreign('host_id')
+                            ->references('id')
+                            ->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('client_id')->nullable();
+                $table->foreign('client_id')
                             ->references('id')
                             ->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('call_id')->nullable();

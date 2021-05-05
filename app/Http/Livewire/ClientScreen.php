@@ -74,7 +74,7 @@ class ClientScreen extends Component
 
     public function start()
     {
-        $call = Call::where('user_id', \Auth::user()->id)->where('status_id', '>', 1)->first();
+        $call = Call::where('client_id', \Auth::user()->id)->where('status_id', '>', 1)->first();
         if($call){
             $this->call_id = $call->id;
             if($call->window){

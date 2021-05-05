@@ -34,7 +34,7 @@ class ApiTest extends TestCase
 
         $this->assertDatabaseHas('calls', [
             'id' => $window->call_id,
-            'user_id' => $window->client_id,
+            'client_id' => $window->client_id,
             'status_id' => $status_closed->id,
         ]);
 

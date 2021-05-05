@@ -10,6 +10,18 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+/////////////////// START DASHBOARD ROUTES //////////////////
+Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
+
+	Route::get('/dashboard', [
+		'as' => 'app.dashboard',
+		'uses' => 'DashboardController@index'
+	]);
+
+});
+/////////////////// STOP DASHBOARD ROUTES //////////////////
+
+
 /////////////////// START VIDEO-CHAT ROUTES //////////////////
 Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
 

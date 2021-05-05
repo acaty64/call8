@@ -18,12 +18,12 @@ trait CallTrait
 
         $status = Status::where('status', 'En Pausa')->first();
 
-        $call = Call::where('user_id', $client->id)
+        $call = Call::where('client_id', $client->id)
                 ->where('status_id', $status->id)
                 ->first();
         if(!$call){
             $call = Call::create([
-                'user_id' => $client->id,
+                'client_id' => $client->id,
                 'status_id' => $status->id,
             ]);
 

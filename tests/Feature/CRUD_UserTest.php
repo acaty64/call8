@@ -92,7 +92,7 @@ class CRUD_UserTest extends TestCase
             ]);
 
         $this->assertDatabaseMissing('calls', [
-                'user_id' => $user->id,
+                'client_id' => $user->id,
             ]);
 
         $this->assertDatabaseMissing('windows', [
@@ -104,7 +104,11 @@ class CRUD_UserTest extends TestCase
             ]);
 
         $this->assertDatabaseMissing('traces', [
-                'user_id' => $user->id,
+                'client_id' => $user->id,
+            ]);
+
+        $this->assertDatabaseMissing('traces', [
+                'host_id' => $user->id,
             ]);
 
     }

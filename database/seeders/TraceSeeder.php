@@ -18,7 +18,7 @@ class TraceSeeder extends Seeder
     {
     	// Usuario 1. En Window 1. En Pausa
     	Trace::create([
-    		'user_id' => 1,
+    		'host_id' => 1,
     		'window_id' => 1,
     		'call_id' => null,
     		'status_id' => 5,
@@ -26,7 +26,7 @@ class TraceSeeder extends Seeder
 
     	// Usuario 1. En Window 1. Libre
     	Trace::create([
-    		'user_id' => 1,
+    		'host_id' => 1,
     		'window_id' => 1,
     		'call_id' => null,
     		'status_id' => 2,
@@ -34,7 +34,7 @@ class TraceSeeder extends Seeder
 
     	// Usuario 1. En Window 1. Llamando
     	Trace::create([
-    		'user_id' => 1,
+    		'host_id' => 1,
     		'window_id' => 1,
     		'call_id' => 1,
     		'status_id' => 3,
@@ -42,7 +42,7 @@ class TraceSeeder extends Seeder
 
     	// Usuario 1. En Window 1. Atendiendo
     	Trace::create([
-    		'user_id' => 1,
+    		'host_id' => 1,
     		'window_id' => 1,
     		'call_id' => 1,
     		'status_id' => 4,
@@ -50,7 +50,7 @@ class TraceSeeder extends Seeder
     	////////////////////////////////////////
     	// Usuario 2. En Window 2. En Pausa
     	Trace::create([
-    		'user_id' => 2,
+    		'host_id' => 2,
     		'window_id' => 2,
     		'call_id' => null,
     		'status_id' => 5,
@@ -58,7 +58,7 @@ class TraceSeeder extends Seeder
 
     	// Usuario 2. En Window 2. Libre
     	Trace::create([
-    		'user_id' => 2,
+    		'host_id' => 2,
     		'window_id' => 2,
     		'call_id' => null,
     		'status_id' => 2,
@@ -66,7 +66,7 @@ class TraceSeeder extends Seeder
 
     	// Usuario 2. En Window 2. Llamando
     	Trace::create([
-    		'user_id' => 2,
+    		'host_id' => 2,
     		'window_id' => 2,
     		'call_id' => 2,
     		'status_id' => 3,
@@ -74,7 +74,7 @@ class TraceSeeder extends Seeder
 
     	// Usuario 2. En Window 2. Atendiendo
     	Trace::create([
-    		'user_id' => 2,
+    		'host_id' => 2,
     		'window_id' => 2,
     		'call_id' => 2,
     		'status_id' => 4,
@@ -82,7 +82,7 @@ class TraceSeeder extends Seeder
     	////////////////////////////////////////
     	// Usuario 3. En Window 3. En Pausa
     	Trace::create([
-    		'user_id' => 3,
+    		'host_id' => 3,
     		'window_id' => 3,
     		'call_id' => null,
     		'status_id' => 5,
@@ -90,7 +90,7 @@ class TraceSeeder extends Seeder
 
     	// Usuario 3. En Window 3. Libre
     	Trace::create([
-    		'user_id' => 3,
+    		'host_id' => 3,
     		'window_id' => 3,
     		'call_id' => null,
     		'status_id' => 2,
@@ -101,7 +101,7 @@ class TraceSeeder extends Seeder
     	////////////////////////////////////////
     	// Usuario 4. En Llamada 4. En Pausa
     	Trace::create([
-    		'user_id' => 4,
+    		'client_id' => 4,
     		'window_id' => null,
     		'call_id' => 4,
     		'status_id' => 5,
@@ -109,7 +109,7 @@ class TraceSeeder extends Seeder
 
     	// Usuario 4. En Llamada 4. En Window 1. Atendiendo
     	Trace::create([
-    		'user_id' => 4,
+    		'client_id' => 4,
     		'window_id' => 1,
     		'call_id' => 4,
     		'status_id' => 4,
@@ -118,7 +118,7 @@ class TraceSeeder extends Seeder
     	////////////////////////////////////////
     	// Usuario 5. En Llamada 5. En Pausa
     	Trace::create([
-    		'user_id' => 5,
+    		'client_id' => 5,
     		'window_id' => null,
     		'call_id' => 5,
     		'status_id' => 5,
@@ -126,7 +126,7 @@ class TraceSeeder extends Seeder
 
     	// Usuario 5. En Llamada 5. En Window 2. Atendiendo
     	Trace::create([
-    		'user_id' => 5,
+    		'client_id' => 5,
     		'window_id' => 3,
     		'call_id' => 5,
     		'status_id' => 4,
@@ -135,7 +135,7 @@ class TraceSeeder extends Seeder
     	////////////////////////////////////////
     	// Usuario 6. En Llamada 6. En Pausa
     	Trace::create([
-    		'user_id' => 6,
+    		'client_id' => 6,
     		'window_id' => null,
     		'call_id' => 6,
     		'status_id' => 5,

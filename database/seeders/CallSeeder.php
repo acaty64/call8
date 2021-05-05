@@ -17,19 +17,19 @@ class CallSeeder extends Seeder
     {
 		Call::create([
 			'number' => 1,
-			'user_id' => 4,
+			'client_id' => 4,
 			'status_id' => 4,
 		]);
 
 		Call::create([
 			'number' => 2,
-			'user_id' => 5,
+			'client_id' => 5,
 			'status_id' => 4,
 		]);
 
 		Call::create([
 			'number' => 3,
-			'user_id' => 6,
+			'client_id' => 6,
 			'status_id' => 5,
 		]);
 

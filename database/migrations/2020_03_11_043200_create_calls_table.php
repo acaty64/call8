@@ -16,8 +16,8 @@ class CreateCallsTable extends Migration
         Schema::create('calls', function (Blueprint $table) {
             $table->id();
             $table->integer('number')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('client_id');
+                $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('status_id');
             $table->foreign('status_id')
                 ->references('id')

@@ -69,7 +69,7 @@ trait WindowTrait {
 
         $window = Window::findOrFail($host->window_id);
         $window->status_id = $status_id;
-        $window->client_id = $call->user_id;
+        $window->client_id = $call->client_id;
         $window->call_id = $call->id;
         $window->mensaje = 'Llamando a ' . $window->client->name ;
         $window->save();

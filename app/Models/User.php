@@ -154,7 +154,7 @@ class User extends Authenticatable
     {
         $status = Status::where('status', 'En Pausa')->first();
         $call = Call::where([
-                'user_id' => $this->id,
+                'client_id' => $this->id,
                 'status_id' => $status->id,
             ])->get();
 

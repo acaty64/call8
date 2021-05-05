@@ -19,8 +19,8 @@ class DashboardScreen extends Component
 
    	public function mount()
    	{
-   		$host_now = Window::where('host_id', '!=', null)->get();
-   		
+   		$this->host_now = Window::where('host_id', '!=', null)->get();
+
    	}
 
 

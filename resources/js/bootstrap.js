@@ -37,10 +37,14 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    forceTLS: true,
 
-	// encrypted: false,
-    // wsHost: window.location.hostname,
-    // wsPort: 6001,
-    // enabledTransports: ['ws'],
+    wsHost: window.location.hostname,
+    wsPort: 6001,
+    enabledTransports: ['ws'],
+    encrypted: false,       // Con SSL cambiar a true
+    // enabledTransports: ['ws', 'wss'],
+    forceTLS: false,
+    disableStats: true,     // Deshabilita Pusher
+    disabledTransports: ['sockjs'],
+    // disabledTransports: ['sockjs', 'xhr_polling', 'xhr_streaming'],
 });

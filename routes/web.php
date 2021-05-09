@@ -10,6 +10,14 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+Route::get('/schedule', [App\Http\Controllers\ScheduleController::class, 'index'])->name('schedule');
+
+
+
+
+
+
 /////////////////// START DASHBOARD ROUTES //////////////////
 Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
 

@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Http\Traits;
+
+use App\Events\Ring2Event;
+use App\Models\Call;
+use App\Models\Schedule;
+use App\Models\Status;
+use App\Models\Trace;
+use App\Models\User;
+use App\Models\Window;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+
+trait ScheduleTrait
+{
+
+    public function horario($host_id, $inicio)
+    {
+        $horas = [];
+        $y = 0;
+        for ($h=8; $h < 21; $h++) {
+            for ($m=0; $m < 2; $m++) {
+                $horas[$y++][] = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m * 30, 2, "00", STR_PAD_LEFT);
+            }
+        }
+
+        foreach ($horas as $key => $value) {
+            $h1 = $value[0];
+            $m = substr($h1, 3,2) + 29;
+            $h2 = str_pad(substr($h1,0,2), 2, "00", STR_PAD_LEFT) . ":" . $m ;
+            $items = Schedule::where('host_id', $host_id)
+                ->where('hour_start','<=', $h1)
+                ->where('hour_end','>=', $h2)
+                ->whereDate('date_start', '<=', $inicio)
+                ->whereDate('date_end', '>=', $inicio)
+                ->get();
+
+            foreach ($items as $key1 => $value1) {
+                if($value1->day == 0){
+                    $horas[$key][7] = 1;
+                }else{
+                    $horas[$key][$value1->day] = 1;
+                }
+            }
+        }
+        $horario = [];
+        foreach ($horas as $key2 => $value2) {
+            $item = [];
+            $y = [];
+            for($n = 0; $n < 8; $n++){
+                if($n == 0){
+                    $item['class'] = 'col-sm-2';
+                }else{
+                    $item['class'] = 'col-sm-1';
+                }
+                if(empty($value2[$n])){
+                    $item['value'] = '0';
+                }else{
+                    $item['value'] = $value2[$n];
+                }
+                $y[] = $item;
+            }
+            $horario[] = $y;
+        }
+        return $horario;
+    }
+
+
+}

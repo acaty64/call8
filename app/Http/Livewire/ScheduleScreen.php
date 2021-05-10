@@ -61,7 +61,7 @@ class ScheduleScreen extends Component
 		        	foreach ($v as $k2 => $v2) {
 						foreach ($v2 as $k3 => $v3) {
 			        		if(is_numeric($schedule[$k][$k2][$k3])){
-				        		$schedule[$k][$k2][$k3] = $schedule[$k][$k2][$k3]+$v3;
+				        		$schedule[$k][$k2][$k3] = $schedule[$k][$k2][$k3] + $v3;
 			        		}
 						}
 		        	}

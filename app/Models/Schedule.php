@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Office;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,5 +18,17 @@ class Schedule extends Model
     		'date_start',
     		'date_end',
     	];
+
+
+    public function host()
+    {
+        return $this->belongsTo(User::class, 'host_id', 'id');
+    }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class, 'office_id', 'id');
+    }
+
 
 }

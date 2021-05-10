@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use App\Models\Call;
+use App\Models\Schedule;
 use App\Models\Status;
 use App\Models\Window;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -44,6 +45,7 @@ class User extends Authenticatable
 
 
     protected $appends = ['window_id', 'is_host', 'is_client', 'is_paused', 'is_free', 'is_busy', 'is_calling', 'window'];
+
 
     public function getWindowAttribute()
     {

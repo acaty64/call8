@@ -13,6 +13,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/schedule', [App\Http\Controllers\ScheduleController::class, 'index'])->name('schedule');
 
+Route::get('/schedule/crud', [App\Http\Controllers\ScheduleController::class, 'crud'])->name('schedule.crud');
+
 
 
 

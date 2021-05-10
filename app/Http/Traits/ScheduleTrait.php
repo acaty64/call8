@@ -17,12 +17,11 @@ trait ScheduleTrait
 
     public function horario($host_id, $inicio)
     {
-        $horas = [];
+        $hours = $this->hours();
         $y = 0;
-        for ($h=8; $h < 21; $h++) {
-            for ($m=0; $m < 2; $m++) {
-                $horas[$y++][] = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m * 30, 2, "00", STR_PAD_LEFT);
-            }
+        $horas = [];
+        foreach ($hours as $kh => $vh) {
+            $horas[$y++][] = $vh;
         }
 
         foreach ($horas as $key => $value) {
@@ -66,5 +65,16 @@ trait ScheduleTrait
         return $horario;
     }
 
+    public function hours()
+    {
+        $horas = [];
+        $y = 0;
+        for ($h=8; $h < 21; $h++) {
+            for ($m=0; $m < 2; $m++) {
+                $horas[] = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m * 30, 2, "00", STR_PAD_LEFT);
+            }
+        }
+        return $horas;
+    }
 
 }

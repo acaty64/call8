@@ -10,4 +10,9 @@ class ScheduleController extends Controller
 	{
 		return view('app.admin.schedule');
 	}
+
+	public function crud()
+	{
+		return view('app.schedule.crud');
+	}
 }

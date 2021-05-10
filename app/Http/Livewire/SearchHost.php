@@ -20,4 +20,10 @@ class SearchHost extends Component
     	$this->hosts = User::where('id', '<', 4)->get();
     	$this->selectedHost = '';
     }
+
+    public function updated($selectedHost, $value)
+    {
+        $this->emit('newHost', $value);
+    }
+
 }

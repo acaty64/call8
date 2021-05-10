@@ -1,41 +1,46 @@
 <div>
+	<div>{{ $message }}</div>
 	@if($status == 'index')
-		<div class="row">
-			<div class="col-sm-3">
-					<button class="btn-success">Agregar</button>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-1">Office</div>
-			<div class="col-sm-4">Host</div>
-			<div class="col-sm-1">Dia</div>
-			<div class="col-sm-1">Inicio</div>
-			<div class="col-sm-1">Fin</div>
-			<div class="col-sm-1">Actions</div>
-		</div>
-		@foreach($schedules as $schedule)
-			<div class="row">
-				<div class="col-sm-1">
-					{{ $schedule->office->code }}
-				</div>
-				<div class="col-sm-4">
-					{{ $schedule->host->name }}
-				</div>
-				<div class="col-sm-1">
-					{{ $schedule->day }}
-				</div>
-				<div class="col-sm-1">
-					{{ $schedule->hour_start }}
-				</div>
-				<div class="col-sm-1">
-					{{ $schedule->hour_end }}
-				</div>
-				<div class="col-sm-3">
-						<button class="btn-warning">Editar</button>
-						<button class="btn-danger">Eliminar</button>
-				</div>
-			</div>
-		@endforeach
+		<table class="table">
+			<button class="btn-success btn-lg" wire:click="setStatus('create')">Agregar</button>
+			<thead>
+				<tr>
+					<th>
+						Office
+{{-- 						<select wire:model="selectedOffice" class="form-control">
+							<option value="" selected>Office</option>
+							@foreach($offices as $office)
+								<option value="{{ $office->id }}">{{ $office->name }}</option>
+							@endforeach
+						</select> --}}
+					</th>
+					<th>Host</th>
+					<th>Dia</th>
+					<th>Inicio</th>
+					<th>Fin</th>
+					<th>Fecha Inicio</th>
+					<th>Fecha Fin</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($schedules as $schedule)
+				<tr>
+					<td>{{ $schedule->office->code }}</td>
+					<td>{{ $schedule->host->name }}</td>
+					<td>{{ $schedule->day }}</td>
+					<td>{{ $schedule->hour_start }}</td>
+					<td>{{ $schedule->hour_end }}</td>
+					<td>{{ $schedule->date_start }}</td>
+					<td>{{ $schedule->date_end }}</td>
+					<td>
+						<button class="btn-warning btn-md">Editar</button>
+						<button class="btn-danger btn-md">Eliminar</button>
+					</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
 	@endif
 	@if($status == 'create')
 		@livewire('schedule-create')

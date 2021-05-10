@@ -3,10 +3,14 @@
 		<div class="card-body">
 			<h3>SCHEDULE CREATE</h3>
 		</div>
+        <div class="col-md-2">
+	        <button wire:click="$emit('setStatus', 'index')" class="btn-primary mb-3 btn-lg">Regresar</button>
+	    </div>
 	</div>
 	<div class="container">
+		{{ $message }}
 		@livewire('search-host')
-
+		@error('selectedHost') <span class="error">{{ $message }}</span> @enderror
 		<div class="form-group row">
 			<div class="col-sm-12">
 				<div class="input-group mb">
@@ -21,6 +25,7 @@
 							@endforeach
 						</select>
 					</div>
+					 @error('selectedOffice') <span class="error">{{ $message }}</span> @enderror
 				</div>
 			</div>
 		</div>
@@ -38,6 +43,7 @@
 							@endforeach
 						</select>
 					</div>
+					@error('selectedDay') <span class="error">{{ $message }}</span> @enderror
 				</div>
 			</div>
 			<div class="col-sm-4">
@@ -49,10 +55,11 @@
 						<select wire:model="hour_start" class="form-control">
 							<option value="" selected>Choose hour start</option>
 							@foreach($hours_start as $kh => $hour)
-								<option value="{{ $kh }}">{{ $hour }}</option>
+								<option value="{{ $hour }}">{{ $hour }}</option>
 							@endforeach
 						</select>
 					</div>
+					@error('hour_start') <span class="error">{{ $message }}</span> @enderror
 				</div>
 			</div>
 			<div class="col-sm-4">
@@ -64,10 +71,11 @@
 						<select wire:model="hour_end" class="form-control">
 							<option value="" selected>Choose hour end</option>
 							@foreach($hours_end as $kh2 => $hour2)
-								<option value="{{ $kh2 }}">{{ $hour2 }}</option>
+								<option value="{{ $hour2 }}">{{ $hour2 }}</option>
 							@endforeach
 						</select>
 					</div>
+					@error('hour_end') <span class="error">{{ $message }}</span> @enderror
 				</div>
 			</div>
 		</div>
@@ -77,21 +85,56 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon1">Fecha de inicio</span>
 					</div>
-					<input type="date" class="form-control" value="{{ $date_start }}" wire:model="date_start"  aria-label="fecha_ini" aria-describedby="basic-addon1">
+					<input type="date" class="form-control"
+						value="{{ $date_start }}"
+						wire:model="date_start"
+						min={{ $min_date_start }}
+						aria-label="fecha_ini" aria-describedby="basic-addon1">
 				</div>
+				@error('date_start') <span class="error">{{ $message }}</span> @enderror
 			</div>
 			<div class="col-sm-6">
 				<div class="input-group mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon1">Fecha de fin</span>
 					</div>
-					<input type="date" class="form-control" value="{{ $date_end }}" wire:model="fin"  aria-label="date_end" aria-describedby="basic-addon1">
+					<input type="date" class="form-control"
+						value="{{ $date_end }}"
+						wire:model="date_end"
+						min={{ $min_date_end }}
+						aria-label="date_end" aria-describedby="basic-addon1">
 				</div>
+				@error('hour_end') <span class="error">{{ $message }}</span> @enderror
 			</div>
 		</div>
+		@if($errores)
+			<div class="container">
+				<div class="card-header">
+					Horarios cruzados
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-sm"><b>Id</b></div>
+						<div class="col-sm"><b>Hora inicio</b></div>
+						<div class="col-sm"><b>Hora fin</b></div>
+						<div class="col-sm"><b>Fecha inicio</b></div>
+						<div class="col-sm"><b>Fecha fin</b></div>
+					</div>
+					@foreach($errores as $error)
+						<div class="row">
+							<div class="col-sm">{{ $error->id }}</div>
+							<div class="col-sm">{{ $error->hour_start }}</div>
+							<div class="col-sm">{{ $error->hour_end }}</div>
+							<div class="col-sm">{{ $error->date_start }}</div>
+							<div class="col-sm">{{ $error->date_end }}</div>
+						</div>
+					@endforeach
+				</div>
+			</div>
+		@endif
 		<div class="form-group row">
 			<div class="col-sm-6">
-				<button class="btn-success btn-lg">Grabar</button>
+				<button wire:click="save" class="btn-success btn-lg">Grabar</button>
 			</div>
 		</div>
 	</div>

@@ -77,4 +77,29 @@ trait ScheduleTrait
         return $horas;
     }
 
+    public function checkSchedule(Schedule $data)
+    {
+        $schedules = Schedule::where('host_id', $data->host_id)
+                    ->where('office_id', '<=', $data->office_id)
+                    ->where('day', '<=', $data->day)
+                    ->get();
+
+        $error = [];
+        foreach ($schedules as $value) {
+            if(($data->date_start <= $value->date_start && 
+                    $data->date_end >= $value->date_start) || 
+                        ($data->date_start >= $value->date_start && 
+                        $data->date_start <= $value->date_end)){
+                if(($data->hour_start <= $value->hour_start && 
+                    $data->hour_end >= $value->hour_start) || 
+                        ($data->hour_start >= $value->hour_start && 
+                        $data->hour_start <= $value->hour_end)){
+                    $error[] = $value;
+                }
+            }
+        }
+
+        return $error;
+    }
+
 }

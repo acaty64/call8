@@ -15,7 +15,7 @@
 		</div>
 		@foreach($schedules as $schedule)
 			<div class="row">
-	{{-- 			<div class="col-sm-1">
+				<div class="col-sm-1">
 					{{ $schedule->office->code }}
 				</div>
 				<div class="col-sm-4">
@@ -29,7 +29,7 @@
 				</div>
 				<div class="col-sm-1">
 					{{ $schedule->hour_end }}
-				</div> --}}
+				</div>
 				<div class="col-sm-3">
 						<button class="btn-warning">Editar</button>
 						<button class="btn-danger">Eliminar</button>

@@ -61,9 +61,9 @@
 						<span class="input-group-text" id="basic-addon0">Hora de Fin</span>
 					</div>
 					<div class="col-md-8">
-						<select wire:model="hour_stop" class="form-control">
-							<option value="" selected>Choose hour stop</option>
-							@foreach($hours_stop as $kh2 => $hour2)
+						<select wire:model="hour_end" class="form-control">
+							<option value="" selected>Choose hour end</option>
+							@foreach($hours_end as $kh2 => $hour2)
 								<option value="{{ $kh2 }}">{{ $hour2 }}</option>
 							@endforeach
 						</select>
@@ -85,7 +85,7 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon1">Fecha de fin</span>
 					</div>
-					<input type="date" class="form-control" value="{{ $date_stop }}" wire:model="fin"  aria-label="date_stop" aria-describedby="basic-addon1">
+					<input type="date" class="form-control" value="{{ $date_end }}" wire:model="fin"  aria-label="date_end" aria-describedby="basic-addon1">
 				</div>
 			</div>
 		</div>

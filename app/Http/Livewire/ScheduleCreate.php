@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Http\Traits\ScheduleTrait;
 use App\Models\Office;
+use App\Models\Schedule;
 use App\Models\User;
 use Livewire\Component;
 
@@ -16,11 +17,12 @@ class ScheduleCreate extends Component
 	public $days;
 	public $hours;
 	public $hours_start;
-	public $hours_stop;
+	public $hours_end;
 	public $hour_start;
-	public $hour_stop;
+	public $hour_end;
 	public $date_start;
-	public $date_stop;
+	public $date_end;
+    public $selectedHost;
     public $selectedOffice;
     public $selectedDay;
 
@@ -32,6 +34,7 @@ class ScheduleCreate extends Component
     public function mount()
     {
     	$this->hosts = User::where('id', '<', 4)->get();
+        $this->selectedHost = '';
     	$this->offices = Office::all();
         $this->selectedOffice = '';
     	$this->days = [
@@ -46,15 +49,21 @@ class ScheduleCreate extends Component
         $this->selectedDay = '';
         $this->hours_start = $this->hours();
         $this->hour_start = '';
-        $this->hours_stop = $this->hours();
-        $this->hour_stop = '';
-    	// $hours = [];
-    	// for ($h=0; $h < 21; $h++) {
-    	// 	for ($m=0; $m < 2; $m++) { 
-    	// 	 	# code...
-    	// 	 } 
-    	// 	# code...
-    	// }
+        $this->hours_end = $this->hours();
+        $this->hour_end = '';
+    }
+
+    public function save()
+    {
+        Schedule::create([
+            'host_id' => $this->selectedHost,
+            'office_id' => $this->selectedOffice,
+            'day' => $this->selectedDay,
+            'hour_start' => $this->hour_start,
+            'hour_end' => $this->hour_end,
+            'date_start' => $this->date_start,
+            'date_end' => $this->date_end,
+        ]);
     }
 
 

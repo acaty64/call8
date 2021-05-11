@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Http\Traits\ScheduleTrait;
+use App\Models\Office;
 use App\Models\Schedule;
 use App\Models\User;
 use Carbon\Carbon;
@@ -15,6 +16,8 @@ class ScheduleScreen extends Component
 	public $inicio;
 	public $fin;
     public $schedule;
+    public $offices;
+    public $selectedOffice;
 
     use ScheduleTrait;
 
@@ -25,11 +28,13 @@ class ScheduleScreen extends Component
 
     public function mount()
     {
-    	$this->hosts = User::where('id','<', 4)->get();
+    	$this->hosts = [];
     	$now = new Carbon();
 
     	$this->inicio = $now->format('Y-m-d');
     	$this->fin = $now->addDays(7)->format('Y-m-d');
+        $this->offices = Office::all();
+        $this->selectedOffice = 1;
         $this->getSchedule();
     }
 
@@ -46,11 +51,14 @@ class ScheduleScreen extends Component
         $this->inicio = $inicio_new->format('Y-m-d');
     	$this->fin = $inicio_new->addDays(6)->format('Y-m-d');
 
-        $users = $this->hosts;
+        $users = Schedule::where('office_id', $this->selectedOffice)->pluck('host_id')->unique();
+
+        $this->hosts = User::whereIn('id', $users)->get();
+
         $schedule = [];
         foreach ($users as $user){
 
-        	$horario = $this->horario($user->id, $this->inicio);
+        	$horario = $this->horario($user, $this->inicio, $this->selectedOffice);
 
 	        foreach ($horario as $k => $v) {
 	        	if(empty($schedule[$k])){
@@ -72,12 +80,19 @@ class ScheduleScreen extends Component
         $this->schedule = $schedule;
     }
 
-    public function updated($inicio, $value)
+    public function updated($field, $value)
     {
-		$this->inicio = $value;
-		$dia = new CarbonImmutable($this->inicio);
-    	$this->fin = $dia->addDays(6)->format('Y-m-d');
-        $this->getSchedule();
+        if($field == 'inicio')
+        {
+            $this->inicio = $value;
+            $dia = new CarbonImmutable($this->inicio);
+            $this->fin = $dia->addDays(6)->format('Y-m-d');
+            $this->getSchedule();
+        }
+        if($field == 'selectedOffice')
+        {
+            $this->getSchedule();
+        }
     }
 
 

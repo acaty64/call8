@@ -15,7 +15,7 @@ use Carbon\CarbonImmutable;
 trait ScheduleTrait
 {
 
-    public function horario($host_id, $inicio)
+    public function horario($host_id, $inicio, $office_id=null)
     {
         $hours = $this->hours();
         $y = 0;
@@ -28,12 +28,23 @@ trait ScheduleTrait
             $h1 = $value[0];
             $m = substr($h1, 3,2) + 29;
             $h2 = str_pad(substr($h1,0,2), 2, "00", STR_PAD_LEFT) . ":" . $m ;
-            $items = Schedule::where('host_id', $host_id)
-                ->where('hour_start','<=', $h1)
-                ->where('hour_end','>=', $h2)
-                ->whereDate('date_start', '<=', $inicio)
-                ->whereDate('date_end', '>=', $inicio)
-                ->get();
+            if(is_null($office_id))
+            {
+                $items = Schedule::where('host_id', $host_id)
+                    ->where('hour_start','<=', $h1)
+                    ->where('hour_end','>=', $h2)
+                    ->whereDate('date_start', '<=', $inicio)
+                    ->whereDate('date_end', '>=', $inicio)
+                    ->get();
+            }else{
+                $items = Schedule::where('host_id', $host_id)
+                    ->where('office_id', $office_id)
+                    ->where('hour_start','<=', $h1)
+                    ->where('hour_end','>=', $h2)
+                    ->whereDate('date_start', '<=', $inicio)
+                    ->whereDate('date_end', '>=', $inicio)
+                    ->get();
+            }
 
             foreach ($items as $key1 => $value1) {
                 if($value1->day == 0){
@@ -89,13 +100,17 @@ trait ScheduleTrait
             if(($data->date_start <= $value->date_start && 
                     $data->date_end >= $value->date_start) || 
                         ($data->date_start >= $value->date_start && 
-                        $data->date_start <= $value->date_end)){
+                        $data->date_start <= $value->date_end))
+            {
                 if(($data->hour_start <= $value->hour_start && 
                     $data->hour_end >= $value->hour_start) || 
                         ($data->hour_start >= $value->hour_start && 
-                        $data->hour_start <= $value->hour_end)){
-                    $error[] = $value;
-                }
+                        $data->hour_start <= $value->hour_end))
+                {
+                    if($data->day == $value->day)
+                    {
+                        $error[] = $value;
+                    }                }
             }
         }
 

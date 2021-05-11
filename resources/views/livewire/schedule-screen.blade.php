@@ -1,15 +1,43 @@
 <div>
 	<div class="container">
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<div class="input-group mb">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon0">Office</span>
+					</div>
+					<div class="col-md-8">
+						<select wire:model="selectedOffice" class="form-control">
+							<option value="" selected>Choose office</option>
+							@foreach($offices as $office)
+								<option value="{{ $office->id }}">{{ $office->name }}</option>
+							@endforeach
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-header">
+				<div class="row">
+					<div class="col-sm">Id</div>
+					<div class="col-sm-3">Operador</div>
+{{-- 					<div class="col-sm">Día</div>
+					<div class="col-sm">Hora inicio</div>
+					<div class="col-sm">Hora fin</div>
+					<div class="col-sm">Fecha inicio</div>
+					<div class="col-sm">Fecha fin</div> --}}
+				</div>
+		</div>
 		<div class="card-body">
 			@foreach($hosts as $host)
 				<div class="row">
 					<div class="col-sm">{{ $host->id }}</div>
 					<div class="col-sm-3">{{ $host->name }}</div>
-					<div class="col-sm">{{ $host->dia }}</div>
+{{-- 					<div class="col-sm">{{ $host->dia }}</div>
 					<div class="col-sm">{{ $host->hora_ini }}</div>
 					<div class="col-sm">{{ $host->hora_fin }}</div>
 					<div class="col-sm">{{ $host->fecha_ini }}</div>
-					<div class="col-sm">{{ $host->fecha_fin }}</div>
+					<div class="col-sm">{{ $host->fecha_fin }}</div> --}}
 				</div>
 			@endforeach
 		</div>

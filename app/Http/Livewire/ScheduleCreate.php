@@ -13,7 +13,6 @@ class ScheduleCreate extends Component
 {
     use ScheduleTrait;
 
-	public $message;
     public $errores;
     public $hosts;
 	public $offices;
@@ -55,7 +54,6 @@ class ScheduleCreate extends Component
 
     public function mount()
     {
-    	$this->message = '';
         $this->errores = [];
         $this->hosts = User::where('id', '<', 4)->get();
         $this->selectedHost = '';
@@ -105,11 +103,11 @@ class ScheduleCreate extends Component
         if($response == []){
             Schedule::create($data);
             $this->errors = [];
-            $this->emit('setMessage', 'Registro grabado.');
+            // session()->flash('message', 'Registro grabado.');
             $this->emit('setStatus', 'index');
         }
         $this->errores = $response;
-        $this->message = 'Error, revise las fechas y horas.';
+        session()->flash('message', 'Error, revise las fechas y horas.');
     }
 
     public function newHost($host_id)

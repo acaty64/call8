@@ -47,5 +47,12 @@ class ScheduleCrud extends Component
         $this->schedules = Schedule::where('office_id', $value)->get();
     }
 
+    public function destroy($schedule_id)
+    {
+        $schedule = Schedule::find($schedule_id);
+        $schedule->delete();
+        $this->schedules = Schedule::all();
+        session()->flash('message', 'Registro ' . $schedule_id . ' eliminado.');
+    }
 
 }

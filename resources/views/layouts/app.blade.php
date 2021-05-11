@@ -75,6 +75,13 @@
             </div>
         </nav>
 {{ App\Models\User::all() }}
+        <div>
+            @if (session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+            @endif
+        </div>
         <main class="py-4">
             @yield('content')
         </main>

@@ -8,7 +8,13 @@
 	    </div>
 	</div>
 	<div class="container">
-		{{ $message }}
+	    <div>
+	        @if (session()->has('message'))
+	            <div class="alert alert-success">
+	                {{ session('message') }}
+	            </div>
+	        @endif
+	    </div>
 		@livewire('search-host')
 		@error('selectedHost') <span class="error">{{ $message }}</span> @enderror
 		<div class="form-group row">
@@ -115,6 +121,7 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-sm"><b>Id</b></div>
+						<div class="col-sm"><b>Dia</b></div>
 						<div class="col-sm"><b>Hora inicio</b></div>
 						<div class="col-sm"><b>Hora fin</b></div>
 						<div class="col-sm"><b>Fecha inicio</b></div>
@@ -123,6 +130,7 @@
 					@foreach($errores as $error)
 						<div class="row">
 							<div class="col-sm">{{ $error->id }}</div>
+							<div class="col-sm">{{ $error->day }}</div>
 							<div class="col-sm">{{ $error->hour_start }}</div>
 							<div class="col-sm">{{ $error->hour_end }}</div>
 							<div class="col-sm">{{ $error->date_start }}</div>

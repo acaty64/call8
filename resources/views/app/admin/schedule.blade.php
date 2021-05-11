@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header"> OPERADOR
+                <div class="card-header">SCHEDULE INDEX
                 </div>
                 <div class="card">
                     @livewire('schedule-screen')

@@ -4,10 +4,12 @@ namespace Tests\Feature;
 
 use App\Http\Traits\WindowTrait;
 use App\Models\Call;
+use App\Models\Schedule;
 use App\Models\Status;
 use App\Models\Trace;
 use App\Models\User;
 use App\Models\Window;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -27,17 +29,30 @@ class Trait_WindowTest extends TestCase
 
         $status = Status::where('status', 'En Pausa')->first();
 
+        $now = Carbon::now();
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $user->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
+
         $response = $this->window_open();
 
         $this->assertDatabaseHas('windows', [
             'host_id' => $user->id,
             'status_id' => $status->id,
+            'office_id' => 1,
         ]);
 
         $this->assertDatabaseHas('traces', [
             'host_id' => $user->id,
             'window_id' => $response['id'],
-            'status_id' => $status->id
+            'status_id' => $status->id,
+            'office_id' => 1,
         ]);
 
     }
@@ -46,6 +61,18 @@ class Trait_WindowTest extends TestCase
     {
         $user = User::findOrFail(4);
         $this->actingAs($user);
+
+        $now = Carbon::now();
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $user->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
+
         $response = $this->window_open();
 
         $first_id = $response['id'];
@@ -55,11 +82,13 @@ class Trait_WindowTest extends TestCase
         $this->assertDatabaseHas('windows', [
             'host_id' => $user->id,
             'status_id' => $status->id,
+            'office_id' => 1,
         ]);
 
         $this->assertDatabaseHas('traces', [
             'host_id' => $user->id,
             'window_id' => $response['id'],
+            'office_id' => 1,
             'status_id' => $status->id
         ]);
 
@@ -82,19 +111,23 @@ class Trait_WindowTest extends TestCase
         $window = Window::where('host_id', null)->first();
         $window->host_id = $user->id;
         $window->status_id = $status_closed->id;
+        $window->office_id = 1;
         $window->save();
 
         $this->actingAs($user);
+
         $response = $this->window_free();
 
         $this->assertDatabaseHas('windows', [
             'host_id' => $user->id,
             'status_id' => $status_free->id,
+            'office_id' => 1,
         ]);
 
         $this->assertDatabaseHas('traces', [
             'host_id' => $user->id,
             'window_id' => $response['id'],
+            'office_id' => 1,
             'status_id' => $status_free->id
         ]);
 
@@ -115,6 +148,17 @@ class Trait_WindowTest extends TestCase
             'user_id' => $user->id,
             'status_id' => $status->id,
         ];
+
+        $now = Carbon::now();
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $user->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
 
         $response = $this->window_open();
         $response = $this->window_start($array);

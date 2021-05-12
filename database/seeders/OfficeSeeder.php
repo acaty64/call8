@@ -16,7 +16,7 @@ class OfficeSeeder extends Seeder
     {
 		Office::create([
 			'code' => 'DAIA',
-    		'name' => 'Dirección de Asuntos Académicos',
+    		'name' => 'Oficina de Asuntos Académicos',
 		]);
 
 		Office::create([

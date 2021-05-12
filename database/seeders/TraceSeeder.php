@@ -22,6 +22,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 1,
     		'call_id' => null,
     		'status_id' => 5,
+            'office_id' => 1,
     	]);
 
     	// Usuario 1. En Window 1. Libre
@@ -30,6 +31,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 1,
     		'call_id' => null,
     		'status_id' => 2,
+            'office_id' => 1,
     	]);
 
     	// Usuario 1. En Window 1. Llamando
@@ -38,6 +40,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 1,
     		'call_id' => 1,
     		'status_id' => 3,
+            'office_id' => 1,
     	]);
 
     	// Usuario 1. En Window 1. Atendiendo
@@ -46,6 +49,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 1,
     		'call_id' => 1,
     		'status_id' => 4,
+            'office_id' => 1,
     	]);
     	////////////////////////////////////////
     	// Usuario 2. En Window 2. En Pausa
@@ -54,6 +58,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 2,
     		'call_id' => null,
     		'status_id' => 5,
+            'office_id' => 1,
     	]);
 
     	// Usuario 2. En Window 2. Libre
@@ -62,6 +67,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 2,
     		'call_id' => null,
     		'status_id' => 2,
+            'office_id' => 1,
     	]);
 
     	// Usuario 2. En Window 2. Llamando
@@ -70,6 +76,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 2,
     		'call_id' => 2,
     		'status_id' => 3,
+            'office_id' => 1,
     	]);
 
     	// Usuario 2. En Window 2. Atendiendo
@@ -78,6 +85,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 2,
     		'call_id' => 2,
     		'status_id' => 4,
+            'office_id' => 1,
     	]);
     	////////////////////////////////////////
     	// Usuario 3. En Window 3. En Pausa
@@ -86,6 +94,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 3,
     		'call_id' => null,
     		'status_id' => 5,
+            'office_id' => 1,
     	]);
 
     	// Usuario 3. En Window 3. Libre
@@ -94,6 +103,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 3,
     		'call_id' => null,
     		'status_id' => 2,
+            'office_id' => 1,
     	]);
     	////////////////////////////////////////
 
@@ -105,6 +115,7 @@ class TraceSeeder extends Seeder
     		'window_id' => null,
     		'call_id' => 4,
     		'status_id' => 5,
+            'office_id' => 1,
     	]);
 
     	// Usuario 4. En Llamada 4. En Window 1. Atendiendo
@@ -113,6 +124,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 1,
     		'call_id' => 4,
     		'status_id' => 4,
+            'office_id' => 1,
     	]);
 
     	////////////////////////////////////////
@@ -122,6 +134,7 @@ class TraceSeeder extends Seeder
     		'window_id' => null,
     		'call_id' => 5,
     		'status_id' => 5,
+            'office_id' => 1,
     	]);
 
     	// Usuario 5. En Llamada 5. En Window 2. Atendiendo
@@ -130,6 +143,7 @@ class TraceSeeder extends Seeder
     		'window_id' => 3,
     		'call_id' => 5,
     		'status_id' => 4,
+            'office_id' => 1,
     	]);
 
     	////////////////////////////////////////
@@ -139,7 +153,9 @@ class TraceSeeder extends Seeder
     		'window_id' => null,
     		'call_id' => 6,
     		'status_id' => 5,
+            'office_id' => 1,
     	]);
 
     }
 }
+

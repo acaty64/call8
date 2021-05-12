@@ -19,14 +19,30 @@ class LivewireClientTest extends TestCase
     /** @test */
     public function client_creation_page_contains_livewire_component()
     {
-        $call = Call::where('client_id', 6)->first();
+        // $call = Call::where('client_id', 6)->first();
+        // $call->status_id = 1;
+        // $call->save();
+
+        $user = User::find(7);
+        Livewire::actingAs($user)
+            ->test(ClientScreen::class)
+            ->set('office_id', '')
+            ->assertSeeHtml('Bienvenido, ')
+            ->assertSeeHtml('seleccione la oficina con la que desea comunicarse.');
+    }
+
+    /** @test */
+    public function client_with_previous_access_page_view_livewire_component()
+    {
+        $call = Call::where('client_id', 4)->first();
         $call->status_id = 1;
         $call->save();
 
-        $user = User::find(6);
+        $user = User::find(4);
         Livewire::actingAs($user)
             ->test(ClientScreen::class)
-            ->assertSeeHtml('Bienvenido')
+            ->set('office_id', '1')
+            ->assertSeeHtml('El horario de atención de hoy en Oficina de Asuntos Académicos es:')
             ->assertSeeHtml('Poner en Cola');
     }
 
@@ -44,6 +60,7 @@ class LivewireClientTest extends TestCase
         $user = User::find(6);
         Livewire::actingAs($user)
             ->test(ClientScreen::class)
+            ->set('office_id', 1)
             ->call('wait');
 
         $status_paused = Status::where('status', 'En Pausa')->first();

@@ -25,17 +25,19 @@ class Trait_CallTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->call_open();
+        $response = $this->call_open(1);
 
         $this->assertDatabaseHas('calls', [
             'client_id' => $user->id,
             'number' => $response['number'],
             'status_id' => $status->id,
+            'office_id' => 1,
         ]);
 
         $this->assertDatabaseHas('traces', [
             'client_id' => $user->id,
             'call_id' => $response['id'],
+            'office_id' => 1,
             'status_id' => $status->id
         ]);
 

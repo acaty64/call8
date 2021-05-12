@@ -4,9 +4,11 @@ namespace Tests\Feature;
 
 use App\Http\Livewire\HostScreen;
 use App\Models\Call;
+use App\Models\Schedule;
 use App\Models\Status;
 use App\Models\User;
 use App\Models\Window;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -21,6 +23,17 @@ class LivewireHostTest extends TestCase
     {
         $status_paused = Status::where('status', 'En Pausa')->first()->id;
         $host = User::find(3);
+
+        $now = Carbon::now();
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $host->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
 
         Livewire::actingAs($host)
             ->test(HostScreen::class)
@@ -50,9 +63,20 @@ class LivewireHostTest extends TestCase
         $window->status_id = $status_id;
         $window->save();
 
-        $user = User::find(3);
+        $host = User::find(3);
 
-        Livewire::actingAs($user)
+        $now = Carbon::now();
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $host->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
+
+        Livewire::actingAs($host)
             ->test(HostScreen::class)
             ->call('openWindow')
             ->assertSeeHtml('Libre')
@@ -83,6 +107,17 @@ class LivewireHostTest extends TestCase
         // $status_paused = Status::where('status', 'En Pausa')->first()->id;
 
         $host = User::find(1);
+        $now = Carbon::now();
+
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $host->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
 
         Livewire::actingAs($host)
             ->test(HostScreen::class)
@@ -96,6 +131,17 @@ class LivewireHostTest extends TestCase
     {
         $host = User::find(1);
 
+        $now = Carbon::now();
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $host->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
+
         Livewire::actingAs($host)
             ->test(HostScreen::class)
             ->call('startWindow')
@@ -106,6 +152,17 @@ class LivewireHostTest extends TestCase
     public function when_host_click_Colgar()
     {
         $host = User::find(1);
+
+        $now = Carbon::now();
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $host->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
 
         Livewire::actingAs($host)
             ->test(HostScreen::class)
@@ -118,6 +175,17 @@ class LivewireHostTest extends TestCase
     public function when_host_click_En_Pausa()
     {
         $host = User::find(1);
+        
+        $now = Carbon::now();
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $host->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
 
         Livewire::actingAs($host)
             ->test(HostScreen::class)
@@ -130,7 +198,16 @@ class LivewireHostTest extends TestCase
     public function when_host_click_Salir()
     {
         $host = User::find(1);
-
+        $now = Carbon::now();
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $host->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
         Livewire::actingAs($host)
             ->test(HostScreen::class)
             ->call('outWindow')

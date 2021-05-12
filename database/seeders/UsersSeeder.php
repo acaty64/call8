@@ -25,7 +25,7 @@ class UsersSeeder extends Seeder
 	        'remember_token' => Str::random(10),
     	]);
 
-        User::factory(5)->create();
+        User::factory(6)->create();
 
         $user = User::find(2);
         $user->email = 'host2@gmail.com';
@@ -45,6 +45,10 @@ class UsersSeeder extends Seeder
 
         $user = User::find(6);
         $user->email = 'client3@gmail.com';
+        $user->save();
+
+        $user = User::find(7);
+        $user->email = 'client4@gmail.com';
         $user->save();
 
 

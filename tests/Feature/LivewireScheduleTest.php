@@ -6,6 +6,7 @@ use App\Http\Livewire\HostScreen;
 use App\Http\Livewire\ScheduleCreate;
 use App\Http\Livewire\ScheduleCrud;
 use App\Http\Livewire\ScheduleScreen;
+use App\Http\Traits\ScheduleTrait;
 use App\Models\Schedule;
 use App\Models\User;
 use Carbon\Carbon;
@@ -17,6 +18,8 @@ use Tests\TestCase;
 class LivewireScheduleTest extends TestCase
 {
     use DatabaseTransactions;
+
+    use ScheduleTrait;
 
     /** @test */
     public function schedule_page_contains_livewire_component()
@@ -118,9 +121,33 @@ class LivewireScheduleTest extends TestCase
 
         $this->assertDatabaseMissing('schedules', $data);
 
-
     }
 
+
+    /** @test */
+    public function attention_horary()
+    {
+        $host = User::find(1);
+        $now = Carbon::now();
+        Schedule::create([
+            'office_id' => 1,
+            'host_id' => $host->id,
+            'day' => $now->dayOfWeek,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
+        $response = $this->horary($host->id);
+
+        $this->assertTrue($response == [
+            [
+                "ini" => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+                "fin" => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':30',
+            ],
+
+        ]);
+    }
 
 
 

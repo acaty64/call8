@@ -21,6 +21,7 @@ class WindowSeeder extends Seeder
             'client_id' => 4,
         	'status_id' => 4,
             'call_id' => 1,
+            'office_id' => 1,
         ]);
         Window::create([
         	'window' => 'A2',
@@ -28,6 +29,7 @@ class WindowSeeder extends Seeder
             'client_id' => null,
         	'status_id' => 5,
             'call_id' => null,
+            'office_id' => 1,
         ]);
         Window::create([
         	'window' => 'A3',
@@ -35,6 +37,7 @@ class WindowSeeder extends Seeder
             'client_id' => null,
         	'status_id' => 1,
             'call_id' => null,
+            'office_id' => null,
         ]);
         Window::create([
             'window' => 'A4',
@@ -42,6 +45,7 @@ class WindowSeeder extends Seeder
             'client_id' => null,
             'status_id' => 1,
             'call_id' => null,
+            'office_id' => null,
         ]);
         Window::create([
             'window' => 'A5',
@@ -49,6 +53,7 @@ class WindowSeeder extends Seeder
             'client_id' => null,
             'status_id' => 1,
             'call_id' => null,
+            'office_id' => null,
         ]);
         Window::create([
             'window' => 'A6',
@@ -56,6 +61,7 @@ class WindowSeeder extends Seeder
             'client_id' => null,
             'status_id' => 1,
             'call_id' => null,
+            'office_id' => null,
         ]);
     }
 }

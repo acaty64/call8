@@ -10,7 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 class Trace extends Model
 {
     protected $fillable = [
-        'host_id', 'client_id', 'call_id', 'window_id', 'status_id'
+        'host_id',
+        'client_id',
+        'call_id',
+        'window_id',
+        'status_id',
+        'office_id',
     ];
 
     public function getUserAttribute()
@@ -47,6 +52,7 @@ class Trace extends Model
             'client_id' => $call->client_id,
             'call_id' => $call->id,
             'status_id' => $call->status_id,
+            'office_id' => $call->office_id,
         ]);
         return true;
     }
@@ -59,6 +65,7 @@ class Trace extends Model
             'call_id' => $window->call_id,
             'window_id' => $window->id,
             'status_id' => $window->status_id,
+            'office_id' => $window->office_id,
         ]);
         return true;
     }

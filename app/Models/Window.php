@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Call;
+use App\Models\Office;
 use App\Models\Status;
 use App\Models\User;
 use App\Models\Window;
@@ -17,6 +18,7 @@ class Window extends Model
         'client_id',
         'status_id',
         'call_id',
+        'office_id',
         'link',
     ];
 
@@ -26,7 +28,27 @@ class Window extends Model
         'time_busy',
         'time_paused',
         'time_free',
+        'office_now',
     ];
+
+
+    public function getOfficeNowAttribute()
+    {
+        $now = Carbon::now();
+        $date_now = $now->format('Y-m-d');
+        $time_now = str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':' . str_pad($now->minute, 2, "00", STR_PAD_LEFT);
+        $schedule = Schedule::where('host_id', $this->host_id)
+                        ->where('date_start', '<=', $date_now)
+                        ->where('date_end', '>=', $date_now)
+                        ->where('day', $now->dayOfWeek)
+                        ->where('hour_start', '<=', $time_now)
+                        ->where('hour_end', '>=', $time_now)
+                        ->first();
+        if(empty($schedule)){
+            return false;
+        }
+        return $schedule;
+    }
 
     public function getTimeFreeAttribute()
     {
@@ -72,6 +94,11 @@ class Window extends Model
     public function host()
     {
         return $this->belongsTo(User::class, 'host_id', 'id');
+    }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class, 'office_id', 'id');
     }
 
     public function status()

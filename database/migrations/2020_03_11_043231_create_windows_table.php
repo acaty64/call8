@@ -32,6 +32,10 @@ class CreateWindowsTable extends Migration
                 $table->foreign('status_id')
                             ->references('id')
                             ->on('statuses');
+            $table->unsignedBigInteger('office_id')->nullable();
+                $table->foreign('office_id')
+                            ->references('id')
+                            ->on('offices');
             $table->string('mensaje')->nullable();
             $table->string('link')->nullable();
             $table->timestamps();

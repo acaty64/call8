@@ -18,8 +18,8 @@ class CRUD_CallTest extends TestCase
     {
         $user = User::find(1);
         $this->actingAs($user);
-        $response = $this->get(route('call.index'));
-        $response->assertStatus(200);
+        $response = $this->get(route('call.index'))
+        		->assertStatus(200);
         $response->assertViewIs('app.call.index');
     }
 

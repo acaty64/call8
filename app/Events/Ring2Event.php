@@ -37,6 +37,7 @@ class Ring2Event implements ShouldBroadcastNow
                 'client_id' => null,
                 'link' => null,
                 'call_id' => null,
+                'office_id' => null,
                 'message' => $this->message,
                 'window' => null,
             ];
@@ -51,6 +52,7 @@ class Ring2Event implements ShouldBroadcastNow
             'link' => $window->link,
             'message' => $window->mensaje,
             'call_id' => $window->call_id,
+            'office_id' => $window->office_id,
             'window' => $window,
         ];
     }

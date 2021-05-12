@@ -15,7 +15,7 @@ use Carbon\CarbonImmutable;
 trait ScheduleTrait
 {
 
-    public function horario($host_id, $inicio, $office_id=null)
+    public function horario($host_id=null, $inicio, $office_id=null)
     {
         $hours = $this->hours();
         $y = 0;
@@ -28,22 +28,32 @@ trait ScheduleTrait
             $h1 = $value[0];
             $m = substr($h1, 3,2) + 29;
             $h2 = str_pad(substr($h1,0,2), 2, "00", STR_PAD_LEFT) . ":" . $m ;
-            if(is_null($office_id))
+            if(is_null($host_id))
             {
-                $items = Schedule::where('host_id', $host_id)
-                    ->where('hour_start','<=', $h1)
-                    ->where('hour_end','>=', $h2)
-                    ->whereDate('date_start', '<=', $inicio)
-                    ->whereDate('date_end', '>=', $inicio)
-                    ->get();
+                    $items = Schedule::where('office_id', $office_id)
+                        ->where('hour_start','<=', $h1)
+                        ->where('hour_end','>=', $h2)
+                        ->whereDate('date_start', '<=', $inicio)
+                        ->whereDate('date_end', '>=', $inicio)
+                        ->get();
             }else{
-                $items = Schedule::where('host_id', $host_id)
-                    ->where('office_id', $office_id)
-                    ->where('hour_start','<=', $h1)
-                    ->where('hour_end','>=', $h2)
-                    ->whereDate('date_start', '<=', $inicio)
-                    ->whereDate('date_end', '>=', $inicio)
-                    ->get();
+                if(is_null($office_id))
+                {
+                    $items = Schedule::where('host_id', $host_id)
+                        ->where('hour_start','<=', $h1)
+                        ->where('hour_end','>=', $h2)
+                        ->whereDate('date_start', '<=', $inicio)
+                        ->whereDate('date_end', '>=', $inicio)
+                        ->get();
+                }else{
+                    $items = Schedule::where('host_id', $host_id)
+                        ->where('office_id', $office_id)
+                        ->where('hour_start','<=', $h1)
+                        ->where('hour_end','>=', $h2)
+                        ->whereDate('date_start', '<=', $inicio)
+                        ->whereDate('date_end', '>=', $inicio)
+                        ->get();
+                }
             }
 
             foreach ($items as $key1 => $value1) {
@@ -115,6 +125,75 @@ trait ScheduleTrait
         }
 
         return $error;
+    }
+
+    public function horary($office_id)
+    {
+        $now = Carbon::now()->format('Y-m-d');
+        $today = Carbon::now()->dayOfWeek;
+        if($today == 0){
+            $today = 7;
+        }
+
+        $hosts = Schedule::where('office_id', $office_id)
+                        ->where('date_start', '<=', $now)
+                        ->where('date_end', '>=', $now)
+                        ->where('day', $today)
+                        ->groupBy('host_id')
+                        ->pluck('host_id');
+
+
+        $horas = $this->hours();
+
+        $schedule = [];
+        foreach ($hosts as $key => $host_id) {
+            $horario = $this->horario($host_id, $now, $office_id);
+            foreach ($horario as $k => $v) {
+                if(empty($schedule[$k])){
+                    foreach ($v as $k2=> $v2) {
+                        $schedule[$k][$k2] = $v2;
+                    }
+                }else{
+                    foreach ($v as $k2 => $v2) {
+                        foreach ($v2 as $k3 => $v3) {
+                            if(is_numeric($schedule[$k][$k2][$k3])){
+                                $schedule[$k][$k2][$k3] = $schedule[$k][$k2][$k3] + $v3;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $horary = [];
+        $horary[0]['ini'] = '';
+        $horary[0]['fin'] = '';
+        $n = 0;
+        $ini = false;
+        foreach ($schedule as $key => $value) {
+            if($value[$today]['value'] > 0)
+            {
+                if($horary[$n]['ini'] == '')
+                {
+                    $horary[$n]['ini'] = $schedule[$key][0]['value'];
+                    $horary[$n]['fin'] = '';
+                }else{
+                    if($schedule[$key-1][$today]['value'] == 1)
+                    {
+                        $horary[$n]['fin'] = $schedule[$key][0]['value'];
+                    }else{
+                        $n++;
+                        $horary[$n]['ini'] = $schedule[$key][0]['value'];
+                        $horary[$n]['fin'] = '';
+                    }
+                }
+            }
+        }
+        if($horary[0]['ini'] == '')
+        {
+            return null;
+        }
+        return $horary;
+
     }
 
 }

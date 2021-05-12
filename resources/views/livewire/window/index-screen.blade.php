@@ -3,22 +3,24 @@
 		<h1>Windows Index</h1>
 		<table class="table table-striped">
 			<thead>
-				<tr>
-			    	<th class="col">Id</th>
-			    	<th class="col">Modulo</th>
-			    	<th class="col">Operador</th>
-			    	<th class="col">Usuario</th>
-			    	<th class="col">Estado</th>
+				<tr class="row">
+			    	<th class="col-sm-1">Id</th>
+			    	<th class="col-sm-1">Modulo</th>
+			    	<th class="col-sm-3">Operador</th>
+			    	<th class="col-sm-3">Usuario</th>
+			    	<th class="col-sm-2">Estado</th>
+			    	<th class="col-sm-1">Oficina</th>
 				</tr>
 			</thead>
 			<tbody>
 			    @foreach($windows as $item)
-			        <tr>
-			        	<td class="col">{{ $item->id }}</td>
-			        	<td class="col">{{ $item->window }}</td>
-			        	<td class="col">{{ $item->host['name'] }}</td>
-			        	<td class="col">{{ is_null($item->client) ?  '' : $item->client['name']  }}</td>
-			        	<td class="col">{{ $item->status['status'] }}</td>
+			        <tr class="row">
+			        	<td class="col-sm-1">{{ $item->id }}</td>
+			        	<td class="col-sm-1">{{ $item->window }}</td>
+			        	<td class="col-sm-3">{{ $item->host['name'] }}</td>
+			        	<td class="col-sm-3">{{ is_null($item->client) ?  '' : $item->client['name']  }}</td>
+			        	<td class="col-sm-2">{{ $item->status['status'] }}</td>
+			        	<td class="col-sm-1">{{ $item->office['code'] }}</td>
 			        </tr>
 			    @endforeach
 			</tbody>

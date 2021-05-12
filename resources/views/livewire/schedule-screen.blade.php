@@ -21,11 +21,6 @@
 				<div class="row">
 					<div class="col-sm">Id</div>
 					<div class="col-sm-3">Operador</div>
-{{-- 					<div class="col-sm">Día</div>
-					<div class="col-sm">Hora inicio</div>
-					<div class="col-sm">Hora fin</div>
-					<div class="col-sm">Fecha inicio</div>
-					<div class="col-sm">Fecha fin</div> --}}
 				</div>
 		</div>
 		<div class="card-body">
@@ -33,11 +28,6 @@
 				<div class="row">
 					<div class="col-sm">{{ $host->id }}</div>
 					<div class="col-sm-3">{{ $host->name }}</div>
-{{-- 					<div class="col-sm">{{ $host->dia }}</div>
-					<div class="col-sm">{{ $host->hora_ini }}</div>
-					<div class="col-sm">{{ $host->hora_fin }}</div>
-					<div class="col-sm">{{ $host->fecha_ini }}</div>
-					<div class="col-sm">{{ $host->fecha_fin }}</div> --}}
 				</div>
 			@endforeach
 		</div>

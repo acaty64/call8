@@ -19,9 +19,11 @@ class CreateCallsTable extends Migration
             $table->unsignedBigInteger('client_id');
                 $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('status_id');
-            $table->foreign('status_id')
+                $table->foreign('status_id')
                 ->references('id')
                 ->on('statuses');
+            $table->unsignedBigInteger('office_id');
+                $table->foreign('office_id')->references('id')->on('offices')->onDelete('cascade');
             $table->timestamps();
         });
     }

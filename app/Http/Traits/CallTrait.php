@@ -12,19 +12,21 @@ use App\Models\Window;
 trait CallTrait
 {
 
-    public function call_open()
+    public function call_open($office_id)
     {
         $client = \Auth::user();
 
         $status = Status::where('status', 'En Pausa')->first();
 
         $call = Call::where('client_id', $client->id)
-                ->where('status_id', $status->id)
-                ->first();
+                    ->where('status_id', $status->id)
+                    ->where('office_id', $office_id)
+                    ->first();
         if(!$call){
             $call = Call::create([
                 'client_id' => $client->id,
                 'status_id' => $status->id,
+                'office_id' => $office_id,
             ]);
 
             $call->number = $call->number_today();
@@ -38,6 +40,7 @@ trait CallTrait
             'host_id' => null,
             'client_id' => null,
             'call_id' => null,
+            'office_id' => $office_id,
             'message' => 'Usuario en Espera.'
         ]));
 

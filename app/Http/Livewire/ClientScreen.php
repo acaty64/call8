@@ -4,8 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Events\RingEvent;
 use App\Http\Traits\CallTrait;
+use App\Http\Traits\ScheduleTrait;
 use App\Http\Traits\WindowTrait;
 use App\Models\Call;
+use App\Models\Office;
 use App\Models\Status;
 use App\Models\Trace;
 use App\Models\User;
@@ -15,8 +17,16 @@ use Livewire\Component;
 class ClientScreen extends Component
 {
     use CallTrait;
+    use ScheduleTrait;
 
-	public $message;
+	public $screen;
+    public $office_id;
+
+    public $office;
+    public $horario;
+    public $horarios;
+
+    public $message;
     public $qclients;
 	public $qwindows;
 	public $status;
@@ -38,12 +48,16 @@ class ClientScreen extends Component
 
     public function mount()
     {
+        $this->screen = "welcome";
+        $this->office_id = "";
         $this->data_test = "";
         $this->status = "";
-        $this->message = "Bienvenido.";
+        $this->message = "Bienvenido, seleccione la oficina con la que desea comunicarse.";
         $this->call_id = null;
         $this->start();
         $this->client = \Auth::user();
+        $this->horario = [];
+        $this->horarios = $this->getHorarios();
     }
 
     public function render()
@@ -77,6 +91,7 @@ class ClientScreen extends Component
         $call = Call::where('client_id', \Auth::user()->id)->where('status_id', '>', 1)->first();
         if($call){
             $this->call_id = $call->id;
+            $this->office_id = $call->office_id;
             if($call->window){
                 $this->message = $call->window->mensaje;
                 $this->status = $call->window->status->status;
@@ -87,7 +102,6 @@ class ClientScreen extends Component
                 $this->message = $status->status;
             }
         }
-
     }
 
     public function ring($data)
@@ -120,7 +134,7 @@ class ClientScreen extends Component
     public function wait()
     {
         $this->status = 'En Pausa';
-        $response = $this->call_open();
+        $response = $this->call_open($this->office_id);
         $this->call_id = $response['id'];
         $this->message = 'Está en cola';
     }
@@ -139,6 +153,36 @@ class ClientScreen extends Component
         $response = $this->call_close();
         $this->status = 'Cerrado';
         $this->message = 'Desconectado';
+
+    }
+
+    public function updated($variable, $value)
+    {
+        if($variable == 'office_id')
+        {
+            $this->office = Office::find($value);
+            $this->horary = $this->horary(1);
+        }
+
+
+
+    }
+
+    public function getHorarios()
+    {
+        $offices = Office::all();
+        $array = [];
+        foreach ($offices as $office) {
+            $horary = $this->horary($office->id);
+            if($horary){
+                $array[] = [
+                    'office' => $office->name,
+                    'horarios' => $horary
+                ];
+            }
+        }
+        $this->horarios = $array;
+// dd($this->horarios);
 
     }
 

@@ -14,7 +14,9 @@ class HostScreen extends Component
 
     use WindowTrait;
 
-	public $qwindows;
+    public $screen;
+	public $office_id;
+    public $qwindows;
     public $qclients;
 	public $status;
     public $window;
@@ -35,6 +37,7 @@ class HostScreen extends Component
     public function mount()
     {
         $window = new Window;
+        $this->office_id = "";
         $this->data_test = "";
         $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;
@@ -42,6 +45,7 @@ class HostScreen extends Component
         $this->link = "";
         $this->message = "";
         $this->window = [];
+        $this->screen = 'close';
         $this->openWindow();
     }
 
@@ -67,6 +71,7 @@ class HostScreen extends Component
             'host_id' => $window->host_id,
             'client_id' => $window->client_id,
             'call_id' => $window->call_id,
+            'office_id' => $window->office_id,
             'message' => 'Connecting'
         ]));
 
@@ -107,13 +112,24 @@ class HostScreen extends Component
     public function openWindow()
     {
         $this->data_test = 'function openWindow';
+
         $window = $this->window_open();
-        $this->window = $window;
 
-        $this->status = $window->status->status;
+        if($window)
+        {
+            $this->window = $window;
 
-        $this->message = $this->status;
+            $this->status = $window->status->status;
 
+            $this->message = $this->status;
+
+            $this->office_id = $window->office_id;
+
+            $this->screen = 'open';
+
+            return true;
+        }
+        $this->screen = 'close';
     }
 
     public function startWindow()

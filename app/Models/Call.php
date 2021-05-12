@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Models\Office;
 use App\Models\Status;
 use App\Models\User;
 use App\Models\Window;
@@ -15,6 +16,7 @@ class Call extends Model
         'number',
         'client_id',
         'status_id',
+        'office_id',
     ];
 
     protected $appends = [
@@ -43,6 +45,11 @@ class Call extends Model
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id', 'id');
+    }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class, 'office_id', 'id');
     }
 
     public function number_today()

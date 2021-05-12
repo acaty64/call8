@@ -17,20 +17,25 @@ trait WindowTrait {
 
         $status_id = Status::where('status', 'En Pausa')->first()->id;
 
-        $window = Window::where('host_id', $host_id)->first();
-        if(!$window)
+        $win = new Window;
+        $win->host_id = $host_id;
+        if($win->office_now)
         {
-            $status_close = Status::where('status', 'Cerrado')->first()->id;
-            $window = Window::where('status_id', $status_close)->first();
-            $window->host_id = $host_id;
-            $window->status_id = $status_id;
-            $window->mensaje = 'Módulo abierto';
-            $window->save();
+            $window = Window::where('host_id', $host_id)->first();
+            if(!$window)
+            {
+                $status_close = Status::where('status', 'Cerrado')->first()->id;
+                $window = Window::where('status_id', $status_close)->first();
+                $window->host_id = $host_id;
+                $window->status_id = $status_id;
+                $window->office_id = $win->office_now->office_id;
+                $window->mensaje = 'Módulo abierto';
+                $window->save();
+            }
+            Trace::new_window($window);
+            return $window;
         }
-        Trace::new_window($window);
-
-        return $window;
-
+        return false;
     }
 
     public function window_free()

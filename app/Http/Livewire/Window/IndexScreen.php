@@ -16,7 +16,7 @@ class IndexScreen extends Component
     public function render()
     {
         return view('livewire.window.index-screen', [
-        	'windows' => Window::paginate(3)
+        	'windows' => Window::paginate(5)
         ]);
     }
 

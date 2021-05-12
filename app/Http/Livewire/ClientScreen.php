@@ -12,6 +12,8 @@ use App\Models\Status;
 use App\Models\Trace;
 use App\Models\User;
 use App\Models\Window;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Livewire\Component;
 
 class ClientScreen extends Component
@@ -57,7 +59,7 @@ class ClientScreen extends Component
         $this->start();
         $this->client = \Auth::user();
         $this->horario = [];
-        $this->horarios = $this->getHorarios();
+        $this->getHorarios();
     }
 
     public function render()
@@ -170,20 +172,61 @@ class ClientScreen extends Component
 
     public function getHorarios()
     {
+
         $offices = Office::all();
+        $today = CarbonImmutable::now()->dayOfWeek;
+        if($today == 6){
+            $tomorrow = 7;
+        }
+
         $array = [];
+        $array['today'] = [
+            'date' => CarbonImmutable::now()->format('l d-m-Y'),
+            'offices' => [],
+        ];
         foreach ($offices as $office) {
-            $horary = $this->horary($office->id);
+            $horary = $this->horary_office($office->id, $today);
             if($horary){
-                $array[] = [
-                    'office' => $office->name,
-                    'horarios' => $horary
-                ];
+                foreach($horary as $franja)
+                {
+
+                    $hour_now = Carbon::now()->format('H') . ":" . Carbon::now()->format('i');
+
+                    if($franja['fin'] >= $hour_now)
+                    {
+                        $array['today']['offices'][$office->name]['id'][] = $office->id;
+                        $array['today']['offices'][$office->name]['horarios'][] = $franja;
+                    }
+                }
+            }
+        };
+
+        $tomorrow = Carbon::now()->dayOfWeek + 1;
+        if($today == 7){
+            $tomorrow = 0;
+        }
+        $array['tomorrow'] = [
+            'date' => CarbonImmutable::now()->addDays(1)->format('l d-m-Y'),
+            'offices' => [],
+        ];
+        foreach ($offices as $office) {
+            $horary = $this->horary_office($office->id, $tomorrow);
+            if($horary){
+                foreach($horary as $franja)
+                {
+                    $array['tomorrow']['offices'][$office->name] = [
+                        'horarios' => $horary,
+                    ];
+                }
             }
         }
+
         $this->horarios = $array;
 // dd($this->horarios);
-
     }
 
+    public function setOfficeId($value)
+    {
+        $this->office_id = $value;
+    }
 }

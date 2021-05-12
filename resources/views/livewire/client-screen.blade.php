@@ -10,17 +10,48 @@
             </div>
         @endif
     </div>
+    office_id: {{$office_id}}
+    <div class="card-header" align="center">
+	    <h1>Hora: {{Carbon\Carbon::now()->format('H:m:s')}}</h1>
+    </div>
     @if( $office_id == '' )
-{{ $horarios }}
-{{--     	@foreach($horarios as $horario_office)
-			{{ $horario_office['office'] }}
-    		@foreach($horario_office['horarios'] as $item)
-				{{ $item }}
-    		@endforeach
-    	@endforeach --}}
-    	<div>
-    		
-    	</div>
+	    <div class="row">
+	    	<div class="col-sm-6">
+		    	<div class="card-header" align="center">
+					<b>Hoy: {{ $horarios['today']['date'] }}</b>
+		    	</div>
+		    	<div class="card-body">
+			    	@foreach($horarios['today']['offices'] as $key => $horario_office)
+			    		<div align="center">{{ $key }}</div>
+			    		@foreach($horario_office['horarios'] as $franja)
+							<div align="center">
+								{{$franja['ini']}} - {{$franja['fin']}}
+							</div>
+							{{-- id: {{$horario_office['id'][0]}} --}}
+							@if($franja['ini'] <= \Carbon\Carbon::now()->format('H:m') && $franja['fin'] >= \Carbon\Carbon::now()->format('H:m'))
+								<button class="btn-success" wire:click="setOfficeId({{$horario_office['id'][0]}})">Ingresar</button>
+							@endif
+				    	@endforeach
+			    	@endforeach
+		    	</div>
+	    	</div>
+	    	<div class="col-sm-6">
+		    	<div class="card-header" align="center">
+					<b>Mañana: {{ $horarios['tomorrow']['date'] }}</b>
+		    	</div>
+		    	<div class="card-body">
+			    	@foreach($horarios['tomorrow']['offices'] as $key2 => $horario_office2)
+			    		<div align="center">{{ $key2 }}</div>
+			    		@foreach($horario_office2['horarios'] as $franja)
+							<div align="center">
+								{{$franja['ini']}} - {{$franja['fin']}}
+							</div>
+
+				    	@endforeach
+			    	@endforeach
+	    		</div>
+	    	</div>
+	    </div>
     @endif
     @if( $office_id != '' )
 	    <div class="container">

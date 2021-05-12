@@ -196,4 +196,68 @@ trait ScheduleTrait
 
     }
 
+    public function horary_office($office_id, $today)
+    {
+        $now = Carbon::now()->format('Y-m-d');
+        $hosts = Schedule::where('office_id', $office_id)
+                        ->where('date_end', '>=', $now)
+                        ->where('day', $today)
+                        ->groupBy('host_id')
+                        ->pluck('host_id');
+
+
+        $horas = $this->hours();
+
+        $schedule = [];
+        foreach ($hosts as $key => $host_id) {
+            $horario = $this->horario($host_id, $now, $office_id);
+            foreach ($horario as $k => $v) {
+                if(empty($schedule[$k])){
+                    foreach ($v as $k2=> $v2) {
+                        $schedule[$k][$k2] = $v2;
+                    }
+                }else{
+                    foreach ($v as $k2 => $v2) {
+                        foreach ($v2 as $k3 => $v3) {
+                            if(is_numeric($schedule[$k][$k2][$k3])){
+                                $schedule[$k][$k2][$k3] = $schedule[$k][$k2][$k3] + $v3;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $horary = [];
+        $horary[0]['ini'] = '';
+        $horary[0]['fin'] = '';
+        $n = 0;
+        $ini = false;
+        foreach ($schedule as $key => $value) {
+            if($value[$today]['value'] > 0)
+            {
+                if($horary[$n]['ini'] == '')
+                {
+                    $horary[$n]['ini'] = $schedule[$key][0]['value'];
+                    $horary[$n]['fin'] = '';
+                }else{
+                    if($schedule[$key-1][$today]['value'] == 1)
+                    {
+                        $horary[$n]['fin'] = $schedule[$key][0]['value'];
+                    }else{
+                        $n++;
+                        $horary[$n]['ini'] = $schedule[$key][0]['value'];
+                        $horary[$n]['fin'] = '';
+                    }
+                }
+            }
+        }
+        if($horary[0]['ini'] == '')
+        {
+            return null;
+        }
+
+        return $horary;
+
+    }
+
 }

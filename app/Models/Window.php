@@ -19,7 +19,6 @@ class Window extends Model
         'status_id',
         'call_id',
         'office_id',
-        'link',
     ];
 
     protected $appends = [

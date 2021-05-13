@@ -14,8 +14,9 @@ class HostAccessTest extends TestCase
     /** @test */
     public function an_admin_user_can_view_host_screen()
     {
-        $admin = User::find(3);
+        $admin = User::find(1);
         $this->actingAs($admin);
+        $this->assertTrue($admin->is_admin);
         $response = $this->get('/call/host');
         $response->assertStatus(200);
     }
@@ -24,6 +25,7 @@ class HostAccessTest extends TestCase
     public function a_host_user_can_view_host_screen()
     {
         $host = User::find(2);
+        $this->assertTrue($host->is_host);
         $this->actingAs($host);
         $response = $this->get('/call/host');
         $response->assertStatus(200);

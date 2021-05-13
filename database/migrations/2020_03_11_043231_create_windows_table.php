@@ -37,7 +37,6 @@ class CreateWindowsTable extends Migration
                             ->references('id')
                             ->on('offices');
             $table->string('mensaje')->nullable();
-            $table->string('link')->nullable();
             $table->timestamps();
         });
     }

@@ -45,7 +45,7 @@ class Trait_CallTest extends TestCase
 
     public function test_answer_the_call()
     {
-        $host = User::findOrFail(1);
+        $host = User::findOrFail(2);
 
         $client = User::findOrFail(5);
         $call = Call::where('client_id', $client->id)->first();

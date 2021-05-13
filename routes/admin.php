@@ -18,11 +18,12 @@ Route::get('/dashboard', [
 	'uses' => 'DashboardController@index'
 ]);
 
-Route::get('/window/index', [
-	'as' => 'window.index',
+Route::get('/windows/index', [
+	'as' => 'windows.index',
 	'uses' => 'WindowController@index'
 ]);
 
+//////////// USER
 
 Route::get('/users/index', [
 	'as' => 'users.index',
@@ -55,10 +56,17 @@ Route::delete('/user/destroy/{id}', [
 ]);
 
 
-
-Route::get('/call/index', [
-	'as' => 'call.index',
+//////////// CALL
+Route::get('/calls/index', [
+	'as' => 'calls.index',
 	'uses' => 'CallController@index'
+]);
+
+
+//////////// LINK
+Route::get('/links/index', [
+	'as' => 'links.index',
+	'uses' => 'LinkController@index'
 ]);
 
 

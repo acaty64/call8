@@ -1,7 +1,9 @@
 <div>
+	@if(env('APP_DEBUG'))
 	<div>
     	View: resources/views/livewire/host-screen.blade.php
 	</div>
+	@endif
     <div>
         {{-- @if (session()->has('message')) --}}
         @if ($message)

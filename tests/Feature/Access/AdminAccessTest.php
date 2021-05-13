@@ -42,7 +42,7 @@ class AdminAccessTest extends TestCase
     {
         $admin = User::find(1);
         $this->actingAs($admin);
-        $response = $this->get('/window/index');
+        $response = $this->get('/windows/index');
         $response->assertStatus(200);
     }
 
@@ -51,7 +51,7 @@ class AdminAccessTest extends TestCase
     {
         $host = User::find(2);
         $this->actingAs($host);
-        $response = $this->get('/window/index');
+        $response = $this->get('/windows/index');
         $response->assertStatus(403);
     }
 
@@ -78,7 +78,7 @@ class AdminAccessTest extends TestCase
     {
         $admin = User::find(1);
         $this->actingAs($admin);
-        $response = $this->get('/call/index');
+        $response = $this->get('/calls/index');
         $response->assertStatus(200);
     }
 
@@ -87,7 +87,7 @@ class AdminAccessTest extends TestCase
     {
         $host = User::find(2);
         $this->actingAs($host);
-        $response = $this->get('/call/index');
+        $response = $this->get('/calls/index');
         $response->assertStatus(403);
     }
 
@@ -176,6 +176,24 @@ class AdminAccessTest extends TestCase
         $response->assertStatus(403);
     }
 
+
+    /** @test */
+    public function an_admin_user_can_view_link_index()
+    {
+        $admin = User::find(1);
+        $this->actingAs($admin);
+        $response = $this->get(route('links.index'));
+        $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function non_admin_user_cannot_view_link_index()
+    {
+        $host = User::find(2);
+        $this->actingAs($host);
+        $response = $this->get(route('links.index'));
+        $response->assertStatus(403);
+    }
 
 
 }

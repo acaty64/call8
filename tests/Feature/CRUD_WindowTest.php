@@ -18,7 +18,7 @@ class CRUD_WindowTest extends TestCase
     {
         $user = User::find(1);
         $this->actingAs($user);
-        $response = $this->get(route('window.index'));
+        $response = $this->get(route('windows.index'));
         $response->assertStatus(200);
         $response->assertViewIs('app.window.index');
     }

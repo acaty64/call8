@@ -179,7 +179,10 @@ trait ScheduleTrait
                 }else{
                     if($schedule[$key-1][$today]['value'] == 1)
                     {
-                        $horary[$n]['fin'] = $schedule[$key][0]['value'];
+                        $h = substr($schedule[$key][0]['value'],0,2);
+                        $m = substr($schedule[$key][0]['value'],3,2) + 29;
+                        $fin = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m, 2, "00", STR_PAD_LEFT);
+                        $horary[$n]['fin'] = $fin;
                     }else{
                         $n++;
                         $horary[$n]['ini'] = $schedule[$key][0]['value'];
@@ -242,7 +245,10 @@ trait ScheduleTrait
                 }else{
                     if($schedule[$key-1][$today]['value'] == 1)
                     {
-                        $horary[$n]['fin'] = $schedule[$key][0]['value'];
+                        $h = substr($schedule[$key][0]['value'],0,2);
+                        $m = substr($schedule[$key][0]['value'],3,2) + 29;
+                        $fin = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m, 2, "00", STR_PAD_LEFT);
+                        $horary[$n]['fin'] = $fin;
                     }else{
                         $n++;
                         $horary[$n]['ini'] = $schedule[$key][0]['value'];

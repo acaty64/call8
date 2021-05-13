@@ -124,7 +124,7 @@ class LivewireScheduleTest extends TestCase
     }
 
 
-    /** @test */
+    /** @test  CHECK TIME BEFORE 21:00 ///////*/
     public function attention_horary()
     {
         $host = User::find(1);
@@ -143,7 +143,7 @@ class LivewireScheduleTest extends TestCase
         $this->assertTrue($response == [
             [
                 "ini" => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
-                "fin" => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':30',
+                "fin" => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':59',
             ],
 
         ]);

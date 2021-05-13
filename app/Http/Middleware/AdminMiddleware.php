@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,9 +20,11 @@ class AdminMiddleware
             Auth::logout();
             return redirect()->to('login');
         };
-        if(!$this->auth->user()->isAdmin){
+
+        if(!$this->auth->user()->is_admin){
+            throw new AuthorizationException;
             // return response()->view('errors.forbidden', [], 403);
-            return redirect()->to('home');
+            // return redirect()->to('home');
         }
         return $next($request);
     }

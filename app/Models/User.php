@@ -44,7 +44,7 @@ class User extends Authenticatable
     ];
 
 
-    protected $appends = ['window_id', 'is_host', 'is_client', 'is_paused', 'is_free', 'is_busy', 'is_calling', 'window'];
+    protected $appends = ['window_id', 'is_admin', 'is_host', 'is_client', 'is_paused', 'is_free', 'is_busy', 'is_calling', 'window'];
 
 
     public function getWindowAttribute()
@@ -66,6 +66,20 @@ class User extends Authenticatable
             return null;
         }
         return $window->id;
+    }
+
+    public function getIsAdminAttribute()
+    {
+        if($this->id == 1){
+            return true;
+        }else{
+            return false;
+        }
+        // $window = Window::where('host_id', $this->id)->get();
+        // if(!$window){
+        //     return false;
+        // }
+        // return true;
     }
 
     public function getIsHostAttribute()

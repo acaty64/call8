@@ -24,7 +24,7 @@ class LivewireScheduleTest extends TestCase
     /** @test */
     public function schedule_page_contains_livewire_component()
     {
-        $host = User::find(1);
+        $admin = User::find(1);
         $hoy = new Carbon();
         if($hoy->dayOfWeek == 0){
             $lunes = $hoy->addDay();
@@ -32,7 +32,7 @@ class LivewireScheduleTest extends TestCase
             $lunes = $hoy->subDays($hoy->dayOfWeek-1);
         }
         $domingo = $lunes->addDays(6);
-        Livewire::actingAs($host)
+        Livewire::actingAs($admin)
             ->test(ScheduleScreen::class)
             ->assertSeeHtml('Fecha de inicio')
             ->assertSeeHtml($lunes->format('Y-m-d'))
@@ -44,12 +44,12 @@ class LivewireScheduleTest extends TestCase
     /** @test */
     public function admin_can_add_schedule_registry()
     {
-
-        $host = User::find(1);
+        $admin = User::find(1);
+        $this->actingAs($admin);
         $this->get(route('schedule.crud'))
                 ->assertSeeLivewire('schedule-crud');
 
-        Livewire::actingAs($host)
+        Livewire::actingAs($admin)
             ->test(ScheduleCrud::class)
             ->set('status', 'create')
             ->assertSeeLivewire('schedule-create');
@@ -64,7 +64,7 @@ class LivewireScheduleTest extends TestCase
             'date_end' => '2021-05-30',
         ];
 
-        Livewire::actingAs($host)
+        Livewire::actingAs($admin)
             ->test(ScheduleCreate::class)
             ->set('selectedHost', $data['host_id'])
             ->set('selectedOffice', $data['office_id'])
@@ -84,12 +84,12 @@ class LivewireScheduleTest extends TestCase
     public function admin_cannot_add_an_error_schedule_registry()
     {
 
-        $host = User::find(1);
-        $this->actingAs($host);
+        $admin = User::find(1);
+        $this->actingAs($admin);
         $this->get(route('schedule.crud'))
                 ->assertSeeLivewire('schedule-crud');
 
-        Livewire::actingAs($host)
+        Livewire::actingAs($admin)
             ->test(ScheduleCrud::class)
             ->set('status', 'create')
             ->assertSeeLivewire('schedule-create');
@@ -106,7 +106,7 @@ class LivewireScheduleTest extends TestCase
             'date_end' => $oldSchedule->end,
         ];
 
-        Livewire::actingAs($host)
+        Livewire::actingAs($admin)
             ->test(ScheduleCreate::class)
             ->set('selectedHost', $data['host_id'])
             ->set('selectedOffice', $data['office_id'])
@@ -138,7 +138,10 @@ class LivewireScheduleTest extends TestCase
             'date_start' => $now->subDays(2)->format('Y-m-d'),
             'date_end' => $now->addDays(2)->format('Y-m-d'),
         ]);
+
         $response = $this->horary($host->id);
+
+        $this->markTestIncomplete();
 
         $this->assertTrue($response == [
             [

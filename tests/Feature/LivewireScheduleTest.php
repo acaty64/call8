@@ -141,7 +141,7 @@ class LivewireScheduleTest extends TestCase
 
         $response = $this->horary($host->id);
 
-        $this->markTestIncomplete();
+        // $this->markTestIncomplete();
 
         $this->assertTrue($response == [
             [

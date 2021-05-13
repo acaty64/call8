@@ -16,7 +16,12 @@ Route::group(['middleware' => 'is_admin', 'namespace' => 'App\Http\Controllers']
 	require __DIR__ . '/admin.php';
 
 });
-/////////////////// STOP DASHBOARD ROUTES //////////////////
+
+Route::group(['middleware' => 'is_host', 'namespace' => 'App\Http\Controllers'], function(){
+
+	require __DIR__ . '/host.php';
+
+});
 
 
 /////////////////// START VIDEO-CHAT ROUTES //////////////////
@@ -42,11 +47,6 @@ Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], fu
 	Route::get('/call/client', [
 		'as' => 'call.client',
 		'uses' => 'CallController@client'
-	]);
-
-	Route::get('/call/host', [
-		'as' => 'call.host',
-		'uses' => 'CallController@host'
 	]);
 
 });

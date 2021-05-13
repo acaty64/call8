@@ -16,7 +16,7 @@ class WindowSeeder extends Seeder
     public function run()
     {
         Window::create([
-        	'window' => 'A1',
+        	'window' => 'A01',
         	'host_id' => 1,
             'client_id' => 4,
         	'status_id' => 4,
@@ -24,7 +24,7 @@ class WindowSeeder extends Seeder
             'office_id' => 1,
         ]);
         Window::create([
-        	'window' => 'A2',
+        	'window' => 'A02',
         	'host_id' => 2,
             'client_id' => null,
         	'status_id' => 5,
@@ -32,7 +32,7 @@ class WindowSeeder extends Seeder
             'office_id' => 1,
         ]);
         Window::create([
-        	'window' => 'A3',
+        	'window' => 'A03',
         	'host_id' => null,
             'client_id' => null,
         	'status_id' => 1,
@@ -40,7 +40,7 @@ class WindowSeeder extends Seeder
             'office_id' => null,
         ]);
         Window::create([
-            'window' => 'A4',
+            'window' => 'A04',
             'host_id' => null,
             'client_id' => null,
             'status_id' => 1,
@@ -48,7 +48,7 @@ class WindowSeeder extends Seeder
             'office_id' => null,
         ]);
         Window::create([
-            'window' => 'A5',
+            'window' => 'A05',
             'host_id' => null,
             'client_id' => null,
             'status_id' => 1,
@@ -56,7 +56,7 @@ class WindowSeeder extends Seeder
             'office_id' => null,
         ]);
         Window::create([
-            'window' => 'A6',
+            'window' => 'A06',
             'host_id' => null,
             'client_id' => null,
             'status_id' => 1,

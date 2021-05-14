@@ -84,7 +84,8 @@ class User extends Authenticatable
 
     public function getIsHostAttribute()
     {
-        if($this->id < 4 && $this->id > 1){
+        // if($this->id < 4 && $this->id > 1){
+        if($this->id < 4 ){
             return true;
         }else{
             return false;

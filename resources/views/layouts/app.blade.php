@@ -74,7 +74,9 @@
                 </div>
             </div>
         </nav>
-{{ App\Models\User::all() }}
+        @if(env('APP_DEBUG'))
+            {{ App\Models\User::all() }}
+        @endif
         <div>
             @if (session()->has('message'))
                 <div class="alert alert-success">

@@ -27,6 +27,12 @@ Route::group(['middleware' => 'is_host', 'namespace' => 'App\Http\Controllers'],
 /////////////////// START VIDEO-CHAT ROUTES //////////////////
 Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
 
+Route::get('/test_route', function ()
+{
+	dd('Ruta auth en web.php');
+} );
+
+
 	Route::get('/video_chat/{user_id}/{other_id}/{call_id}', [
 		'as' => 'app.video_chat',
 		'uses' => 'VideoChatController@index'

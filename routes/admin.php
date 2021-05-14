@@ -69,6 +69,12 @@ Route::get('/links/index', [
 	'uses' => 'LinkController@index'
 ]);
 
+//////////// COMMENTS
+Route::get('/comments/index', [
+	'as' => 'comments.index',
+	'uses' => 'CommentController@index'
+]);
+
 
 Route::get('/tests', function () {
     return view('tests.tests')->with(['user' => Auth::user()]);
@@ -77,3 +83,5 @@ Route::get('/tests', function () {
 Route::get('/pusher/tests', function () {
     return view('tests.Pusher_test');
 });
+
+

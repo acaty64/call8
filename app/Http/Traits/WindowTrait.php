@@ -113,7 +113,6 @@ trait WindowTrait {
         $call->status_id = $status_close->id;
         $call->save();
 
-
         $status_paused = Status::where('status', 'En Pausa')->first();
         $window->status_id = $status_paused->id;
         $window->mensaje = 'Llamada terminada por operador ' . $host->name;

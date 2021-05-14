@@ -100,6 +100,11 @@ class Window extends Model
         return $this->belongsTo(Office::class, 'office_id', 'id');
     }
 
+    public function call()
+    {
+        return $this->belongsTo(Call::class, 'call_id', 'id');
+    }
+
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id', 'id');

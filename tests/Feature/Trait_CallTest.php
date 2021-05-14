@@ -85,7 +85,7 @@ class Trait_CallTest extends TestCase
     public function test_close_the_call()
     {
         $host = User::findOrFail(3);
-        $client = User::findOrFail(4);
+        $client = User::findOrFail(6);
 
         $status_answer = Status::where('status', 'Atendiendo')->first();
 

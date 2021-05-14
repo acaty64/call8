@@ -30,6 +30,16 @@ Route::group(['namespace' => 'App\Http\Controllers'], function(){
 		'uses' => 'ApiController@sendStop'
 	]);
 
+	Route::get('/get-comments/{call_id}', [
+		'as' => 'api.comments.get',
+		'uses' => 'ApiController@getComments'
+	]);
+
+	Route::post('/save-comments', [
+		'as' => 'api.comments.save',
+		'uses' => 'ApiController@saveComments'
+	]);
+
 });
 
 //////////////// TEST ////////////////////

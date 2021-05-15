@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/access/index', [
+	'as' => 'access.index',
+	'uses' => 'AccessController@index'
+]);
+
 Route::get('/schedule', [
 	'as' => 'schedule',
 	'uses' => 'ScheduleController@index'

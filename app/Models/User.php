@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Models\Access;
 use App\Models\Call;
 use App\Models\Schedule;
 use App\Models\Status;
@@ -44,7 +45,7 @@ class User extends Authenticatable
     ];
 
 
-    protected $appends = ['window_id', 'is_admin', 'is_host', 'is_client', 'is_paused', 'is_free', 'is_busy', 'is_calling', 'window'];
+    protected $appends = ['window_id', 'is_master', 'is_admin', 'is_host', 'is_client', 'is_paused', 'is_free', 'is_busy', 'is_calling', 'window'];
 
 
     public function getWindowAttribute()
@@ -68,38 +69,52 @@ class User extends Authenticatable
         return $window->id;
     }
 
+    public function access()
+    {
+        return $this->belongsTo(Access::class, 'id', 'user_id');
+    }
+
+    public function getIsMasterAttribute()
+    {
+        if($this->access && $this->access->type->acronym == 'master'){
+            return true;
+        }
+        return false;
+    }
+
     public function getIsAdminAttribute()
     {
-        if($this->id == 1){
-            return true;
-        }else{
-            return false;
+        if($this->access){
+            if( $this->access->type->acronym == 'admin' ||
+                $this->access->type->acronym == 'master' )
+            {
+                return true;
+            }
         }
-        // $window = Window::where('host_id', $this->id)->get();
-        // if(!$window){
-        //     return false;
-        // }
-        // return true;
+        return false;
     }
 
     public function getIsHostAttribute()
     {
-        // if($this->id < 4 && $this->id > 1){
-        if($this->id < 4 ){
-            return true;
-        }else{
-            return false;
+        if($this->access){
+            if( $this->access->type->acronym == 'host' ||
+                $this->access->type->acronym == 'admin' ||
+                $this->access->type->acronym == 'master')
+            {
+                return true;
+            }
         }
-        // $window = Window::where('host_id', $this->id)->get();
-        // if(!$window){
-        //     return false;
-        // }
-        // return true;
+        return false;
     }
 
     public function getIsClientAttribute()
     {
-        if($this->id > 3){
+
+        return true;
+
+        $calls = Call::where('client_id', $this->user)->first();
+
+        if($calls){
             return true;
         }else{
             return false;

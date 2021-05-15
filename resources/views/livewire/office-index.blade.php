@@ -1,27 +1,25 @@
 <div>
 	@if(env('APP_DEBUG'))
-		View: resources/views/livewire/access-index.blade.php
+		View: resources/views/livewire/office-index.blade.php
 	@endif
 @if( $status == 'index')
 	<div class="container">
-		<h1>Indice de Accesos</h1>
+		<h1>Indice de Oficinas</h1>
 		<button class="btn-success btn-lg" wire:click="setStatus('create')">Agregar</button>
 		<table class="table table-striped">
 			<thead>
 				<tr class="row">
 			    	<th class="col-sm-1">Id</th>
-			    	<th class="col-sm-3">Usuario</th>
-			    	<th class="col-sm-1">Tipo</th>
-			    	<th class="col-sm-1">Oficina</th>
+			    	<th class="col-sm-1">Siglas</th>
+			    	<th class="col-sm-3">Nombre</th>
 				</tr>
 			</thead>
 			<tbody>
 			    @foreach($index as $item)
 			        <tr class="row">
 			        	<td class="col-sm-1">{{ $item->id }}</td>
-			        	<td class="col-sm-3">{{ $item->user->name }}</td>
-			        	<td class="col-sm-1">{{ $item->type->acronym }}</td>
-			        	<td class="col-sm-1">{{ is_null($item->office) ? '' :$item->office->code }}</td>
+			        	<td class="col-sm-1">{{ $item->code }}</td>
+			        	<td class="col-sm-3">{{ $item->name }}</td>
 			        	<td class="col-sm-2">
 							<button class="btn-success btn-md" wire:click="setStatus('edit', {{ $item->id }})">Editar</button>
 							<button class="btn-danger btn-md" wire:click="setStatus('destroy', {{ $item->id }})">Eliminar</button>
@@ -38,11 +36,11 @@
 		<div class="card-header">
 			@if( $status == 'edit' )
 				<div>
-					<h1>Edición de Acceso Id: {{ $access_id }}</h1>
+					<h1>Edición de Oficina Id: {{ $office_id }}</h1>
 				</div>
 			@endif
 			@if( $status == 'create' )
-				<h1>Nuevo Acceso</h1>
+				<h1>Nueva Oficina</h1>
 			@endif
 			<div class="row">
 				<div class="col-sm-3">
@@ -72,8 +70,8 @@
 @if( $status == 'destroy' )
 	<div class="container">
 		<div class="card-header">
-			<h1>Acceso a Eliminar</h1>
-			<div>Id: {{ $access_id }}</div>
+			<h1>Oficina a Eliminar</h1>
+			<div>Id: {{ $office_id }}</div>
 			<button class="btn-warning btn-lg" wire:click="setStatus('index')">Regresar</button>
 			<button class="btn-danger btn-lg" wire:click="save">Eliminar</button>
 		</div>

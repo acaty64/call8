@@ -21,7 +21,7 @@ class ApiTest extends TestCase
 
         $status_closed = Status::where('status', 'Cerrado')->first();
 
-        $host = User::find(2);
+        $host = User::find(3);
         $this->assertTrue($host->is_host);
 
         $client = User::find(4);

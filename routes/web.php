@@ -19,7 +19,12 @@ Route::get('/login/callback', [App\Http\Controllers\Auth\LoginGoogleController::
 /////////////////// END GOOGLE LOGIN //////////////////
 
 
+/////////////////// ACCESS ROUTES //////////////////
+Route::group(['middleware' => 'is_master', 'namespace' => 'App\Http\Controllers'], function(){
 
+	require __DIR__ . '/master.php';
+
+});
 
 Route::group(['middleware' => 'is_admin', 'namespace' => 'App\Http\Controllers'], function(){
 
@@ -32,6 +37,7 @@ Route::group(['middleware' => 'is_host', 'namespace' => 'App\Http\Controllers'],
 	require __DIR__ . '/host.php';
 
 });
+/////////////////// end ACCESS ROUTES //////////////////
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

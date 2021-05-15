@@ -27,7 +27,7 @@ class AccessIndex extends Component
 
     public function render()
     {
-        return view('livewire.access-index', ['index' => Access::orderBy('id', 'desc')->paginate(1)]);
+        return view('livewire.access-index', ['index' => Access::orderBy('id', 'desc')->paginate(5)]);
     }
 
     public function mount()
@@ -68,7 +68,7 @@ class AccessIndex extends Component
     	$access = Access::find($this->access_id);
 		$this->user_id = $access->user_id;
 		$this->type_id = $access->type_id;
-		$this->office_id = $access->_officeid;
+		$this->office_id = $access->office_id;
     }
 
     public function destroy()
@@ -76,7 +76,7 @@ class AccessIndex extends Component
     	$access = Access::find($this->access_id);
 		$this->user_id = $access->user_id;
 		$this->type_id = $access->type_id;
-		$this->office_id = $access->_officeid;
+		$this->office_id = $access->office_id;
     }
 
     public function save()

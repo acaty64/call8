@@ -7,8 +7,18 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+/////////////////// GOOGLE LOGIN //////////////////
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Redirigir al usuario hacia Google
+Route::get('/login/google', [App\Http\Controllers\Auth\LoginGoogleController::class, 'redirect']);
+
+// Gestionar la respuesta de Google
+Route::get('/login/callback', [App\Http\Controllers\Auth\LoginGoogleController::class,'callback']);
+
+
+/////////////////// END GOOGLE LOGIN //////////////////
+
+
 
 
 Route::group(['middleware' => 'is_admin', 'namespace' => 'App\Http\Controllers'], function(){
@@ -23,6 +33,7 @@ Route::group(['middleware' => 'is_host', 'namespace' => 'App\Http\Controllers'],
 
 });
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 /////////////////// START VIDEO-CHAT ROUTES //////////////////
 Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){

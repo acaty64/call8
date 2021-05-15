@@ -1,0 +1,116 @@
+Fuente: https://programacionymas.com/blog/laravel-login-redes-sociales
+
+Instalacion de Google Authentication
+
+Ingresar a https://console.cloud.google.com/
+
+Credenciales
+ID de clientes OAuth 2.0 (Editar)
+
+URI
+http://call.ucssfcec.work
+http://call.ucssfcec.xyz
+
+
+URI de redireccionamiento autorizados
+
+http://call.ucssfcec.work/login/callback
+http://call.ucssfcec.xyz/login/callback
+
+
+*****************************************
+* Agregar en /etc/hosts
+
+127.0.0.1   call.ucssfcec.work
+
+*****************************************
+
+~> composer require laravel/socialite
+
+* Agregar en config/app.php
+
+'providers' => [
+    // Other service providers...
+
+    Laravel\Socialite\SocialiteServiceProvider::class,
+],
+
+'aliases' => [
+    // Others aliases
+
+    'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+],
+
+*****************************************
+
+* Modificar en config/services.php
+return [
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT'),
+        'project_id' => env('GOOGLE_APP_ID'),
+        'auth_uri' => 'https://accounts.google.com/o/oauth2/auth',
+        'token_uri' => 'https://accounts.google.com/o/oauth2/token',
+        'auth_provider_x509_cert_url' => 'https://www.googleapis.com/oauth2/v1/certs',
+        'redirect_uris' => [env('GOOGLE_REDIRECT')],
+    ],
+
+    // others ....
+
+]
+
+
+*****************************************
+
+* Modificar en .env
+
+GOOGLE_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxx
+GOOGLE_CLIENT_SECRET=yyyyyyyyyyyyyyyyyyyyyy
+GOOGLE_REDIRECT=http://call.ucssfcec.work/login/callback
+
+*****************************************
+
+* Agregar en routes/web.php
+
+// Redirigir al usuario hacia Google
+Route::get('/login/google', [App\Http\Controllers\Auth\LoginGoogleController::class, 'redirect']);
+
+// Gestionar la respuesta de Google
+Route::get('/login/callback', [App\Http\Controllers\Auth\LoginGoogleController::class,'callback']);
+
+
+* Crear el controlador
+
+~> php artisan make:controller Auth/LoginGoogleController
+
+*****************************************
+
+* Agregar en app/http/Controllers/Auth/LoginGoogleController.php
+
+public function redirect()
+{
+    return Socialite::driver('google')->redirect();
+}
+
+public function callback()
+{
+    $user = Socialite::driver('google')->user();
+    dd($user);
+}
+
+*** Opciones
+$user = Socialite::driver('facebook')->user();
+
+$user->getId();
+$user->getNickname();
+$user->getName();
+$user->getEmail();
+$user->getAvatar();
+
+*****************************************
+
+Test en navegador.
+
+call.ucssfcec.work/login/google

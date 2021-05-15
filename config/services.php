@@ -13,7 +13,18 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
-
+   
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT'),
+        'project_id' => env('GOOGLE_APP_ID'),
+        'auth_uri' => 'https://accounts.google.com/o/oauth2/auth',
+        'token_uri' => 'https://accounts.google.com/o/oauth2/token',
+        'auth_provider_x509_cert_url' => 'https://www.googleapis.com/oauth2/v1/certs',
+        'redirect_uris' => [env('GOOGLE_REDIRECT')],
+    ], 
+    
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

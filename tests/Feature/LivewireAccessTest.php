@@ -40,7 +40,6 @@ class LivewireAccessTest extends TestCase
         $data = [
             'user_id' => 1,
             'type_id' => 2,
-            'office_id' => 1,
         ];
 
         Livewire::actingAs($admin)
@@ -48,7 +47,6 @@ class LivewireAccessTest extends TestCase
             ->call('setStatus', 'create')
             ->set('user_id', $data['user_id'])
             ->set('type_id', $data['type_id'])
-            ->set('office_id', $data['office_id'])
             ->call('save');
             // ->assertSeeHtml('Registro grabado.');
 
@@ -57,36 +55,38 @@ class LivewireAccessTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_update_access_registry()
+    public function master_can_update_access_registry()
     {
-        $admin = User::find(1);
-        $this->actingAs($admin);
+        $master = User::find(1);
+        $this->assertTrue($master->is_master);
+        $this->actingAs($master);
+
+        $user = User::orderBy('id', 'desc')->first();
 
         $data = [
-            'user_id' => 1,
+            'user_id' => $user->id,
             'type_id' => 2,
-            'office_id' => 1,
         ];
 
         $access = Access::create($data);
         $this->assertDatabaseHas('accesses', $data);
 
         $newData = [
-            'user_id' => 1,
-            'type_id' => 2,
-            'office_id' => 2,
+            'user_id' => $user->id,
+            'type_id' => 3,
         ];
 
-        Livewire::actingAs($admin)
+        Livewire::actingAs($master)
             ->test(AccessIndex::class)
-            ->set('status', 'edit')
+            ->set('status', 'edit', $access->id)
             ->assertSeeHtml('Edición de Acceso');
 
-        Livewire::actingAs($admin)
+        Livewire::actingAs($master)
             ->test(AccessIndex::class)
             ->call('setStatus', 'edit', $access->id)
             ->assertSet('type_id', $data['type_id'])
-            ->set('office_id', $newData['office_id'])
+            ->set('type_id', $newData['type_id'])
+            ->assertSet('type_id', $newData['type_id'])
             ->call('save');
 
         $this->assertDatabaseHas('accesses', $newData);

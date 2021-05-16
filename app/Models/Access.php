@@ -13,7 +13,6 @@ class Access extends Model
     public $fillable = [
     	'user_id',
     	'type_id',
-    	'office_id',
     ];
 
 
@@ -27,9 +26,5 @@ class Access extends Model
         return $this->belongsTo(Type::class, 'type_id', 'id');
     }
 
-    public function office()
-    {
-        return $this->belongsTo(Office::class, 'office_id', 'id');
-    }
 
 }

@@ -22,13 +22,11 @@ class AccessSeeder extends Seeder
         Access::create([
             'user_id' => 2,
             'type_id' => 2,
-            'office_id' => 1,
         ]);
 
         Access::create([
             'user_id' => 3,
             'type_id' => 3,
-            'office_id' => 2,
         ]);
 
 

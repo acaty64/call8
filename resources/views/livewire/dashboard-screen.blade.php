@@ -40,8 +40,8 @@
 		@endforeach
 		<br>
 		<div>************* TODAY **************</div>
-		<div>OPERADORES</div>
+		<div>OPERADORES (Todo)</div>
 		<br>
-		<div>USUARIOS</div>
+		<div>USUARIOS (Todo)</div>
 	</div>
 </div>

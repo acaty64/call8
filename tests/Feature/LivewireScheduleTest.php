@@ -128,11 +128,13 @@ class LivewireScheduleTest extends TestCase
     public function attention_horary()
     {
         $host = User::find(1);
+        $this->assertTrue($host->is_host);
         $now = Carbon::now();
+        $today = $now->dayOfWeek == 0 ? 7 : $now->dayOfWeek;
         Schedule::create([
             'office_id' => 1,
             'host_id' => $host->id,
-            'day' => $now->dayOfWeek,
+            'day' => $today,
             'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
             'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
             'date_start' => $now->subDays(2)->format('Y-m-d'),
@@ -142,7 +144,6 @@ class LivewireScheduleTest extends TestCase
         $response = $this->horary($host->id);
 
         // $this->markTestIncomplete();
-
         $this->assertTrue($response == [
             [
                 "ini" => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',

@@ -23,10 +23,6 @@ class CreateAccessesTable extends Migration
                 $table->foreign('type_id')
                             ->references('id')
                             ->on('types')->onDelete('cascade');
-           $table->unsignedBigInteger('office_id')->nullable();
-                $table->foreign('office_id')
-                            ->references('id')
-                            ->on('offices')->onDelete('cascade');
             $table->timestamps();
         });
     }

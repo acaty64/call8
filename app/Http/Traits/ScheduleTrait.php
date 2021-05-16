@@ -134,14 +134,12 @@ trait ScheduleTrait
         if($today == 0){
             $today = 7;
         }
-
         $hosts = Schedule::where('office_id', $office_id)
                         ->where('date_start', '<=', $now)
                         ->where('date_end', '>=', $now)
                         ->where('day', $today)
                         ->groupBy('host_id')
                         ->pluck('host_id');
-
 
         $horas = $this->hours();
 

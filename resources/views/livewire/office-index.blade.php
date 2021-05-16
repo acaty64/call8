@@ -53,17 +53,23 @@
 		</div>
 		<div class="card-body">
 			<div class="input-group mb-3">
-
-
-{{-- 			<div class="input-group mb-3">
 				<div class="col-sm-12">
 					<div class="input-group-prepend">
-						<span class="input-group-text" id="basic-addon1">Enlace</span>
-						<input type="text" class="form-control" wire:model="access">
-						@error('access') <span class="error">{{ $message }}</span> @enderror
+						<span class="input-group-text" id="basic-addon1">Siglas</span>
+						<input type="text" class="form-control" wire:model="code">
+						@error('code') <span class="error">{{ $message }}</span> @enderror
 					</div>
 				</div>
-			</div> --}}
+			</div>
+			<div class="input-group mb-3">
+				<div class="col-sm-12">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">Nombre de oficina</span>
+						<input type="text" class="form-control" wire:model="name">
+						@error('name') <span class="error">{{ $message }}</span> @enderror
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 @endif
@@ -76,14 +82,22 @@
 			<button class="btn-danger btn-lg" wire:click="save">Eliminar</button>
 		</div>
 		<div class="card-body">
-{{-- 			<div class="input-group mb-3">
+			<div class="input-group mb-3">
 				<div class="col-sm-12">
 					<div class="input-group-prepend">
-						<span class="input-group-text" id="basic-addon1">Enlace</span>
-						<input readonly type="text" class="form-control" wire:model="access">
+						<span class="input-group-text" id="basic-addon1">Siglas</span>
+						<input readonly type="text" class="form-control" wire:model="code">
 					</div>
 				</div>
-			</div> --}}
+			</div>
+			<div class="input-group mb-3">
+				<div class="col-sm-12">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">Oficina</span>
+						<input readonly type="text" class="form-control" wire:model="name">
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 @endif

@@ -7,6 +7,7 @@ use App\Http\Livewire\ScheduleCreate;
 use App\Http\Livewire\ScheduleCrud;
 use App\Http\Livewire\ScheduleScreen;
 use App\Http\Traits\ScheduleTrait;
+use App\Models\Office;
 use App\Models\Schedule;
 use App\Models\User;
 use Carbon\Carbon;
@@ -22,22 +23,34 @@ class LivewireScheduleTest extends TestCase
     use ScheduleTrait;
 
     /** @test */
+    public function refactoring()
+    {
+        $user_id = User::find(1)->id;
+        $inicio = Carbon::now()->format('Y-m-d');
+        $office_id = Office::find(1)->id;
+
+        $schedule = Schedule::find(3);
+        $schedule->day = 0;
+        $schedule->hour_start = '08:00';
+        $schedule->save();
+
+        $response = $this->horario($inicio, $user_id, $office_id);
+        $this->assertFalse(empty($response));
+    }
+    /** @test */
     public function schedule_page_contains_livewire_component()
     {
         $admin = User::find(1);
         $hoy = new Carbon();
-        if($hoy->dayOfWeek == 0){
-            $lunes = $hoy->addDay();
-        }else{
-            $lunes = $hoy->subDays($hoy->dayOfWeek-1);
-        }
-        $domingo = $lunes->addDays(6);
+        $domingo = $hoy->subDays( $hoy->dayOfWeek );
+        $sabado = $hoy->addDays( 6 - $hoy->dayOfWeek );
+
         Livewire::actingAs($admin)
             ->test(ScheduleScreen::class)
             ->assertSeeHtml('Fecha de inicio')
-            ->assertSeeHtml($lunes->format('Y-m-d'))
+            ->assertSeeHtml($domingo->format('Y-m-d'))
             ->assertSeeHtml('Fecha de fin')
-            ->assertSeeHtml($domingo->format('Y-m-d'));
+            ->assertSeeHtml($sabado->format('Y-m-d'));
 
     }
 
@@ -116,8 +129,6 @@ class LivewireScheduleTest extends TestCase
             ->set('date_start', $data['date_start'])
             ->set('date_end', $data['date_end'])
             ->call('save');
-            // ->assertSeeHtml('Horarios cruzados');
-            // ->assertSeeHtml('Error, revise las fechas y horas.');
 
         $this->assertDatabaseMissing('schedules', $data);
 
@@ -127,12 +138,13 @@ class LivewireScheduleTest extends TestCase
     /** @test  CHECK TIME BEFORE 21:00 ///////*/
     public function attention_horary()
     {
-        $host = User::find(1);
+        $host = User::find(3);
         $this->assertTrue($host->is_host);
         $now = Carbon::now();
-        $today = $now->dayOfWeek == 0 ? 7 : $now->dayOfWeek;
-        Schedule::create([
-            'office_id' => 1,
+        $today = $now->dayOfWeek;
+
+        $schedule = Schedule::create([
+            'office_id' => 3,
             'host_id' => $host->id,
             'day' => $today,
             'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
@@ -141,18 +153,24 @@ class LivewireScheduleTest extends TestCase
             'date_end' => $now->addDays(2)->format('Y-m-d'),
         ]);
 
-        $response = $this->horary($host->id);
+        $m = substr($schedule->hour_end, 3, 2) + 59;
 
-        // $this->markTestIncomplete();
-        $this->assertTrue($response == [
+        $vhour_end = str_pad(substr($schedule->hour_start, 0, 2), 2, "00", STR_PAD_LEFT) . ':' . $m;
+
+        $response = $this->horary($schedule->office_id);
+
+///////////////
+//        $this->markTestIncomplete();
+
+        $check = [
             [
                 "ini" => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
-                "fin" => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':59',
+                "fin" => $vhour_end,
             ],
 
-        ]);
+        ];
+
+        $this->assertTrue($response == $check);
     }
-
-
 
 }

@@ -4,7 +4,7 @@
 			<h3>SCHEDULE CREATE</h3>
 		</div>
         <div class="col-md-2">
-	        <button wire:click="$emit('setStatus', 'index')" class="btn-primary mb-3 btn-lg">Regresar</button>
+	        <button wire:click="$emit('setStatus', 'index')" class="btn-warning mb-3 btn-lg">Regresar</button>
 	    </div>
 	</div>
 	<div class="container">

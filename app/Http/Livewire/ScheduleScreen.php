@@ -42,11 +42,7 @@ class ScheduleScreen extends Component
     {
     	$inicio_old = CarbonImmutable::create($this->inicio);
     	$dow = $inicio_old->dayOfWeek;
-    	if($dow == 0){
-    		$inicio_new = $inicio_old->addDay();
-    	}else{
-    		$inicio_new = $inicio_old->subDays($dow - 1);
-    	}
+        $inicio_new = $inicio_old->subDays($dow);
 
         $this->inicio = $inicio_new->format('Y-m-d');
     	$this->fin = $inicio_new->addDays(6)->format('Y-m-d');
@@ -58,7 +54,7 @@ class ScheduleScreen extends Component
         $schedule = [];
         foreach ($users as $user){
 
-        	$horario = $this->horario($user, $this->inicio, $this->selectedOffice);
+        	$horario = $this->horario($this->inicio, $user, $this->selectedOffice);
 
 	        foreach ($horario as $k => $v) {
 	        	if(empty($schedule[$k])){
@@ -67,17 +63,33 @@ class ScheduleScreen extends Component
 		        	}
 	        	}else{
 		        	foreach ($v as $k2 => $v2) {
-						foreach ($v2 as $k3 => $v3) {
-			        		if(is_numeric($schedule[$k][$k2][$k3])){
-				        		$schedule[$k][$k2][$k3] = $schedule[$k][$k2][$k3] + $v3;
-			        		}
-						}
+		        		if(is_numeric($schedule[$k][$k2])){
+			        		$schedule[$k][$k2] = $schedule[$k][$k2] + $v2;
+		        		}
 		        	}
 	        	}
 	        }
         }
 
-        $this->schedule = $schedule;
+        $screen = [];
+        foreach ($schedule as $key => $value) {
+            $screen[$key] = [];
+            foreach ($value as $key2 => $value2) {
+                if($key2 == 0){
+                    $screen[$key][] = [
+                        'class' => 'col-sm-2',
+                        'value' => $value2,
+                    ];
+                }else{
+                    $screen[$key][] = [
+                        'class' => 'col-sm-1',
+                        'value' => $value2,
+                    ];
+                }
+            }
+        }
+
+        $this->schedule = $screen;
     }
 
     public function updated($field, $value)

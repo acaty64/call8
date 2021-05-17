@@ -15,75 +15,80 @@ use Carbon\CarbonImmutable;
 trait ScheduleTrait
 {
 
-    public function horario($host_id=null, $inicio, $office_id=null)
+    public function horario($inicio, $host_id=null, $office_id=null)
     {
+        $inicio = CarbonImmutable::create($inicio);
+
+        $f_ini = $inicio->subdays($inicio->dayOfWeek);
+        $f_fin = $f_ini->addDays(6);
+
+        $days = [];
+        for ($i=0; $i < 7; $i++) {
+            $f = $f_ini->addDays($i);
+            $days[] = $f;
+        }
+
         $hours = $this->hours();
         $y = 0;
         $horas = [];
         foreach ($hours as $kh => $vh) {
-            $horas[$y++][] = $vh;
+            $horas[$y][0] = $vh;
+            for ($i=0; $i < 7; $i++) {
+                $horas[$y][$i+1] = 0;
+            }
+            $y++;
         }
+        foreach ($days as $day) {
+            foreach ($hours as $value) {
+                $schedules = $this->scheduleFilter($day->format('Y-m-d'), $value, $host_id, $office_id);
+                foreach ($schedules as $schedule) {
+                    if( $day->dayOfWeek == $schedule->day )
+                    {
+                        $indice = array_search($value, $hours);
+                        $horas[$indice][$day->dayOfWeek + 1]++;
+                    }
+                }
+            }
+        }
+        return $horas;
 
-        foreach ($horas as $key => $value) {
-            $h1 = $value[0];
-            $m = substr($h1, 3,2) + 29;
-            $h2 = str_pad(substr($h1,0,2), 2, "00", STR_PAD_LEFT) . ":" . $m ;
-            if(is_null($host_id))
+    }
+
+    public function scheduleFilter($fecha, $hora, $host_id=null, $office_id=null)
+    {
+        $h1 = $hora;
+        $m = substr($h1, 3,2) + 29;
+        $h2 = str_pad(substr($h1,0,2), 2, "00", STR_PAD_LEFT) . ":" . $m ;
+        if(is_null($host_id))
+        {
+            $items = Schedule::where('office_id', $office_id)
+                    ->where('hour_start','<=', $h1)
+                    ->where('hour_end','>=', $h2)
+                    ->whereDate('date_start', '<=', $fecha)
+                    ->whereDate('date_end', '>=', $fecha)
+                    ->get();
+        }else{
+            if(is_null($office_id))
             {
-                    $items = Schedule::where('office_id', $office_id)
-                        ->where('hour_start','<=', $h1)
-                        ->where('hour_end','>=', $h2)
-                        ->whereDate('date_start', '<=', $inicio)
-                        ->whereDate('date_end', '>=', $inicio)
-                        ->get();
+                $items = Schedule::where('host_id', $host_id)
+                    ->where('hour_start','<=', $h1)
+                    ->where('hour_end','>=', $h2)
+                    ->whereDate('date_start', '<=', $fecha)
+                    ->whereDate('date_end', '>=', $fecha)
+                    ->get();
             }else{
-                if(is_null($office_id))
-                {
-                    $items = Schedule::where('host_id', $host_id)
-                        ->where('hour_start','<=', $h1)
-                        ->where('hour_end','>=', $h2)
-                        ->whereDate('date_start', '<=', $inicio)
-                        ->whereDate('date_end', '>=', $inicio)
-                        ->get();
-                }else{
-                    $items = Schedule::where('host_id', $host_id)
-                        ->where('office_id', $office_id)
-                        ->where('hour_start','<=', $h1)
-                        ->where('hour_end','>=', $h2)
-                        ->whereDate('date_start', '<=', $inicio)
-                        ->whereDate('date_end', '>=', $inicio)
-                        ->get();
-                }
+                $items = Schedule::where('host_id', $host_id)
+                    ->where('office_id', $office_id)
+                    ->where('hour_start','<=', $h1)
+                    ->where('hour_end','>=', $h2)
+                    ->whereDate('date_start', '<=', $fecha)
+                    ->whereDate('date_end', '>=', $fecha)
+                    ->get();
             }
+        }
 
-            foreach ($items as $key1 => $value1) {
-                if($value1->day == 0){
-                    $horas[$key][7] = 1;
-                }else{
-                    $horas[$key][$value1->day] = 1;
-                }
-            }
-        }
-        $horario = [];
-        foreach ($horas as $key2 => $value2) {
-            $item = [];
-            $y = [];
-            for($n = 0; $n < 8; $n++){
-                if($n == 0){
-                    $item['class'] = 'col-sm-2';
-                }else{
-                    $item['class'] = 'col-sm-1';
-                }
-                if(empty($value2[$n])){
-                    $item['value'] = '0';
-                }else{
-                    $item['value'] = $value2[$n];
-                }
-                $y[] = $item;
-            }
-            $horario[] = $y;
-        }
-        return $horario;
+        return $items;
+
     }
 
     public function hours()
@@ -131,9 +136,6 @@ trait ScheduleTrait
     {
         $now = Carbon::now()->format('Y-m-d');
         $today = Carbon::now()->dayOfWeek;
-        if($today == 0){
-            $today = 7;
-        }
         $hosts = Schedule::where('office_id', $office_id)
                         ->where('date_start', '<=', $now)
                         ->where('date_end', '>=', $now)
@@ -142,10 +144,9 @@ trait ScheduleTrait
                         ->pluck('host_id');
 
         $horas = $this->hours();
-
         $schedule = [];
         foreach ($hosts as $key => $host_id) {
-            $horario = $this->horario($host_id, $now, $office_id);
+            $horario = $this->horario($now, $host_id, $office_id);
             foreach ($horario as $k => $v) {
                 if(empty($schedule[$k])){
                     foreach ($v as $k2=> $v2) {
@@ -153,37 +154,37 @@ trait ScheduleTrait
                     }
                 }else{
                     foreach ($v as $k2 => $v2) {
-                        foreach ($v2 as $k3 => $v3) {
-                            if(is_numeric($schedule[$k][$k2][$k3])){
-                                $schedule[$k][$k2][$k3] = $schedule[$k][$k2][$k3] + $v3;
+                            if(is_numeric($schedule[$k][$k2])){
+                                $schedule[$k][$k2] = $schedule[$k][$k2] + $v2;
                             }
-                        }
                     }
                 }
             }
         }
+
+        $col_today = $today + 1;
         $horary = [];
         $horary[0]['ini'] = '';
         $horary[0]['fin'] = '';
         $n = 0;
         $ini = false;
         foreach ($schedule as $key => $value) {
-            if($value[$today]['value'] > 0)
+            if($value[$col_today] > 0)
             {
                 if($horary[$n]['ini'] == '')
                 {
-                    $horary[$n]['ini'] = $schedule[$key][0]['value'];
+                    $horary[$n]['ini'] = $schedule[$key][0];
                     $horary[$n]['fin'] = '';
                 }else{
-                    if($schedule[$key-1][$today]['value'] == 1)
+                    if($schedule[$key-1][$col_today] == 1)
                     {
-                        $h = substr($schedule[$key][0]['value'],0,2);
-                        $m = substr($schedule[$key][0]['value'],3,2) + 29;
+                        $h = substr($schedule[$key][0],0,2);
+                        $m = substr($schedule[$key][0],3,2) + 29;
                         $fin = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m, 2, "00", STR_PAD_LEFT);
                         $horary[$n]['fin'] = $fin;
                     }else{
                         $n++;
-                        $horary[$n]['ini'] = $schedule[$key][0]['value'];
+                        $horary[$n]['ini'] = $schedule[$key][0];
                         $horary[$n]['fin'] = '';
                     }
                 }
@@ -193,6 +194,7 @@ trait ScheduleTrait
         {
             return null;
         }
+
         return $horary;
 
     }
@@ -206,12 +208,11 @@ trait ScheduleTrait
                         ->groupBy('host_id')
                         ->pluck('host_id');
 
-
         $horas = $this->hours();
 
         $schedule = [];
         foreach ($hosts as $key => $host_id) {
-            $horario = $this->horario($host_id, $now, $office_id);
+            $horario = $this->horario($now, $host_id, $office_id);
             foreach ($horario as $k => $v) {
                 if(empty($schedule[$k])){
                     foreach ($v as $k2=> $v2) {
@@ -219,10 +220,8 @@ trait ScheduleTrait
                     }
                 }else{
                     foreach ($v as $k2 => $v2) {
-                        foreach ($v2 as $k3 => $v3) {
-                            if(is_numeric($schedule[$k][$k2][$k3])){
-                                $schedule[$k][$k2][$k3] = $schedule[$k][$k2][$k3] + $v3;
-                            }
+                        if(is_numeric($schedule[$k][$k2])){
+                            $schedule[$k][$k2] = $schedule[$k][$k2] + $v2;
                         }
                     }
                 }
@@ -234,22 +233,22 @@ trait ScheduleTrait
         $n = 0;
         $ini = false;
         foreach ($schedule as $key => $value) {
-            if($value[$today]['value'] > 0)
+            if($value[$today] > 0)
             {
                 if($horary[$n]['ini'] == '')
                 {
-                    $horary[$n]['ini'] = $schedule[$key][0]['value'];
+                    $horary[$n]['ini'] = $schedule[$key][0];
                     $horary[$n]['fin'] = '';
                 }else{
-                    if($schedule[$key-1][$today]['value'] == 1)
+                    if($schedule[$key-1][$today] == 1)
                     {
-                        $h = substr($schedule[$key][0]['value'],0,2);
-                        $m = substr($schedule[$key][0]['value'],3,2) + 29;
+                        $h = substr($schedule[$key][0],0,2);
+                        $m = substr($schedule[$key][0],3,2) + 29;
                         $fin = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m, 2, "00", STR_PAD_LEFT);
                         $horary[$n]['fin'] = $fin;
                     }else{
                         $n++;
-                        $horary[$n]['ini'] = $schedule[$key][0]['value'];
+                        $horary[$n]['ini'] = $schedule[$key][0];
                         $horary[$n]['fin'] = '';
                     }
                 }

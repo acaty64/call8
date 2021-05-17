@@ -166,8 +166,6 @@ class ClientScreen extends Component
             $this->horary = $this->horary(1);
         }
 
-
-
     }
 
     public function getHorarios()
@@ -175,9 +173,6 @@ class ClientScreen extends Component
 
         $offices = Office::all();
         $today = CarbonImmutable::now()->dayOfWeek;
-        if($today == 6){
-            $tomorrow = 7;
-        }
 
         $array = [];
         $array['today'] = [
@@ -222,7 +217,6 @@ class ClientScreen extends Component
         }
 
         $this->horarios = $array;
-// dd($this->horarios);
     }
 
     public function setOfficeId($value)

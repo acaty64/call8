@@ -61,6 +61,9 @@
 					Franja
 				</div>
 				<div class="col-sm-1">
+					DOM
+				</div>
+				<div class="col-sm-1">
 					LUN
 				</div>
 				<div class="col-sm-1">
@@ -77,9 +80,6 @@
 				</div>
 				<div class="col-sm-1">
 					SAB
-				</div>
-				<div class="col-sm-1">
-					DOM
 				</div>
 			</div>
 		</div>

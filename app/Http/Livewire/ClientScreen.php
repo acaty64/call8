@@ -184,8 +184,8 @@ class ClientScreen extends Component
             if($horary){
                 foreach($horary as $franja)
                 {
-
-                    $hour_now = Carbon::now()->format('H') . ":" . Carbon::now()->format('i');
+                    $hour_now = Carbon::now()->format('H:i');
+                    // $hour_now = Carbon::now()->format('H') . ":" . Carbon::now()->format('i');
 
                     if($franja['fin'] >= $hour_now)
                     {
@@ -197,9 +197,9 @@ class ClientScreen extends Component
         };
 
         $tomorrow = Carbon::now()->dayOfWeek + 1;
-        if($today == 7){
-            $tomorrow = 0;
-        }
+        // if($today == 7){
+        //     $tomorrow = 0;
+        // }
         $array['tomorrow'] = [
             'date' => CarbonImmutable::now()->addDays(1)->format('l d-m-Y'),
             'offices' => [],

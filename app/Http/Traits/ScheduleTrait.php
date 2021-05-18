@@ -227,20 +227,21 @@ trait ScheduleTrait
                 }
             }
         }
+
         $horary = [];
         $horary[0]['ini'] = '';
         $horary[0]['fin'] = '';
         $n = 0;
         $ini = false;
         foreach ($schedule as $key => $value) {
-            if($value[$today] > 0)
+            if($value[$today + 1] > 0)
             {
                 if($horary[$n]['ini'] == '')
                 {
                     $horary[$n]['ini'] = $schedule[$key][0];
                     $horary[$n]['fin'] = '';
                 }else{
-                    if($schedule[$key-1][$today] == 1)
+                    if($schedule[$key-1][$today + 1] == 1)
                     {
                         $h = substr($schedule[$key][0],0,2);
                         $m = substr($schedule[$key][0],3,2) + 29;

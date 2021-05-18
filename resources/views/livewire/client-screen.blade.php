@@ -14,7 +14,7 @@
     </div>
     office_id: {{$office_id}}
     <div class="card-header" align="center">
-	    <h1>Hora: {{Carbon\Carbon::now()->format('H:m:s')}}</h1>
+	    <h1>Hora: {{Carbon\Carbon::now()->format('H:i:s')}}</h1>
     </div>
     @if( $office_id == '' )
 	    <div class="row">

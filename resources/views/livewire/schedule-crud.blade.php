@@ -13,16 +13,32 @@
 				<tr>
 					<th><b>Id</b></th>
 					<th>
-						<b>Office
-{{-- 						<select wire:model="selectedOffice" class="form-control">
+						<b>Office</b>
+						<select wire:model="selectedOffice" class="form-control">
 							<option value="" selected>Office</option>
 							@foreach($offices as $office)
 								<option value="{{ $office->id }}">{{ $office->name }}</option>
 							@endforeach
-						</select> --}}
+						</select>
 					</th>
-					<th><b>Host</b></th>
-					<th><b>Dia</b></th>
+					<th>
+						<b>Host</b>
+						<select wire:model="selectedHost" class="form-control">
+							<option value="" selected>Host</option>
+							@foreach($hosts as $host)
+								<option value="{{ $host->id }}">{{ $host->name }}</option>
+							@endforeach
+						</select>
+					</th>
+					<th>
+						<b>Dia</b>
+						<select wire:model="selectedDay" class="form-control">
+							<option value="" selected>Día</option>
+							@foreach($days as $key => $day)
+								<option value="{{ $key }}">{{ $day }}</option>
+							@endforeach
+						</select>
+					</th>
 					<th><b>Inicio</b></th>
 					<th><b>Fin</b></th>
 					<th><b>Fecha Inicio</b></th>

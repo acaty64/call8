@@ -24,6 +24,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'given_name' => substr($this->faker->name,0, strpos($this->faker->name, ' ')),
             'code' => $this->faker->numerify('###########'),
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),

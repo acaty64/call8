@@ -23,6 +23,7 @@ class UserController extends Controller
     {
         $user = User::create([
             'name' => $request->name,
+            'given_name' => $request->given_name,
             'email' => $request->email,
             'password' => $request->password,
             'code' => $request->code
@@ -47,6 +48,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($request->id);
         $user->name = $request->name;
+        $user->given_name = $request->given_name;
         $user->code = $request->code;
         $user->email = $request->email;
         $user->save();

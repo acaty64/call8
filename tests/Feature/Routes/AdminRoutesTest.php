@@ -155,61 +155,6 @@ class AdminRoutesTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
-    public function an_admin_user_can_store_a_user()
-    {
-        $admin = User::find(2);
-        $this->assertTrue($admin->is_admin);
-        $this->assertFalse($admin->is_master);
-        $data = [
-            'name' => 'Jane Doe',
-            'email' => 'janeDoe@gmail.com',
-            'password' => bcrypt('secret'),
-            'code' => '1234567'
-        ];
-        $this->actingAs($admin);
-        $response = $this->post(route('user.store', $data));
-        $response->assertStatus(302);
-                // ->assertRedirect'user.create');
-    }
-
-    /** @test */
-    public function non_admin_user_cannot_store_a_user()
-    {
-        $host = User::find(3);
-        $this->assertFalse($host->is_admin);
-        $data = [
-            'name' => 'Jane Doe',
-            'email' => 'janeDoe@gmail.com',
-            'password' => bcrypt('secret'),
-            'code' => '1234567'
-        ];
-        $this->actingAs($host);
-        $response = $this->post(route('user.store', $data));
-        $response->assertStatus(403);
-    }
-
-    /** @test */
-    public function an_admin_user_can_see_edit_user()
-    {
-        $admin = User::find(2);
-        $this->assertTrue($admin->is_admin);
-        $this->assertFalse($admin->is_master);
-        $this->actingAs($admin);
-        $response = $this->get('user/2/edit');
-        $response->assertStatus(200);
-    }
-
-    /** @test */
-    public function non_admin_user_cannot_see_edit_user()
-    {
-        $host = User::find(3);
-        $this->assertFalse($host->is_admin);
-        $this->actingAs($host);
-        $response = $this->get('user/2/edit');
-        $response->assertStatus(403);
-    }
-
 
     /** @test */
     public function an_admin_user_can_view_link_index()

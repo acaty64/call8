@@ -38,6 +38,7 @@ class GoogleLoginTest extends TestCase
         // Given ...
         $user = User::create([
             'name' => 'JOHN DOE',
+            'given_name' => 'John',
             'email' => 'jdoe@gmail.com',
             'code' => '999999'
         ]);
@@ -66,6 +67,7 @@ class GoogleLoginTest extends TestCase
         // Given ...
         $user = User::create([
             'name' => 'JOHN DOE',
+            'given_name' => 'John',
             'email' => 'jdoe@gmail.com',
             'code' => '999999'
         ]);

@@ -142,7 +142,7 @@ class HostScreen extends Component
         if(!$response->client_id){
             $this->message = $response->link;
         }else{
-            $this->message = "Llamando a " . $response->client->name;
+            $this->message = "Llamando a " . $response->client->given_name;
             $this->client = User::find($response->client->id);
         }
     }

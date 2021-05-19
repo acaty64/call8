@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Test;
 
 use App\Events\Test2Event;
 use App\Events\Test3Event;
@@ -23,7 +23,7 @@ class Test3Screen extends Component
     ];
     public function render()
     {
-        return view('livewire.test3-screen');
+        return view('livewire.test.test3-screen');
     }
 
     public function send()

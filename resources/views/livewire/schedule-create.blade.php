@@ -1,11 +1,15 @@
 <div>
 	<div class="container card mb-3">
 		<div class="card-body">
-			<h3>SCHEDULE CREATE</h3>
+			<div class="row">
+			    <div class="col-md-6">
+					<h3>SCHEDULE CREATE</h3>
+			    </div>
+			    <div class="col-md-2">
+			        <button wire:click="$emit('setStatus', 'index')" class="btn-warning mb-3 btn-lg">Regresar</button>
+			    </div>
+			</div>
 		</div>
-        <div class="col-md-2">
-	        <button wire:click="$emit('setStatus', 'index')" class="btn-warning mb-3 btn-lg">Regresar</button>
-	    </div>
 	</div>
 	<div class="container">
 	    <div>
@@ -23,7 +27,7 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon0">Office</span>
 					</div>
-					<div class="col-md-8">
+					<div class="col-md-8 pl-0">
 						<select wire:model="selectedOffice" class="form-control">
 							<option value="" selected>Choose office</option>
 							@foreach($offices as $office)
@@ -41,7 +45,7 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon0">Day</span>
 					</div>
-					<div class="col-md-8">
+					<div class="col-md-8 pl-0">
 						<select wire:model="selectedDay" class="form-control">
 							<option value="" selected>Choose day</option>
 							@foreach($days as $key => $day)
@@ -57,7 +61,7 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon0">Hora Inicio</span>
 					</div>
-					<div class="col-md-8">
+					<div class="col-md-8 pl-0">
 						<select wire:model="hour_start" class="form-control">
 							<option value="" selected>Choose hour start</option>
 							@foreach($hours_start as $kh => $hour)
@@ -73,7 +77,7 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon0">Hora de Fin</span>
 					</div>
-					<div class="col-md-8">
+					<div class="col-md-8 pl-0">
 						<select wire:model="hour_end" class="form-control">
 							<option value="" selected>Choose hour end</option>
 							@foreach($hours_end as $kh2 => $hour2)

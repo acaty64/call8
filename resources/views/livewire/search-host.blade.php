@@ -6,7 +6,7 @@
 					<span class="input-group-text" id="basic-addon0">Host</span>
 				</div>
 				{{-- ///////// --}}
-				<div class="col-md-8">
+				<div class="col-md-8 pl-0">
 					<select wire:model="selectedHost" class="form-control" aria-describedby="basic-addon0">
 						<option value="" selected>Choose host</option>
 						@foreach($hosts as $host)

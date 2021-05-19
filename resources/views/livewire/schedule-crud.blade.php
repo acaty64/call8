@@ -17,7 +17,7 @@
 						<select wire:model="selectedOffice" class="form-control">
 							<option value="" selected>Office</option>
 							@foreach($offices as $office)
-								<option value="{{ $office->id }}">{{ $office->name }}</option>
+								<option value="{{ $office->id }}">{{ $office->code }}</option>
 							@endforeach
 						</select>
 					</th>

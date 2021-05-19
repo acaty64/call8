@@ -7,8 +7,8 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-8"><h1>SCHEDULE INDEX</h1></div>
-                        <div class="col-md-2" align="right"><a href="{{ URL::previous() }}" class="btn btn-warning">Regresar</a></div>
+                        <div class="col-md-8"><h1>SCHEDULE SCREEN</h1></div>
+                        <div class="col-md-2" align="right"><a href="{{ (\Auth::user()->is_master) ? route('master.menu') : route('admin.menu') }}" class="btn btn-warning">Regresar</a></div>
                     </div>
                 </div>
                 <div class="card">

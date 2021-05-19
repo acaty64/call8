@@ -2,11 +2,11 @@
 	<div class="container">
 		<div class="form-group row">
 			<div class="col-sm-12">
-				<div class="input-group mb">
+				<div class="input-group mt-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="basic-addon0">Office</span>
 					</div>
-					<div class="col-md-8">
+					<div class="col-md-8 pl-0">
 						<select wire:model="selectedOffice" class="form-control">
 							<option value="" selected>Choose office</option>
 							@foreach($offices as $office)
@@ -14,20 +14,23 @@
 							@endforeach
 						</select>
 					</div>
+					<div class="col-md-2">
+						<a href="{{ route('schedule.crud') }}" class="btn btn-success btn-lg">Horarios</a>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="card-header">
 				<div class="row">
-					<div class="col-sm">Id</div>
-					<div class="col-sm-3">Operador</div>
+					<div class="col-sm-1">Id</div>
+					<div class="col-sm-5">Operador</div>
 				</div>
 		</div>
 		<div class="card-body">
 			@foreach($hosts as $host)
 				<div class="row">
-					<div class="col-sm">{{ $host->id }}</div>
-					<div class="col-sm-3">{{ $host->name }}</div>
+					<div class="col-sm-1">{{ $host->id }}</div>
+					<div class="col-sm-5">{{ $host->name }}</div>
 				</div>
 			@endforeach
 		</div>

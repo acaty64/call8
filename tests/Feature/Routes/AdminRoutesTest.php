@@ -135,28 +135,6 @@ class AdminRoutesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_user_can_view_user_create()
-    {
-        $admin = User::find(2);
-        $this->assertTrue($admin->is_admin);
-        $this->assertFalse($admin->is_master);
-        $this->actingAs($admin);
-        $response = $this->get(route('user.create'));
-        $response->assertStatus(200);
-    }
-
-    /** @test */
-    public function non_admin_user_cannot_view_user_create()
-    {
-        $host = User::find(3);
-        $this->assertFalse($host->is_admin);
-        $this->actingAs($host);
-        $response = $this->get(route('user.create'));
-        $response->assertStatus(403);
-    }
-
-
-    /** @test */
     public function an_admin_user_can_view_link_index()
     {
         $admin = User::find(2);

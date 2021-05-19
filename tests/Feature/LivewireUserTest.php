@@ -20,7 +20,10 @@ class LivewireUserTest extends TestCase
         $admin = User::find(1);
         Livewire::actingAs($admin)
             ->test(UserCrud::class)
-            ->assertSeeHtml('Indice de Usuarios');
+            ->assertSeeHtml('Nombre')
+            ->assertSeeHtml('E-mail')
+            ->assertSeeHtml('Codigo')
+            ;
 
     }
 

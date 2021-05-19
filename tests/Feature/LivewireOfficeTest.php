@@ -22,7 +22,9 @@ class LivewireOfficeTest extends TestCase
         $master = User::find(1);
         Livewire::actingAs($master)
             ->test(OfficeIndex::class)
-            ->assertSeeHtml('Indice de Oficinas');
+            ->assertSeeHtml('Siglas')
+            ->assertSeeHtml('Nombre')
+            ;
 
     }
 

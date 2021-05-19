@@ -19,7 +19,7 @@ Route::get('/schedule/crud', [
 ]);
 
 Route::get('/dashboard', [
-	'as' => 'app.dashboard',
+	'as' => 'dashboard',
 	'uses' => 'DashboardController@index'
 ]);
 
@@ -35,30 +35,30 @@ Route::get('/users/index', [
 	'uses' => 'UserController@index'
 ]);
 
-Route::get('/user/create', [
-	'as' => 'user.create',
-	'uses' => 'UserController@create'
-]);
+// Route::get('/user/create', [
+// 	'as' => 'user.create',
+// 	'uses' => 'UserController@create'
+// ]);
 
-Route::post('/user/store', [
-	'as' => 'user.store',
-	'uses' => 'UserController@store'
-]);
+// Route::post('/user/store', [
+// 	'as' => 'user.store',
+// 	'uses' => 'UserController@store'
+// ]);
 
-Route::get('/user/{id}/edit', [
-	'as' => 'user.edit',
-	'uses' => 'UserController@edit'
-]);
+// Route::get('/user/{id}/edit', [
+// 	'as' => 'user.edit',
+// 	'uses' => 'UserController@edit'
+// ]);
 
-Route::post('/user/update', [
-	'as' => 'user.update',
-	'uses' => 'UserController@update'
-]);
+// Route::post('/user/update', [
+// 	'as' => 'user.update',
+// 	'uses' => 'UserController@update'
+// ]);
 
-Route::delete('/user/destroy/{id}', [
-	'as' => 'user.destroy',
-	'uses' => 'UserController@destroy'
-]);
+// Route::delete('/user/destroy/{id}', [
+// 	'as' => 'user.destroy',
+// 	'uses' => 'UserController@destroy'
+// ]);
 
 
 //////////// CALL

@@ -22,7 +22,9 @@ class LivewireAccessTest extends TestCase
         $admin = User::find(1);
         Livewire::actingAs($admin)
             ->test(AccessIndex::class)
-            ->assertSeeHtml('Indice de Accesos');
+            ->assertSeeHtml('Id')
+            ->assertSeeHtml('Usuario')
+            ->assertSeeHtml('Tipo');
 
     }
 

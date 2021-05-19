@@ -39,6 +39,12 @@ class LoginGoogleController extends Controller
 
 	    Auth::login($userLogued, true);
 
+	    if(Auth::user()->is_master){
+	    	return redirect(route('master.menu'));
+	    }
+
+
+
 	    return redirect(route('home'));
 	}
 

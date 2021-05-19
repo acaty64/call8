@@ -4,7 +4,6 @@
 	@endif
 @if( $status == 'index')
 	<div class="container">
-		<h1>Indice de Oficinas</h1>
 		<button class="btn-success btn-lg" wire:click="setStatus('create')">Agregar</button>
 		<table class="table table-striped">
 			<thead>

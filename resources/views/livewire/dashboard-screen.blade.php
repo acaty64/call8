@@ -1,8 +1,5 @@
 <div>
 	<div class="container">
-		<div class="card-header pb-1">
-			<h1 align="center">DASHBOARD</h1>
-		</div>
 		<div class="card-header pb-0">
 			<h3 align="center">OPERADORES ACTIVOS</h3>
 		</div>

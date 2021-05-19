@@ -14,19 +14,10 @@ Auth::routes();
 /////////////////// GOOGLE LOGIN //////////////////
 
 // Redirigir al usuario hacia Google
-Route::get('/login/google', [
-		'as' => 'login.google',
-		'uses' => 'LoginGoogleController@redirect'
-	]);
+Route::get('/login/google', [App\Http\Controllers\Auth\LoginGoogleController::class, 'redirect'])->name('login.google');
 
 // Gestionar la respuesta de Google
 Route::get('/login/callback', [App\Http\Controllers\Auth\LoginGoogleController::class, 'callback']);
-
-// Route::get('/login/callback', [
-// 		'as' => 'google.callback',
-// 		'uses' => 'LoginGoogleController@callback'
-// 	]);
-
 
 /////////////////// END GOOGLE LOGIN //////////////////
 

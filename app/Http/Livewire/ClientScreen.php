@@ -176,7 +176,7 @@ class ClientScreen extends Component
 
         $array = [];
         $array['today'] = [
-            'date' => CarbonImmutable::now()->format('l d-m-Y'),
+            'date' => CarbonImmutable::now()->isoformat('dddd') . ' ' . CarbonImmutable::now()->format('d-m-Y'),
             'offices' => [],
         ];
         foreach ($offices as $office) {
@@ -196,12 +196,12 @@ class ClientScreen extends Component
             }
         };
 
-        $tomorrow = Carbon::now()->dayOfWeek + 1;
+        $tomorrow = CarbonImmutable::now()->dayOfWeek + 1;
         // if($today == 7){
         //     $tomorrow = 0;
         // }
         $array['tomorrow'] = [
-            'date' => CarbonImmutable::now()->addDays(1)->format('l d-m-Y'),
+            'date' => CarbonImmutable::now()->addDays(1)->isoformat('dddd') . ' ' . CarbonImmutable::now()->addDays(1)->format('d-m-Y'),
             'offices' => [],
         ];
         foreach ($offices as $office) {

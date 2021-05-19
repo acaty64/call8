@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/admin/menu', [
+	'as' => 'admin.menu',
+	'uses' => 'MenuController@admin'
+]);
 
 Route::get('/access/index', [
 	'as' => 'access.index',

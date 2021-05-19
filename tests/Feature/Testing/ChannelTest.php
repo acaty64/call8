@@ -15,9 +15,6 @@ class FirstTest extends TestCase
     /** @test */
     public function testLoginUserShowTestView()
     {
-        $response = $this->get('/');
-        $response->assertStatus(200);
-
         $user = User::find(1);
         $this->actingAs($user);
 

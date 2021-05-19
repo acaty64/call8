@@ -10,4 +10,9 @@ class MenuController extends Controller
 	{
 		return view('app.menu.master');
 	}
+
+	public function admin()
+	{
+		return view('app.menu.admin');
+	}
 }

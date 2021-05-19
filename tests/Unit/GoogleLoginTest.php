@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Access;
+use App\Models\Access;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -33,20 +33,15 @@ class GoogleLoginTest extends TestCase
     }
 
     /** @test */
-    public function a_user_authorized_are_authenticated()
+    public function a_master_authorized_are_authenticated()
     {
         // Given ...
-        $user = User::create([
-            'name' => 'JOHN DOE',
-            'given_name' => 'John',
-            'email' => 'jdoe@gmail.com',
-            'code' => '999999'
-        ]);
-
+        $master = User::find(1);
+        $this->assertTrue($master->is_master);
 
         $googleUser = m::mock(SocialiteUser::class, [
-            'getName' => $user->name,
-            'getEmail' => $user->email
+            'getName' => $master->name,
+            'getEmail' => $master->email
         ]);
 
         $this->mockGoogleProvider()
@@ -58,7 +53,43 @@ class GoogleLoginTest extends TestCase
 
         // Then
         $this->assertAuthenticated();
-        $response->assertRedirect('/home');
+        $response->assertRedirect(route('master.menu'));
+        // $response->assertRedirect('/home');
+    }
+
+    /** @test */
+    public function a_host_authorized_are_authenticated()
+    {
+        // Given ...
+        $host = User::create([
+            'name' => 'JOHN DOE',
+            'given_name' => 'John',
+            'email' => 'jjjjj@gmail.com',
+            'code' => '999999'
+        ]);
+
+        $access = Access::create([
+            'user_id' => $host->id,
+            'type_id' => 3,     // Host
+        ]);
+
+
+        $googleUser = m::mock(SocialiteUser::class, [
+            'getName' => $host->name,
+            'getEmail' => $host->email
+        ]);
+
+        $this->mockGoogleProvider()
+            ->shouldReceive('user')
+            ->andReturn($googleUser);
+
+        // When
+        $response = $this->get('/login/callback');
+
+        // Then
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('call.host'));
+        // $response->assertRedirect('/home');
     }
 
     /** @test */

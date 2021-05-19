@@ -160,7 +160,7 @@ class LivewireScheduleTest extends TestCase
         $response = $this->horary($schedule->office_id);
 
 ///////////////
-       // $this->markTestIncomplete();
+       $this->markTestIncomplete();
 
         $check = [
             [

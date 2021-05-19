@@ -43,9 +43,17 @@ class LoginGoogleController extends Controller
 	    	return redirect(route('master.menu'));
 	    }
 
+	    if(Auth::user()->is_admin){
+	    	return redirect(route('admin.menu'));
+	    }
 
+	    if(Auth::user()->is_host){
+	    	return redirect(route('call.host'));
+	    }
 
-	    return redirect(route('home'));
+    	return redirect(route('call.client'));
+
+	    // return redirect(route('home'));
 	}
 
 }

@@ -1,19 +1,31 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginGoogleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+	if(env('APP_DEBUG')){
+		return redirect(route('login'));
+	}
+	return redirect(route('login.google'));
 });
 
 Auth::routes();
 /////////////////// GOOGLE LOGIN //////////////////
 
 // Redirigir al usuario hacia Google
-Route::get('/login/google', [App\Http\Controllers\Auth\LoginGoogleController::class, 'redirect']);
+Route::get('/login/google', [
+		'as' => 'login.google',
+		'uses' => 'LoginGoogleController@redirect'
+	]);
 
 // Gestionar la respuesta de Google
-Route::get('/login/callback', [App\Http\Controllers\Auth\LoginGoogleController::class,'callback']);
+Route::get('/login/callback', [App\Http\Controllers\Auth\LoginGoogleController::class, 'callback']);
+
+// Route::get('/login/callback', [
+// 		'as' => 'google.callback',
+// 		'uses' => 'LoginGoogleController@callback'
+// 	]);
 
 
 /////////////////// END GOOGLE LOGIN //////////////////

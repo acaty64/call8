@@ -22,7 +22,9 @@ class LoginGoogleController extends Controller
 
 	    $email = $user->getEmail();
 
-		if ( substr($user->email, strpos($user->email, '@')+1) == 'ucss.edu.pe' || substr($user->email, strpos($user->email, '@')+1) = 'ucss.pe' )
+		$domain = substr($email, strpos($email, '@')+1);
+
+		if ( $domain == 'ucss.edu.pe' || $domain = 'ucss.pe' )
 		{
 		    $userLogued = User::where('email', $email)->first();
 

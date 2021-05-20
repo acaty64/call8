@@ -19,7 +19,7 @@ class UsersSeeder extends Seeder
         	'name' => 'Master',
             'given_name' => 'master',
             'code' => '12345678901',
-	        'email' => 'master@gmail.com',
+	        'email' => 'master@ucss.edu.pe',
 	        'email_verified_at' => now(),
             'password' => bcrypt('secret'),
 	        // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -29,27 +29,27 @@ class UsersSeeder extends Seeder
         User::factory(6)->create();
 
         $user = User::find(2);
-        $user->email = 'host2@gmail.com';
+        $user->email = 'host2@ucss.edu.pe';
         $user->save();
 
         $user = User::find(3);
-        $user->email = 'host3@gmail.com';
+        $user->email = 'host3@ucss.edu.pe';
         $user->save();
 
         $user = User::find(4);
-        $user->email = 'client1@gmail.com';
+        $user->email = 'client1@ucss.edu.pe';
         $user->save();
 
         $user = User::find(5);
-        $user->email = 'client2@gmail.com';
+        $user->email = 'client2@ucss.pe';
         $user->save();
 
         $user = User::find(6);
-        $user->email = 'client3@gmail.com';
+        $user->email = 'client3@ucss.pe';
         $user->save();
 
         $user = User::find(7);
-        $user->email = 'client4@gmail.com';
+        $user->email = 'client4@ucss.pe';
         $user->save();
 
 

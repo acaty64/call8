@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 
 class Trace extends Model
@@ -17,6 +18,11 @@ class Trace extends Model
         'status_id',
         'office_id',
     ];
+
+    public function getDateAttribute()
+    {
+        return CarbonImmutable::parse($this->created_at)->format('Y-m-d');
+    }
 
     public function getUserAttribute()
     {

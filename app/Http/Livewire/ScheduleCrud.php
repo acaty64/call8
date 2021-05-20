@@ -19,6 +19,7 @@ class ScheduleCrud extends Component
     public $selectedOffice;
     public $selectedHost;
     public $selectedDay;
+    public $schedule_id;
 
     protected $listeners = ['setStatus'];
 
@@ -102,6 +103,12 @@ class ScheduleCrud extends Component
             }
         }
         $this->schedules = Schedule::where($arrayFilter)->get();
+    }
+
+    public function edit($schedule_id)
+    {
+        $this->schedule_id = $schedule_id;
+        $this->status = 'edit';
     }
 
     public function destroy($schedule_id)

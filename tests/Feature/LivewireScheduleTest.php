@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Http\Livewire\HostScreen;
 use App\Http\Livewire\ScheduleCreate;
 use App\Http\Livewire\ScheduleCrud;
+use App\Http\Livewire\ScheduleEdit;
 use App\Http\Livewire\ScheduleScreen;
 use App\Http\Traits\ScheduleTrait;
 use App\Models\Office;
@@ -131,6 +132,48 @@ class LivewireScheduleTest extends TestCase
             ->call('save');
 
         $this->assertDatabaseMissing('schedules', $data);
+
+    }
+
+    /** @test */
+    public function admin_can_edit_schedule_registry()
+    {
+        $admin = User::find(1);
+        $this->actingAs($admin);
+        $this->get(route('schedule.crud'))
+                ->assertSeeLivewire('schedule-crud');
+
+        Livewire::actingAs($admin)
+                ->test(ScheduleCrud::class)
+                ->call('edit', 1)
+                ->assertSeeLivewire('schedule-edit');
+
+        $old_data = Schedule::find(1);
+
+        $data = [
+            'id' => $old_data->id,
+            'host_id' => 1,
+            'office_id' => 3,
+            'day' => 1,
+            'hour_start' => '10:00',
+            'hour_end' => '14:00',
+            'date_start' => '2021-05-20',
+            'date_end' => '2021-05-30',
+        ];
+
+        Livewire::actingAs($admin)
+            ->test(ScheduleEdit::class, ['schedule_id' => 1])
+            ->set('selectedOffice', $data['office_id'])
+            ->set('selectedDay', $data['day'])
+            ->set('hour_start', $data['hour_start'])
+            ->set('hour_end', $data['hour_end'])
+            ->set('date_start', $data['date_start'])
+            ->set('date_end', $data['date_end'])
+            ->call('save');
+            // ->assertSeeHtml('Registro grabado.');
+
+        $this->assertDatabaseHas('schedules', $data);
+        $this->assertDatabaseMissing('schedules', $old_data->toArray());
 
     }
 

@@ -9,10 +9,11 @@ use App\Models\User;
 use Carbon\CarbonImmutable;
 use Livewire\Component;
 
-class ScheduleCreate extends Component
+class ScheduleEdit extends Component
 {
     use ScheduleTrait;
 
+    public $schedule_id;
     public $errores;
     public $hosts;
 	public $offices;
@@ -26,18 +27,15 @@ class ScheduleCreate extends Component
 	public $date_end;
     public $min_date_start;
     public $min_date_end;
-    public $selectedHost;
+    public $host_name;
     public $selectedOffice;
     public $selectedDay;
     public $host_id;
     public $office_id;
     public $day;
 
-    // protected $listeners = ['newHost'];
-
-
     protected $rules = [
-            'selectedHost' => 'required',
+            'host_id' => 'required',
             'selectedOffice' => 'required',
             'selectedDay' => 'required',
             'hour_start' => 'required',
@@ -49,18 +47,18 @@ class ScheduleCreate extends Component
 
     public function render()
     {
-        return view('livewire.schedule-create');
+        return view('livewire.schedule-edit');
     }
 
     public function mount()
     {
         $this->errores = [];
-        $this->hosts = User::where('id', '<', 4)->get();
-        $this->selectedHost = '';
-        $this->host_id = null;
+        $this->schedule = Schedule::find($this->schedule_id);
+        $this->host_name = $this->schedule->host->name;
+        $this->host_id = $this->schedule->host_id;
     	$this->offices = Office::all();
-        $this->selectedOffice = '';
-        $this->office_id = null;
+        $this->selectedOffice = $this->schedule->office_id;
+        $this->office_id = $this->selectedOffice;
     	$this->days = [
     		'0' => 'Domingo',
     		'1' => 'Lunes',
@@ -70,24 +68,23 @@ class ScheduleCreate extends Component
     		'5' => 'Viernes',
     		'6' => 'Sábado',
     	];
-        $this->day = null;
-        $this->selectedDay = '';
+        $this->day = $this->schedule->day;
+        $this->selectedDay = $this->day;
         $this->hours_start = $this->hours();
-        $this->hour_start = null;
+        $this->hour_start = $this->schedule->hour_start;
         $this->hours_end = $this->hours();
-        $this->hour_end = null;
-        $this->date_start = CarbonImmutable::now()->format('Y-m-d');
-        $this->date_end = CarbonImmutable::now()->format('Y-m-d');
+        $this->hour_end = $this->schedule->hour_end;
+        $this->date_start = $this->schedule->date_start;
+        $this->date_end = $this->schedule->date_end;
         $this->min_date_start = CarbonImmutable::now()->format('Y-m-d');
-        $this->min_date_end = CarbonImmutable::now()->format('Y-m-d');
-
+        $this->min_date_end = $this->date_start;
     }
 
     public function save()
     {
         $this->validate();
         $data = [
-            'host_id' => $this->selectedHost,
+            'host_id' => $this->host_id,
             'office_id' => $this->selectedOffice,
             'day' => $this->selectedDay,
             'hour_start' => $this->hour_start,
@@ -96,12 +93,18 @@ class ScheduleCreate extends Component
             'date_end' => $this->date_end,
         ];
 
-        $schedule = new Schedule($data);
+        $schedule = Schedule::find($this->schedule_id);
 
-        $response = $this->checkSchedule($schedule);
+        $response = $this->checkScheduleEdit($schedule);
 
         if($response == []){
-            Schedule::create($data);
+            $schedule->office_id = $this->selectedOffice;
+            $schedule->day = $this->selectedDay;
+            $schedule->hour_start = $this->hour_start;
+            $schedule->hour_end = $this->hour_end;
+            $schedule->date_start = $this->date_start;
+            $schedule->date_end = $this->date_end;
+            $schedule->save();
             $this->errors = [];
             // session()->flash('message', 'Registro grabado.');
             $this->emit('setStatus', 'index');
@@ -110,10 +113,6 @@ class ScheduleCreate extends Component
         session()->flash('message', 'Error, revise las fechas y horas.');
     }
 
-    public function newHost($host_id)
-    {
-        $this->selectedHost = $host_id;
-    }
 
     public function updated($field, $value)
     {

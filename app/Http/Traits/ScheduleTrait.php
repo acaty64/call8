@@ -132,6 +132,36 @@ trait ScheduleTrait
         return $error;
     }
 
+    public function checkScheduleEdit(Schedule $data)
+    {
+        $schedules = Schedule::where('host_id', $data->host_id)
+                    ->where('office_id', '<=', $data->office_id)
+                    ->where('day', '<=', $data->day)
+                    ->where('id', '!=', $data->id)
+                    ->get();
+
+        $error = [];
+        foreach ($schedules as $value) {
+            if(($data->date_start <= $value->date_start && 
+                    $data->date_end >= $value->date_start) || 
+                        ($data->date_start >= $value->date_start && 
+                        $data->date_start <= $value->date_end))
+            {
+                if(($data->hour_start <= $value->hour_start && 
+                    $data->hour_end >= $value->hour_start) || 
+                        ($data->hour_start >= $value->hour_start && 
+                        $data->hour_start <= $value->hour_end))
+                {
+                    if($data->day == $value->day)
+                    {
+                        $error[] = $value;
+                    }                }
+            }
+        }
+
+        return $error;
+    }
+
     public function horary($office_id)
     {
         $now = Carbon::now()->format('Y-m-d');

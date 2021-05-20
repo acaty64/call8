@@ -58,7 +58,7 @@
 					<td>{{ $schedule->date_start }}</td>
 					<td>{{ $schedule->date_end }}</td>
 					<td>
-						{{-- <button class="btn-warning btn-md">Editar</button> --}}
+						<button wire:click="edit({{$schedule->id}})" class="btn-warning btn-md">Editar</button>
 						<button wire:click="destroy({{$schedule->id}})" class="btn-danger btn-md">Eliminar</button>
 					</td>
 				</tr>
@@ -68,6 +68,10 @@
 	@endif
 	@if($status == 'create')
 		@livewire('schedule-create')
+	@endif
+
+	@if($status == 'edit')
+		@livewire('schedule-edit', ['schedule_id' => $schedule_id])
 	@endif
 
 </div>

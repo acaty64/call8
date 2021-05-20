@@ -22,38 +22,42 @@ class LoginGoogleController extends Controller
 
 	    $email = $user->getEmail();
 
-	    $userLogued = User::where('email', $email)->first();
+		if ( substr($user->email, strpos($user->email, '@')+1) == 'ucss.edu.pe' || substr($user->email, strpos($user->email, '@')+1) = 'ucss.pe' )
+		{
+		    $userLogued = User::where('email', $email)->first();
 
-	    if(!$userLogued){
-			$userLogued = User::create([
-				'email' => $user->getEmail(),
-				'name' => $user->getName(),
-				'given_name' => $user->user['given_name'],
-				'code' => substr(substr($user->email, 0, strpos($user->email, '@')), 0, 11),
-			]);
-			if(!$userLogued){
-				throw new AuthorizationException;
-			}
+		    if(!$userLogued){
+				$userLogued = User::create([
+					'email' => $user->getEmail(),
+					'name' => $user->getName(),
+					'given_name' => $user->user['given_name'],
+					'code' => substr(substr($user->email, 0, strpos($user->email, '@')), 0, 11),
+				]);
+				if(!$userLogued){
+					throw new AuthorizationException;
+				}
 
-	    }
+		    }
 
-	    Auth::login($userLogued, true);
+		    Auth::login($userLogued, true);
 
-	    if(Auth::user()->is_master){
-	    	return redirect(route('master.menu'));
-	    }
+		    if(Auth::user()->is_master){
+		    	return redirect(route('master.menu'));
+		    }
 
-	    if(Auth::user()->is_admin){
-	    	return redirect(route('admin.menu'));
-	    }
+		    if(Auth::user()->is_admin){
+		    	return redirect(route('admin.menu'));
+		    }
 
-	    if(Auth::user()->is_host){
-	    	return redirect(route('call.host'));
-	    }
+		    if(Auth::user()->is_host){
+		    	return redirect(route('call.host'));
+		    }
 
-    	return redirect(route('call.client'));
+	    	return redirect(route('call.client'));
+		}
 
-	    // return redirect(route('home'));
+    	return redirect(route('login.google'));
+
 	}
 
 }

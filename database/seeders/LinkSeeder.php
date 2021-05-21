@@ -8,11 +8,6 @@ use Illuminate\Support\Str;
 
 class LinkSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         Link::create([

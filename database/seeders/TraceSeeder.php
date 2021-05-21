@@ -10,11 +10,7 @@ use Illuminate\Support\Str;
 
 class TraceSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+
     public function run()
     {
     	// Usuario 1. En Window 1. En Pausa
@@ -226,8 +222,6 @@ class TraceSeeder extends Seeder
             $trace->created_at = CarbonImmutable::parse($trace->created_at)->addMinutes($trace->id*5)->format('Y-m-d H:i:s');
             $trace->save();
         }
-
-
 
     }
 }

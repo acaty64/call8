@@ -7,11 +7,6 @@ use Illuminate\Support\Str;
 
 class OfficeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
 		Office::create([

@@ -8,11 +8,6 @@ use App\Models\Status;
 
 class StatusSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         Status::create(['id'=>1, 'status'=>'Cerrado']);

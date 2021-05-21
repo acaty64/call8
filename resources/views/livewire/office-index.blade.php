@@ -9,17 +9,18 @@
 			<thead>
 				<tr class="row">
 			    	<th class="col-sm-1">Id</th>
-			    	<th class="col-sm-1">Siglas</th>
-			    	<th class="col-sm-3">Nombre</th>
+			    	<th class="col-sm-2">Siglas</th>
+			    	<th class="col-sm-4">Nombre</th>
+			    	<th class="col-sm-4">Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
 			    @foreach($index as $item)
 			        <tr class="row">
 			        	<td class="col-sm-1">{{ $item->id }}</td>
-			        	<td class="col-sm-1">{{ $item->code }}</td>
-			        	<td class="col-sm-3">{{ $item->name }}</td>
-			        	<td class="col-sm-2">
+			        	<td class="col-sm-2">{{ $item->code }}</td>
+			        	<td class="col-sm-4">{{ $item->name }}</td>
+			        	<td class="col-sm-4">
 							<button class="btn-success btn-md" wire:click="setStatus('edit', {{ $item->id }})">Editar</button>
 							<button class="btn-danger btn-md" wire:click="setStatus('destroy', {{ $item->id }})">Eliminar</button>
 			        	</td>

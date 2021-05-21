@@ -7,11 +7,6 @@ use Illuminate\Support\Str;
 
 class TypeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         Type::create([

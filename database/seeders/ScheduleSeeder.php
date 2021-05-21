@@ -9,15 +9,8 @@ use Illuminate\Support\Str;
 
 class ScheduleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-
-
 		Schedule::create([
     		'office_id' => 1,
     		'host_id' => 1,

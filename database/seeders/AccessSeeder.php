@@ -7,11 +7,6 @@ use Illuminate\Support\Str;
 
 class AccessSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         Access::create([
@@ -19,16 +14,17 @@ class AccessSeeder extends Seeder
             'type_id' => 1,
         ]);
 
-        Access::create([
-            'user_id' => 2,
-            'type_id' => 2,
-        ]);
+        if(env('APP_DEBUG'))
+        {
+            Access::create([
+                'user_id' => 2,
+                'type_id' => 2,
+            ]);
 
-        Access::create([
-            'user_id' => 3,
-            'type_id' => 3,
-        ]);
-
-
+            Access::create([
+                'user_id' => 3,
+                'type_id' => 3,
+            ]);
+        }
     }
 }

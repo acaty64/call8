@@ -7,8 +7,17 @@
         @endif
     </div>
 	@if($status == 'index')
+		<div class="container">
+			<div class="row">
+				<div class="col-6">
+					<button class="btn-success btn-lg" wire:click="setStatus('create')">Agregar</button>
+				</div>
+				<div class="col-6" align="right">
+					<button class="btn-success btn-lg" wire:click="export()">Exportar</button>
+				</div>
+			</div>
+		</div>
 		<table class="table">
-			<button class="btn-success btn-lg" wire:click="setStatus('create')">Agregar</button>
 			<thead>
 				<tr>
 					<th><b>Id</b></th>

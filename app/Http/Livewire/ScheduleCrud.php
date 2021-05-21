@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\SchedulesExport;
 use App\Models\Office;
 use App\Models\Schedule;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ScheduleCrud extends Component
 {
@@ -117,6 +120,18 @@ class ScheduleCrud extends Component
         $schedule->delete();
         $this->schedules = Schedule::all();
         session()->flash('message', 'Registro ' . $schedule_id . ' eliminado.');
+    }
+
+
+    public function export()
+    {
+        $rowSelect = $this->schedules->keys();
+
+        $now = CarbonImmutable::now()->format('Y_m_d_H_i_s');
+        $file_out =  'Schedules_' . $now . '.xlsx';
+
+        return Excel::download(new SchedulesExport($rowSelect), $file_out);
+
     }
 
 }

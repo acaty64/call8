@@ -114,3 +114,30 @@ $user->getAvatar();
 Test en navegador.
 
 call.ucssfcec.work/login/google
+
+
+
+*****************************************
+
+EXCEL EXPORT
+Fuente: https://stackoverflow.com/questions/62420521/laravel-7-w-laravel-excel-your-requirements-could-not-be-resolved-to-an-instal
+
+~> ./dock composer require maatwebsite/excel --ignore-platform-reqs
+
+'providers' => [
+    /*
+     * Package Service Providers...
+     */
+    Maatwebsite\Excel\ExcelServiceProvider::class,
+]
+
+'aliases' => [
+    ...
+    'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+]
+
+
+~> ./dock art vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" --tag=config
+
+
+~> ./dock art make:export SchedulesExport --model=Schedule

@@ -3,6 +3,10 @@
 use App\Http\Controllers\Auth\LoginGoogleController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/php', function () {
+	return view('welcome');
+});
+
 Route::get('/', function () {
 	if(env('APP_DEBUG')){
 		return redirect(route('login'));

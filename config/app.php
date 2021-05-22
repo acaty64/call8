@@ -170,7 +170,8 @@ return [
          */
         Laravel\Socialite\SocialiteServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */

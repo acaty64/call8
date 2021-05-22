@@ -7,6 +7,8 @@ Route::get('/php', function () {
 	return view('welcome');
 });
 
+Route::get('/chart/test', [App\Http\Controllers\ChartController::class, 'index'])->name('chart.index');
+
 Route::get('/', function () {
 	if(env('APP_DEBUG')){
 		return redirect(route('login'));

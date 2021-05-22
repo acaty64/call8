@@ -39,6 +39,7 @@ RUN apt-get update \
         php7.3-sqlite3 \
         php7.3-imagick \
         php7.3-sockets \
+        php7.3-zip \
     && php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
     && mkdir /run/php \
     && apt-get remove -y \
@@ -50,6 +51,8 @@ RUN apt-get update \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
+
+COPY php.ini /etc/php/7.3/fpm/php.ini
 
 COPY default /etc/nginx/sites-available/default
 

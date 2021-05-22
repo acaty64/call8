@@ -1,0 +1,24 @@
+Fuente: https://www.youtube.com/watch?v=pqVoUYzZQgk
+Laravel Charts, Part 2: Setting up on our Laravel site
+
+*** He agregado --ignore-platform-reqs
+Fuente: https://stackoverflow.com/questions/62420521/laravel-7-w-laravel-excel-your-requirements-could-not-be-resolved-to-an-instal
+
+./dock composer require consoletvs/charts ^6  --ignore-platform-reqs
+
+php artisan vendor:publish --tag=charts
+
+
+php artisan make:chart SampleChart
+
+
+npm install chart.js@2.5.0
+
+
+
+
+
+
+
+
+

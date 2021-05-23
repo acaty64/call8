@@ -5,8 +5,10 @@ namespace App\Http\Livewire;
 use App\Events\Ring2Event;
 use App\Events\RingEvent;
 use App\Http\Traits\WindowTrait;
+use App\Models\Schedule;
 use App\Models\User;
 use App\Models\Window;
+use Carbon\CarbonImmutable;
 use Livewire\Component;
 
 class HostScreen extends Component
@@ -25,6 +27,7 @@ class HostScreen extends Component
     public $message;
     public $client;
     public $host;
+    public $program;
 
     protected $listeners = [
 
@@ -47,6 +50,7 @@ class HostScreen extends Component
         $this->window = [];
         $this->screen = 'close';
         $this->openWindow();
+        $this->getProgram();
     }
 
     public function render()
@@ -118,13 +122,9 @@ class HostScreen extends Component
         if($window)
         {
             $this->window = $window;
-
             $this->status = $window->status->status;
-
             $this->message = $this->status;
-
             $this->office_id = $window->office_id;
-
             $this->screen = 'open';
 
             return true;
@@ -189,6 +189,37 @@ class HostScreen extends Component
         $this->message = $this->status;
     }
 
+    public function getProgram()
+    {
+        $f_ini = CarbonImmutable::now();
+        $f_fin = CarbonImmutable::now()->addDays(6);
+
+        $days = [];
+        for ($i=0; $i < 7; $i++) {
+            $f = $f_ini->addDays($i)->format('Y-m-d');
+            $days[] = $f;
+        }
+
+        $program = [];
+        foreach ($days as $key => $day) {
+            $dia = CarbonImmutable::create($day);
+            $diaSemana = $dia->dayOfWeek;
+            $schedules = Schedule::where('date_start', '<=', $day )
+                                    ->where('date_end', '>=', $day)
+                                    ->where('day', $diaSemana)
+                                    ->where('host_id', \Auth::user()->id)
+                                    ->get();
+            foreach ($schedules as $schedule) {
+                $program[] = [
+                    'fecha' => $dia->isoformat('dddd') . ' ' . $dia->format('d-m-Y'),
+                    'hora_ini' => $schedule->hour_start,
+                    'hora_fin' => $schedule->hour_end,
+                ];
+            }
+        }
+
+        $this->program = $program;
+    }
 
 }
 

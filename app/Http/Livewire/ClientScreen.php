@@ -7,6 +7,7 @@ use App\Http\Traits\CallTrait;
 use App\Http\Traits\ScheduleTrait;
 use App\Http\Traits\WindowTrait;
 use App\Models\Call;
+use App\Models\Link;
 use App\Models\Office;
 use App\Models\Status;
 use App\Models\Trace;
@@ -40,6 +41,7 @@ class ClientScreen extends Component
     public $others;
     public $client;
     public $host;
+    public $links;
 
     protected $listeners = [
         'echo-private:channel-ring,Ring2Event' => 'ring',
@@ -60,6 +62,7 @@ class ClientScreen extends Component
         $this->client = \Auth::user();
         $this->horario = [];
         $this->getHorarios();
+        $this->links = Link::where('active', 1)->orderBy('order')->get();
     }
 
     public function render()
@@ -196,10 +199,13 @@ class ClientScreen extends Component
             }
         };
 
+        if($array['today']['offices'] == []){
+            $this->message = 'No hay operadores programados, revise los horarios de atención.';
+        }
+
+
         $tomorrow = CarbonImmutable::now()->dayOfWeek + 1;
-        // if($today == 7){
-        //     $tomorrow = 0;
-        // }
+
         $array['tomorrow'] = [
             'date' => CarbonImmutable::now()->addDays(1)->isoformat('dddd') . ' ' . CarbonImmutable::now()->addDays(1)->format('d-m-Y'),
             'offices' => [],

@@ -12,7 +12,6 @@
             </div>
         @endif
     </div>
-data_test: {{$data_test}}
     @if($screen == 'open')
 	    <div class="container">
 	    	<div><h1>{{ $window['office']['name']  }}</h1></div>
@@ -53,6 +52,32 @@ data_test: {{$data_test}}
 			@endif
 		</div>
 	@else
-		<h1>No tiene turno</h1>
+		<h1>No tiene turno programado.</h1>
 	@endif
+	<div class="card">
+		<div class="card-header" align="center">
+			<h2>Programación</h1>
+		</div>
+		<div class="card-body">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">Dia</th>
+						<th scope="col">Hora de Inicio</th>
+						<th scope="col">Hora de Fin</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($program as $item)
+						<tr>
+							<td>{{$item['fecha']}}</td>
+							<td>{{$item['hora_ini']}}</td>
+							<td>{{$item['hora_fin']}}</td>
+						</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
+	</div>
+
 </div>

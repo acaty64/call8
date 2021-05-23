@@ -80,9 +80,9 @@
         <!-- Footer -->
         @include('layouts.partials.footer')
     </div>
-    {!! $chart->script() !!}
+    {{-- {!! $chart->script() !!} --}}
 
     {{-- @livewireScripts --}}
-    {{-- @yield('script') --}}
+    @yield('script')
 </body>
 </html>

@@ -7,7 +7,8 @@ Route::get('/php', function () {
 	return view('welcome');
 });
 
-Route::get('/chart/test', [App\Http\Controllers\ChartController::class, 'index'])->name('chart.index');
+
+Route::get('/chart/test', [App\Http\Controllers\ChartController::class, 'test'])->name('chart.test');
 
 Route::get('/', function () {
 	if(env('APP_DEBUG')){

@@ -27,6 +27,11 @@ Route::get('/dashboard', [
 	'uses' => 'DashboardController@index'
 ]);
 
+Route::get('/chart/statistics', [
+	'as' => 'chart.statistics',
+	'uses' => 'ChartController@statistics'
+]);
+
 Route::get('/windows/index', [
 	'as' => 'windows.index',
 	'uses' => 'WindowController@index'

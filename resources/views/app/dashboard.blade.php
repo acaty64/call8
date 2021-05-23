@@ -8,7 +8,8 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-8"><h1>DASHBOARD</h1></div>
-                        <div class="col-md-2" align="right"><a href="{{ URL::previous() }}" class="btn btn-warning">Regresar</a></div>
+                        <div class="col-md-2" align="right"><a href="{{ route('chart.statistics') }}" class="btn btn-success">Estadísticas</a></div>
+                        <div class="col-md-2" align="right"><a href="{{ route('dashboard') }}" class="btn btn-warning">Regresar</a></div>
                     </div>
                 </div>
                 <div class="card">

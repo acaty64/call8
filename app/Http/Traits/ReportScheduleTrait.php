@@ -9,6 +9,15 @@ use Carbon\CarbonImmutable;
 
 trait ReportScheduleTrait
 {
+	public function DateRange($date_start, $date_end)
+	{
+		$fechas = [];
+		for ($i=0; $i < $date_start->diffInDays($date_end) + 1; $i++) {
+			$fechas[] = $date_start->addDays($i)->format('Y-m-d');
+		}
+		return $fechas;
+	}
+
 	public function ScheduleDateRange($date_start, $date_end)
 	{
 		$array_where = [

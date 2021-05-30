@@ -40,7 +40,7 @@ class Trait_ReportTraceTest extends TestCase
     	$date_end = CarbonImmutable::now()->addDays(3)->format('Y-m-d');
 
     	$response = $this->HostTimeAverage($date_start, $date_end);
-
+// dd($response);
         $this->assertTrue($response != "");
 	}
 

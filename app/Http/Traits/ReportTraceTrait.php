@@ -172,7 +172,6 @@ trait ReportTraceTrait
 	public function HostTimeAverage($date_start, $date_end)
 	{
 		$data = $this->StatisticHosts($date_start, $date_end);
-
 		$nHosts = 0;
 		$date_0 = CarbonImmutable::createFromTime(0, 0, 0, 'America/Lima');
 		$date_1 = CarbonImmutable::createFromTime(0, 0, 0, 'America/Lima');

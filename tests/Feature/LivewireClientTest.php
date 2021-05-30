@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Http\Livewire\ClientScreen;
 use App\Models\Call;
+use App\Models\Schedule;
 use App\Models\Status;
 use App\Models\User;
 use App\Models\Window;
@@ -25,11 +26,24 @@ class LivewireClientTest extends TestCase
                $this->markTestIncomplete();
         }
 
+        $now = CarbonImmutable::now();
+
+        $schedule = Schedule::create([
+            'office_id' => 1,
+            'host_id' => 1,
+            'day' => $now->dayOfWeek,
+            'hour_start' => $now->format('H:00'),
+            'hour_end' => $now->addHour(1)->format('H:00'),
+            'date_start' => $now->format('Y-m-d'),
+            'date_end' => $now->addDays(1)->format('Y-m-d'),
+
+        ]);
+
         $user = User::find(7);
         Livewire::actingAs($user)
             ->test(ClientScreen::class)
             ->set('office_id', '')
-            ->assertSeeHtml('Bienvenido, ')
+            ->assertSeeHtml('HORARIOS DE ATENCIÓN')
             ->assertSeeHtml('seleccione la oficina con la que desea comunicarse.');
     }
 

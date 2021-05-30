@@ -13,7 +13,7 @@ class UserTest extends TestCase
         $this->assertTrue(true);
         $this->assertDatabaseHas('users', [
 	        'name' => 'Master',
-            'email' => 'master@ucss.edu.pe',
+            'email' => 'aarashiro@ucss.edu.pe',
 	    ]);
     }
 }

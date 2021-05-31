@@ -203,7 +203,7 @@ class LivewireScheduleTest extends TestCase
 
         $response = $this->horary($schedule->office_id);
 
-        if($now->format('H') > 21){
+        if($now->format('H') > 21 || $now->format('H') < 8){
                $this->markTestIncomplete();
         }
 

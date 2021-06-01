@@ -48,8 +48,15 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
-$response = tap($kernel->handle(
-    $request = Request::capture()
-))->send();
+if(env('APP_ENV') === 'production'){
+	$response = tap($kernel->handle(
+	    $request = App\Custom\Http\Request::capture()
+	))->send();
+}else{
+	$response = tap($kernel->handle(
+	    $request = Request::capture()
+	))->send();
+}
+
 
 $kernel->terminate($request, $response);

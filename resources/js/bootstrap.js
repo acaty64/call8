@@ -40,9 +40,10 @@ window.Echo = new Echo({
 
     wsHost: window.location.hostname,
     wsPort: 6001,
-    enabledTransports: ['ws'],
-    encrypted: false,       // Con SSL cambiar a true
-    // enabledTransports: ['ws', 'wss'],
+    // enabledTransports: ['ws'],  // en local
+    enabledTransports: ['ws', 'wss'],    // Con SSL
+    // encrypted: false,       // Con SSL cambiar a true
+    encrypted: true,       // Con SSL cambiar a true
     forceTLS: false,
     disableStats: true,     // Deshabilita Pusher
     disabledTransports: ['sockjs'],

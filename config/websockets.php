@@ -29,8 +29,10 @@ return [
             'secret' => env('PUSHER_APP_SECRET'),
             // 'path' => env('PUSHER_APP_PATH'),
             // 'capacity' => null,
-            'enable_client_messages' => true,
-            'enable_statistics' => true,
+            // 'enable_client_messages' => false,  // Localhost
+            'enable_client_messages' => env('WEBSOCKETS_ENABLE_CLIENT_MESSAGES'),
+            // 'enable_statistics' => true,
+            'enable_statistics' => env('WEBSOCKETS_ENABLE_STATISTICS'),
         ],
     ],
 
@@ -96,13 +98,17 @@ return [
          * When the clean-command is executed, all recorded statistics older than
          * the number of days specified here will be deleted.
          */
-        'delete_statistics_older_than_days' => 60,
+        'delete_statistics_older_than_days' => 30,
 
         /*
          * Use an DNS resolver to make the requests to the statistics logger
          * default is to resolve everything to 127.0.0.1.
          */
-        'perform_dns_lookup' => false,
+        // 'perform_dns_lookup' => false,
+        'secret' => env('WEBSOCKETS_PERFORM_DNS_LOOKUP'),
+
+        // Localhost ******************
+        'perform_dns_lookup' => env('WEBSOCKETS_PERFORM_DNS_LOOKUP'),
     ],
 
     /*

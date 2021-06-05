@@ -33,19 +33,37 @@ import Echo from 'laravel-echo';
 
 window.Pusher = require('pusher-js');
 
+// Rehacer npm run dev y reiniciar servidor
+// Localhost
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 
     wsHost: window.location.hostname,
+
     wsPort: 6001,
-    // enabledTransports: ['ws'],  // en local
-    enabledTransports: ['ws', 'wss'],    // Con SSL
-    // encrypted: false,       // Con SSL cambiar a true
-    encrypted: true,       // Con SSL cambiar a true
+    enabledTransports: ['ws'],
+    encrypted: false,
     forceTLS: false,
-    disableStats: true,     // Deshabilita Pusher
-    disabledTransports: ['sockjs'],
-    // disabledTransports: ['sockjs', 'xhr_polling', 'xhr_streaming'],
+    disableStats: true, // Deshabilita Pusher
+    disabledTransports: ['sockjs'], //??Por error traefik??
 });
+
+// SSL Digital Ocean    ******************
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+
+//     wsHost: window.location.hostname,
+
+//     wsPort: 6001,
+//     wssPort: 6001,
+//     enabledTransports: ['ws', 'wss'],
+//     encrypted: true,
+//     forceTLS: true,
+//     disableStats: true, // Deshabilita Pusher
+//     disabledTransports: ['sockjs'],
+
+// });

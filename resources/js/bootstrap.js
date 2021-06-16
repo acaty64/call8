@@ -47,7 +47,7 @@ window.Echo = new Echo({
     encrypted: false,
     forceTLS: false,
     disableStats: true, // Deshabilita Pusher
-    disabledTransports: ['sockjs'], //??Por error traefik??
+    // disabledTransports: ['sockjs'], //??Por error traefik??
 });
 
 // SSL Digital Ocean    ******************
@@ -57,10 +57,10 @@ window.Echo = new Echo({
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     wsHost: window.location.hostname,
 //     wsPort: 6001,
-//     //wssPort: 6001,
+//     wssPort: 6001,
 //     enabledTransports: ['ws', 'wss'],
 //     encrypted: true,
 //     forceTLS: true,
 //     disableStats: true, // Deshabilita Pusher
-//     disabledTransports: ['sockjs'],
+//     // disabledTransports: ['sockjs'],
 // });

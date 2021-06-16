@@ -28,7 +28,6 @@ class TestController extends Controller
 
     public function send1(Request $request)
     {
-        // event(new Test1Event($request->data));
         broadcast(new Test1Event($request->data));
         return response()->json($request->data);
     }

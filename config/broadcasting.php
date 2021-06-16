@@ -43,6 +43,11 @@ return [
                 'scheme' => env('PUSHER_SCHEME'),
                 'useTLS' => env('PUSHER_USETLS'),
             ],
+        // SSL DigitalOcean
+        //         'curl_options' => [
+        //             CURLOPT_SSL_VERIFYHOST => 0,
+        //             CURLOPT_SSL_VERIFYPEER => 0,
+        //         ],
         ],
 
         // SSL DigitalOcean ******************
@@ -52,12 +57,16 @@ return [
         //     'secret' => env('PUSHER_APP_SECRET'),
         //     'app_id' => env('PUSHER_APP_ID'),
         //     'options' => [
-        //         //'cluster' => env('PUSHER_APP_CLUSTER'),
-        //         'encrypted' => true,
-        //         'host' => '127.0.0.1',
-        //         'port' => 6001,
-        //         'scheme' => 'https',  // Con SSL https
-        //         'useTLS' => true,
+        //         'cluster' => env('PUSHER_APP_CLUSTER'),
+        //         'encrypted' => env('PUSHER_ENCRYPTED'),
+        //         'host' => env('PUSHER_HOST'),
+        //         'port' => env('PUSHER_PORT'),
+        //         'scheme' => env('PUSHER_SCHEME'),  // Con SSL https
+        //         'useTLS' => env('PUSHER_USETLS'),
+        //         'curl_options' => [
+        //             CURLOPT_SSL_VERIFYHOST => 0,
+        //             CURLOPT_SSL_VERIFYPEER => 0,
+        //         ],
         //     ],
         // ],
 

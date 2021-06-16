@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" rel="stylesheet" defer></script>
+    <script src="{{ asset('js/chart.min.js') }}" rel="stylesheet" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

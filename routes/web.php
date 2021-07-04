@@ -3,6 +3,10 @@
 use App\Http\Controllers\Auth\LoginGoogleController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/web-rtc', function () {
+	return view('tests.webrtc_tests');
+});
+
 Route::get('/php', function () {
 	return view('welcome');
 });

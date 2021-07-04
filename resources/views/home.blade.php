@@ -13,8 +13,13 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    {{ __('You are logged in!') }}
+                    <ul>
+                        <li><a href="{{ env('APP_URL') . '/laravel-websockets'}}">Laravel Websockets</a></li>
+                        <li><a href="{{ env('APP_URL') . '/master/menu'}}">Master</a></li>
+                        <li><a href="{{ env('APP_URL') . '/call/client'}}">Cliente</a></li>
+                        <li><a href="{{ env('APP_URL') . '/tests'}}">Tests</a></li>
+                        <li><a href="{{ env('APP_URL') . '/web-rtc'}}">web-rtc - incompleto</a></li>
+                    </ul>
                 </div>
             </div>
         </div>

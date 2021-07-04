@@ -42,6 +42,7 @@ class ClientScreen extends Component
     public $client;
     public $host;
     public $links;
+    public $custom_time;
 
     protected $listeners = [
         'echo-private:channel-ring,Ring2Event' => 'ring',
@@ -65,13 +66,20 @@ class ClientScreen extends Component
         $this->links = Link::where('active', 1)->orderBy('order')->get();
     }
 
+    public function watch()
+    {
+        $this->custom_time = Carbon::now()->format('H:i:s');
+    }
+
     public function render()
     {
+        $this->watch();
         return view('livewire.client-screen');
     }
 
     public function here()
     {
+        $this->watch();
         $window = new Window;
         $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;
@@ -79,6 +87,7 @@ class ClientScreen extends Component
 
     public function joining()
     {
+        $this->watch();
         $window = new Window;
         $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;
@@ -86,6 +95,7 @@ class ClientScreen extends Component
 
     public function leaving($data)
     {
+        $this->watch();
         $window = new Window;
         $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;
@@ -93,6 +103,7 @@ class ClientScreen extends Component
 
     public function start()
     {
+        $this->watch();
         $call = Call::where('client_id', \Auth::user()->id)->where('status_id', '>', 1)->first();
         if($call){
             $this->call_id = $call->id;
@@ -111,6 +122,7 @@ class ClientScreen extends Component
 
     public function ring($data)
     {
+        $this->watch();
         if($data['message']){
             if($data['message'] == 'Connecting'){
                 $this->host = User::find($data['host_id']);
@@ -138,6 +150,7 @@ class ClientScreen extends Component
 
     public function wait()
     {
+        $this->watch();
         $this->status = 'En Pausa';
         $response = $this->call_open($this->office_id);
         $this->call_id = $response['id'];
@@ -146,6 +159,7 @@ class ClientScreen extends Component
 
     public function answer()
     {
+        $this->watch();
         $this->message = 'Conectando ...., espere.';
         $response = $this->call_answer($this->call_id);
         $this->status = $response['status'];
@@ -154,6 +168,7 @@ class ClientScreen extends Component
 
     public function stop()
     {
+        $this->watch();
         $this->message = 'Desconectando ....';
         $response = $this->call_close();
         $this->status = 'Cerrado';
@@ -163,6 +178,7 @@ class ClientScreen extends Component
 
     public function updated($variable, $value)
     {
+        $this->watch();
         if($variable == 'office_id')
         {
             $this->office = Office::find($value);
@@ -174,6 +190,7 @@ class ClientScreen extends Component
     public function getHorarios()
     {
 
+        $this->watch();
         $offices = Office::all();
         $today = CarbonImmutable::now()->dayOfWeek;
 
@@ -227,6 +244,7 @@ class ClientScreen extends Component
 
     public function setOfficeId($value)
     {
+        $this->watch();
         $this->office_id = $value;
     }
 }

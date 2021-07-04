@@ -35,7 +35,7 @@ class ApiTest extends TestCase
 
         $this->actingAs($host);
 
-        $response = $this->get('/api/stop-window/' . $window->id);
+        $response = $this->get('/api/stop-window/' . $window->host->id);
 
         $this->assertDatabaseHas('windows', [
             'id' => $window->id,
@@ -76,7 +76,7 @@ class ApiTest extends TestCase
 
         $this->actingAs($host);
 
-        $response = $this->get('/api/stop-window/' . $window->id);
+        $response = $this->get('/api/stop-window/' . $window->host->id);
 
         $this->assertDatabaseHas('windows', [
             'id' => $window->id,

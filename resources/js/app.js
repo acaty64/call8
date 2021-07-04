@@ -24,6 +24,8 @@ Vue.component('test1-component', require('./components/Test1Component.vue').defa
 Vue.component('test2-component', require('./components/Test2Component.vue').default);
 Vue.component('test3-component', require('./components/Test3Component.vue').default);
 Vue.component('video-chat', require('./components/VideoChat.vue').default);
+Vue.component('web-rtc', require('./components/WebRTCComponent.vue').default);
+Vue.component('web-rtc_1', require('./components/WebRTCComponent_1.vue').default);
 
 
 /**

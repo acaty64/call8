@@ -202,7 +202,7 @@ trait ReportTraceTrait
 		$m = $date_1->format('i')*60;
 		$s = $date_1->format('s');
 
-		$average = ($h + $m + $s) / $nHosts;
+		$average = ($h + $m + $s) / ($nHosts == 0 ? 1 : $nHosts);
 		$cAverage = Carbon::parse($average)->format("H:i:s");
 
 		return $cAverage;
@@ -242,7 +242,7 @@ trait ReportTraceTrait
 		$h = $date_1->format('H')*60*60;
 		$m = $date_1->format('i')*60;
 		$s = $date_1->format('s');
-		$average = ($h + $m + $s) / $nHosts;
+		$average = ($h + $m + $s) / ($nHosts == 0 ? 1 : $nHosts);
 		$cAverage = Carbon::parse($average)->format("H:i:s");
 
 		return $cAverage;

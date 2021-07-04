@@ -6,6 +6,7 @@ use App\Events\Ring2Event;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\Trace;
+use App\Models\User;
 use App\Models\Window;
 
 
@@ -93,15 +94,9 @@ trait WindowTrait {
 
     }
 
-    public function window_stop($window_id = '')
+    public function window_stop($user_id)
     {
-        $host = \Auth::user();
-        if(!$host)
-        {
-            $host = Window::find($window_id)->host;
-        }
-
-        $host_id = $host->id;
+        $host = User::findOrFail($user_id);
 
         $window = Window::findOrFail($host->window_id);
         $trace = $window;

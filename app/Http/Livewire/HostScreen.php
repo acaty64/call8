@@ -1,5 +1,5 @@
 <?php
-
+ 
 namespace App\Http\Livewire;
 
 use App\Events\Ring2Event;
@@ -161,7 +161,7 @@ class HostScreen extends Component
     {
         $this->message = 'Desconectando ....';
         $this->data_test = 'function stopWindow';
-        $response = $this->window_stop();
+        $response = $this->window_stop($this->host->id);
         $this->window = $response;
         $this->status = $response->status->status;
         $this->link = $response->link;

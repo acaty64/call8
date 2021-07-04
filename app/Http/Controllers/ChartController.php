@@ -51,7 +51,6 @@ class ChartController extends Controller
             'pointRadius'               => 1,
         ];
 
-
 		$chart = new SampleChart;
 		$chart->title('Cantidad de Operadores');
 		$chart->labels($fechas);
@@ -62,12 +61,11 @@ class ChartController extends Controller
 		$c_attentions = [];
 		foreach ($fechas as $key => $value) {
 			$clients[] = Trace::whereDate('created_at', $value)->where('client_id', '!=', null)->pluck('client_id')->unique()->count();
-			$c_attentions[] = Trace::whereDate('created_at', $_value)
+			$c_attentions[] = Trace::whereDate('created_at', $value)
 							->where('client_id', '!=', null)
 							->where('status_id', 4)
 							->count();
 		}
-
 		$chart1 = new SampleChart;
 		$chart1->title('Cantidad de Usuarios');
 		$chart1->labels($fechas);

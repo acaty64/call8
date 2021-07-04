@@ -36,3 +36,5 @@
     {!! $chart->script() !!}
     {!! $chart1->script() !!}
 @endsection
+
+@section('view','statistics/dashboard.blade.php')

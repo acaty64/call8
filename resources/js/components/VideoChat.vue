@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="text-center">VideoChat.vue</h1>
+    <h1 class="text-center">VideoChat.vue - yyyyyyyyyyyyyyyyy</h1>
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-8">
@@ -20,6 +20,8 @@
             <div class="row justify-content-center">
               <div v-if="is_host && is_connected">
                 <button @click="startVideoChat(other.id)" v-text="`Conectar con ${other.name}`" class="btn btn-large btn-success"/>
+              </div>
+              <div v-if="is_host">
                 <button @click="stopWindow()" class="btn btn-large btn-danger">Colgar</button>
               </div>
             </div>
@@ -115,6 +117,15 @@ export default {
     }
   },
   methods: {
+    closeWindow(){
+      // Redirige a ruta call
+      if(this.is_host){
+        // router.push('/call/host');
+        window.location.href = '/call/host';
+      }
+      window.location.href = '/call/client';
+      // router.push('/call/client');
+    },
     saveComments(){
       var URLdomain = window.location.host;
       var protocol = window.location.protocol;
@@ -156,20 +167,20 @@ export default {
     stopWindow(){
       var URLdomain = window.location.host;
       var protocol = window.location.protocol;
-      var url = protocol+'//'+URLdomain+'/api/stop-window/' + this.client.id;
+      var url = protocol+'//'+URLdomain+'/api/stop-window/' + this.user.id;
       console.log('url: ', url);
       axios.get(url)
         .then((response) => {
-            var url2 = protocol+'//'+URLdomain+'/api/send-stop';
-            console.log('url2: ???? Hace lo mismo ????', url2);
-            axios.get(url2)
-              .then((resp) => {
-                console.log('stopWindow send-stop');
+            // var url2 = protocol+'//'+URLdomain+'/api/send-stop';
+            // console.log('url2: ???? Hace lo mismo ????', url2);
+            // axios.get(url2)
+            //   .then((resp) => {
+            //     console.log('stopWindow send-stop');
 
-              })
-              .catch(function (err) {
-                console.log('err stopWindow 2', err)
-              });
+            //   })
+            //   .catch(function (err) {
+            //     console.log('err stopWindow 2', err)
+            //   });
             console.log('Get Data received:', response.data);
             window.location.href = '/call/host';
           })
@@ -189,10 +200,11 @@ export default {
       }
     },
     getPermissions() {
-// console.log('getPermissions');
       return new Promise((res, rej) => {
         navigator.mediaDevices.getUserMedia({video: true, audio: true})
         .then((stream) => {
+          this.stream = stream;
+console.log('getPermissions stream: ', this.stream);
           res(stream);
         })
         .catch(err => {
@@ -234,6 +246,8 @@ console.log('Conectado: ', userId);
             peer.destroy();
           }
           delete this.peers[userId];
+          // redirige a ruta call
+          this.closeWindow();
         });
         this.peers[userId] = peer;
       }

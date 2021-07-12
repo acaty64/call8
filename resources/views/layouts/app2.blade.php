@@ -12,6 +12,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" rel="stylesheet" defer></script>
     <script src="{{ asset('js/chart.min.js') }}" rel="stylesheet" defer></script>
+    <script src='https://meet.jit.si/external_api.js'></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

@@ -26,6 +26,7 @@ Vue.component('test3-component', require('./components/Test3Component.vue').defa
 Vue.component('video-chat', require('./components/VideoChat.vue').default);
 Vue.component('web-rtc', require('./components/WebRTCComponent.vue').default);
 Vue.component('web-rtc_1', require('./components/WebRTCComponent_1.vue').default);
+Vue.component('jitsi-chat', require('./components/JitsiChat.vue').default);
 
 
 /**

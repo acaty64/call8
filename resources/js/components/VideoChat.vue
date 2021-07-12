@@ -222,14 +222,12 @@ console.log('Conectado: ', userId);
       this.getPeer(userId, true);
     },
     getPeer(userId, initiator) {
-// console.log('getPeer 1', [userId, initiator]);
       if(this.peers[userId] === undefined) {
         let peer = new Peer({
           initiator,
           stream: this.stream,
           trickle: false
         });
-// console.log('getPeer 1', peer);
         peer.on('signal', (data) => {
           this.channel.trigger(`client-signal-${userId}`, {
             userId: this.user.id,
@@ -267,7 +265,7 @@ console.log('Conectado: ', userId);
         const peer = this.getPeer(signal.userId, false);
         peer.signal(signal.data);
       });
-console.log('setupVideoChat this.channel.members: ', this.channel.members);
+      // console.log('setupVideoChat this.channel.members: ', this.channel.members);
     },
     getPusherInstance() {
       return new Pusher(this.pusherKey, {

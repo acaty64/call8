@@ -13,11 +13,16 @@ class VideoChatController extends Controller
         $other = User::find($other_id);
         $call = Call::find($call_id);
 
-        return view('app.video.index')->with([
+        return view('app.video.jitsi')->with([
             'user' => $user,
             'other' => $other,
             'call' => $call,
         ]);
+        // return view('app.video.index')->with([
+        //     'user' => $user,
+        //     'other' => $other,
+        //     'call' => $call,
+        // ]);
     }
 
     public function auth(Request $request) {

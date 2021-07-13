@@ -72,21 +72,20 @@ class AdminRoutesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_user_can_view_tests()
+    public function a_master_user_can_view_tests()
     {
-        $admin = User::find(2);
-        $this->assertTrue($admin->is_admin);
-        $this->assertFalse($admin->is_master);
-        $this->actingAs($admin);
+        $master = User::find(1);
+        $this->assertTrue($master->is_master);
+        $this->actingAs($master);
         $response = $this->get('/tests');
         $response->assertStatus(200);
     }
 
     /** @test */
-    public function non_admin_user_cannot_view_tests()
+    public function non_master_user_cannot_view_tests()
     {
         $host = User::find(3);
-        $this->assertFalse($host->is_admin);
+        $this->assertFalse($host->is_master);
         $this->actingAs($host);
         $response = $this->get('/tests');
         $response->assertStatus(403);

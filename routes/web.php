@@ -3,16 +3,6 @@
 use App\Http\Controllers\Auth\LoginGoogleController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/web-rtc', function () {
-	return view('tests.webrtc_tests');
-});
-
-Route::get('/php', function () {
-	return view('welcome');
-});
-
-
-Route::get('/chart/test', [App\Http\Controllers\ChartController::class, 'test'])->name('chart.test');
 
 Route::get('/', function () {
 	if(env('APP_DEBUG')){
@@ -57,12 +47,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 /////////////////// START VIDEO-CHAT ROUTES //////////////////
 Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function(){
-
-Route::get('/test_route', function ()
-{
-	dd('Ruta auth en web.php');
-} );
-
 
 	Route::get('/video_chat/{user_id}/{other_id}/{call_id}', [
 		'as' => 'app.video_chat',

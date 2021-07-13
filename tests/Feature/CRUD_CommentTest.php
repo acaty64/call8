@@ -50,7 +50,8 @@ class CRUD_CommentTest extends TestCase
         $this->actingAs($host);
         $response = $this->get($route)
         		->assertStatus(200);
-        $response->assertViewIs('app.video.index');
+        // $response->assertViewIs('app.video.index');
+        $response->assertViewIs('app.video.jitsi');
                 // TODO Hacer VUE test
         		// ->assertSee('Consulta')
         		// ->assertSee('Respuesta');

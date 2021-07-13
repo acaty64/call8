@@ -8,12 +8,12 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class FirstTest extends TestCase
+class ChannelTest extends TestCase
 {
     use DatabaseTransactions;
 
     /** @test */
-    public function testLoginUserShowTestView()
+    public function testLoginMasterShowTestView()
     {
         $user = User::find(1);
         $this->actingAs($user);

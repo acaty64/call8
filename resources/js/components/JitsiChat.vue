@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     getData(){
-      this.room = 'room_' + this.window.id + this.call_id;
+      this.room = 'room_' + this.window.id + '_' + this.call_id;
       this.options = {
           roomName: this.room,
           width: 700,

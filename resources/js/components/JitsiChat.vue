@@ -93,6 +93,7 @@ export default {
       client_comment: '',
       host_comment: '',
       options: {},
+      domain: 'meet.jit.si',
     }
   },
   mounted() {

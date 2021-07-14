@@ -258,13 +258,13 @@ class Trait_WindowTest extends TestCase
 
     public function test_host_close_a_window()
     {
-        $user = User::findOrFail(1);
+        $user = User::findOrFail(2);
 
         $this->actingAs($user);
 
         $status = Status::where('status', 'Cerrado')->first();
 
-        $response = $this->window_out();
+        $this->assertTrue($user->is_host);
 
         $this->assertDatabaseHas('windows', [
             'id' => $response['id'],
@@ -287,10 +287,12 @@ class Trait_WindowTest extends TestCase
 
         $this->actingAs($user);
 
+        $this->assertTrue($user->is_admin);
+
         $status = Status::where('status', 'Cerrado')->first();
 
         $host_id = $user->id;
- 
+
         $response = $this->window_out($host_id);
 
         $this->assertDatabaseHas('windows', [

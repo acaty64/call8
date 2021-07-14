@@ -120,7 +120,7 @@ export default {
       this.room = 'room_' + this.window.id + '_' + this.call_id;
       this.options = {
           roomName: this.room,
-          width: 700,
+          width: 700 ,
           height: 700,
           parentNode: document.querySelector('#meet'),
           userInfo: {
@@ -212,8 +212,8 @@ export default {
 </script>
 <style>
 .video-container {
-  width: 500px;
-  height: 380px;
+  width: 700px;
+  height: 700px;
   margin: 8px auto;
   border: 3px solid #000;
   position: relative;

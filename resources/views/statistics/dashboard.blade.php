@@ -4,7 +4,7 @@
 <div class="container">
 
     <div class="row justify-content-center">
-        <div class="col-md-8"><h1>ESTADISTICAS</h1></div>
+        <div class="col-md-8"><h1>ESTADISTICAS (pdte por Office_id)</h1></div>
         <div class="col-md-2" align="right"><a href="{{ URL::previous() }}" class="btn btn-warning">Regresar</a></div>
     </div>
     <div class="row justify-content-center">

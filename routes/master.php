@@ -18,8 +18,12 @@ Route::get('/master/menu', [
 	'uses' => 'MenuController@master'
 ]);
 
-Route::get('/tests', function () {
-    return view('tests.tests')->with(['user' => Auth::user()]);
+Route::get('/test/vue', function () {
+    return view('tests.test_vue')->with(['user' => \Auth::user()]);
+});
+
+Route::get('/test/livewire', function () {
+    return view('tests.test_livewire')->with(['user' => \Auth::user()]);
 });
 
 Route::get('/pusher/tests', function () {

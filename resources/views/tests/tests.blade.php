@@ -23,15 +23,15 @@
                 </div>
                 <div class="card-body">
                     <h1>Prueba Livewire Channel</h1>
-                    @livewire('test.test1-screen')
+                    @livewire('test.test1-screen', [], '1')
                 </div>
                 <div class="card-body">
                     <h1>Prueba Livewire Private Channel</h1>
-                    @livewire('test.test2-screen')
+                    @livewire('test.test2-screen', [], '2')
                 </div>
                 <div class="card-body">
                     <h1>Prueba Livewire Presence Channel</h1>
-                    @livewire('test.test3-screen')
+                    @livewire('test.test3-screen', [], '3')
                 </div>
                 <div class="card-body">
                     <h1>Prueba Channel</h1>

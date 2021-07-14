@@ -90,12 +90,5 @@ Route::get('/comments/index', [
 ]);
 
 
-Route::get('/tests', function () {
-    return view('tests.tests')->with(['user' => Auth::user()]);
-});
-
-Route::get('/pusher/tests', function () {
-    return view('tests.Pusher_test');
-});
 
 

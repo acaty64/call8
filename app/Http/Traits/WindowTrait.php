@@ -148,10 +148,12 @@ trait WindowTrait {
 
     }
 
-    public function window_out()
+    public function window_out($host_id=null)
     {
-        $host = \Auth::user();
-        $host_id = $host->id;
+        if($host_id == null){
+            $host = \Auth::user();
+            $host_id = $host->id;
+        }
         $status_id = Status::where('status', 'Cerrado')->first()->id;
         $window = Window::where('host_id', $host_id)->first();
         $window->host_id = null;

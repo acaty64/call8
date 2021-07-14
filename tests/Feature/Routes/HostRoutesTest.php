@@ -57,5 +57,34 @@ class HostRoutesTest extends TestCase
         $response->assertStatus(403);
     }
 
+    /** @test */
+    public function a_master_user_can_view_vue_tests()
+    {
+        $master = User::find(1);
+        $this->assertTrue($master->is_master);
+        $this->actingAs($master);
+        $response = $this->get('/test/vue');
+        $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function a_master_user_can_view_livewire_tests()
+    {
+        $master = User::find(1);
+        $this->assertTrue($master->is_master);
+        $this->actingAs($master);
+        $response = $this->get('/test/livewire');
+        $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function non_master_user_cannot_view_tests()
+    {
+        $host = User::find(3);
+        $this->assertFalse($host->is_master);
+        $this->actingAs($host);
+        $response = $this->get('/test/vue');
+        $response->assertStatus(403);
+    }
 
 }

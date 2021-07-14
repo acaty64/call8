@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Traits\WindowTrait;
 use App\Models\Call;
+use App\Models\Office;
 use App\Models\Schedule;
 use App\Models\Status;
 use App\Models\Window;
@@ -11,6 +13,9 @@ use Livewire\Component;
 
 class DashboardScreen extends Component
 {
+
+  use WindowTrait;
+
 	public $hosts_now;
 	public $clients_now;
 	public $window_today;
@@ -18,6 +23,7 @@ class DashboardScreen extends Component
   public $offices;
   public $office_id;
   public $schedules;
+  public $selectedOffice;
 
   protected $listeners = [
       'echo-private:channel-ring,Ring2Event' => 'ring',
@@ -34,6 +40,8 @@ class DashboardScreen extends Component
  	public function mount()
  	{
     $this->getData();
+    $this->offices = Office::all();
+    $this->selectedOffice = 1;
  	}
 
   public function ring()
@@ -52,12 +60,12 @@ class DashboardScreen extends Component
     $status_paused = Status::where('status', 'En Pausa')->first()->id;
     $this->clients_now = Call::where('status_id',  $status_paused)->get();
 
-    $this->office_id = 1;
+    // $this->office_id = 1;
     $this->now = CarbonImmutable::now()->format('Y-m-d');
     $this->hour_now = CarbonImmutable::now()->format('H:i');
 
     $arrayWhere = [
-      ['office_id', $this->office_id],
+      ['office_id', $this->selectedOffice],
       ['date_start', '<=', $this->now],
       ['date_end', '>=', $this->now],
       ['hour_start', '<=', $this->hour_now ],
@@ -72,7 +80,12 @@ class DashboardScreen extends Component
 
   }
 
-
+  public function closeWindow($window_id)
+  {
+    $window = Window::findOrFail($window_id);
+    $this->window_out($window->host_id);
+    $this->getData();
+  }
 
 
 

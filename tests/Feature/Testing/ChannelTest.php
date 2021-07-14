@@ -18,7 +18,7 @@ class ChannelTest extends TestCase
         $user = User::find(1);
         $this->actingAs($user);
 
-        $response = $this->get('/tests');
+        $response = $this->get('/test/vue');
         $response->assertStatus(200);
     }
 

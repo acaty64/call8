@@ -1,0 +1,18 @@
+Despues de hacer git pull
+
+En ~/code/call8>
+
+sudo cp /config/broadcasting.php.do /config/broadcasting.php
+
+sudo cp /resources/js/bootstrap.js.do /resources/js/bootstrap.js
+
+docker exec -it node sh
+
+npm run prod
+
+exit
+
+cd ~/code/traefik
+
+./dock art config:clear
+

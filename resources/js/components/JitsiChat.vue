@@ -8,6 +8,7 @@
             <div>Window: {{window}}</div>
             <div>is_host: {{is_host}}</div>
             <div>is_connected: {{is_connected}}</div>
+            <div>call_id: {{call_id}}</div>
           </div>
 
           <div class="card-body">
@@ -88,7 +89,7 @@ export default {
       is_host: this.user.is_host,
       is_connected: false,
       window: this.user.window,
-      call_id: null,
+      call_id: this.call.id,
       comments: null,
       client_comment: '',
       host_comment: '',
@@ -99,8 +100,7 @@ export default {
   mounted() {
     this.getData();
     this.startVideoChat();
-    // this.getListeners();
-    this.call_id = this.call.id;
+    this.getListeners();
     this.getComments();
   },
   watch: {
@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     getData(){
-      this.room = 'room_' + this.window.id + '_' + this.call_id;
+      this.room = 'ucss_' + this.window.id + '_' + this.call_id;
       this.options = {
           roomName: this.room,
           width: 700 ,

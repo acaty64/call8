@@ -1,17 +1,39 @@
 <template>
   <div class="container">
-    <h1 class="text-center">JitsiChat.vue</h1>
+    <!-- <h1 class="text-center">Video Chat</h1> -->
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
           <div class="card">
-            <div>Window: {{window}}</div>
-            <div>is_host: {{is_host}}</div>
-            <div>is_connected: {{is_connected}}</div>
-            <div>call_id: {{call_id}}</div>
+            <!-- <div>Window: {{window}}</div> -->
+            <div class="row justify-content-center">
+              <div class="col-3">
+              </div>
+              <div class="col-6">
+                  Haga click en <span style = "color: #ff0000; font-size: 18px;"> Iniciar en el navegador</span>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-3">
+              </div>
+              <div class="col-6">
+                 y luego en <span style = "color: #ff0000; font-size: 18px;"> Entrar a la reunión</span>
+              </div>
+            </div>
           </div>
-
-          <div class="card-body">
+          <div class="card">
+            <div class="row justify-content-center">
+                <div class="col-3">
+                </div>
+                <div class="col-6">
+                  <div>Operador: {{window.host_name}}</div>
+                  <div>Atendiendo a: {{window.client_name}}</div>
+                </div>
+                <div class="col-3">
+                </div>
+            </div>
+          </div>
+          <div class="card">
             <div class="video-container" id="meet"></div>
           </div>
           <div class="card-body">
@@ -95,6 +117,8 @@ export default {
       host_comment: '',
       options: {},
       domain: 'meet.jit.si',
+      host_name: "",
+      client_name: "",
     }
   },
   mounted() {

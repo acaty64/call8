@@ -28,8 +28,27 @@ class Window extends Model
         'time_paused',
         'time_free',
         'office_now',
+        'host_name',
+        'client_name',
     ];
 
+    public function getClientNameAttribute()
+    {
+        $client = User::find($this->client_id);
+        if(!$client){
+            return "";
+        }
+        return $client->name;
+    }
+
+    public function getHostNameAttribute()
+    {
+        $host = User::find($this->host_id);
+        if(!$host){
+            return "";
+        }
+        return $host->name;
+    }
 
     public function getOfficeNowAttribute()
     {

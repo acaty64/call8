@@ -2,9 +2,13 @@ Despues de hacer git pull
 
 En ~/code/call8>
 
-sudo cp /config/broadcasting.php.do /config/broadcasting.php
+cd ~/code/call8/config
 
-sudo cp /resources/js/bootstrap.js.do /resources/js/bootstrap.js
+sudo cp broadcasting.php.do broadcasting.php
+
+cd ~/code/call8/resources/js
+
+sudo cp bootstrap.js.do bootstrap.js
 
 docker exec -it node sh
 
@@ -14,5 +18,6 @@ exit
 
 cd ~/code/traefik
 
+./dock restart
 ./dock art config:clear
 

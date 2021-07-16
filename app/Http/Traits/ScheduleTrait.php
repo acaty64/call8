@@ -257,7 +257,7 @@ trait ScheduleTrait
                 }
             }
         }
-
+// dd($schedule);
         $horary = [];
         $horary[0]['ini'] = '';
         $horary[0]['fin'] = '';
@@ -271,7 +271,8 @@ trait ScheduleTrait
                     $horary[$n]['ini'] = $schedule[$key][0];
                     $horary[$n]['fin'] = '';
                 }else{
-                    if($schedule[$key-1][$today + 1] == 1)
+                    // if($schedule[$key-1][$today + 1] == 1)
+                    if($schedule[$key-1][$today + 1] > 0)
                     {
                         $h = substr($schedule[$key][0],0,2);
                         $m = substr($schedule[$key][0],3,2) + 29;

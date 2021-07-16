@@ -55,7 +55,10 @@ class ScheduleCreate extends Component
     public function mount()
     {
         $this->errores = [];
-        $this->hosts = User::where('id', '<', 4)->get();
+        // $this->hosts = User::where('id', '<', 4)->get();
+        $this->hosts = User::all()->filter(function($model){
+                return $model->is_host == true;
+            });
         $this->selectedHost = '';
         $this->host_id = null;
     	$this->offices = Office::all();

@@ -53,7 +53,7 @@
       <div class="container">
         <div class="card-header">
           <div class="col-md-12">Agregar Consulta y Respuesta actual</div>
-          <button @click="saveComments()" class="btn btn-large btn-success">Grabar</button>
+          <button @click="saveComments()" class="btn btn-large btn-success">Grabar textos</button>
         </div>
         <div class="card-body">
           <div class="input-group mb-3">
@@ -144,8 +144,8 @@ export default {
       this.room = 'ucss_' + this.window.id + '_' + this.call_id;
       this.options = {
           roomName: this.room,
-          width: 700 ,
-          height: 700,
+          width: 450 ,
+          height: 450,
           parentNode: document.querySelector('#meet'),
           userInfo: {
               displayName: this.user.name
@@ -236,8 +236,8 @@ export default {
 </script>
 <style>
 .video-container {
-  width: 700px;
-  height: 700px;
+  width: 450px;
+  height: 450px;
   margin: 8px auto;
   border: 3px solid #000;
   position: relative;

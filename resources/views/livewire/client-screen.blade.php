@@ -1,7 +1,8 @@
 <div>
 	@if(env('APP_DEBUG'))
 	<div>
-    	View: resources/views/livewire/client-screen.blade.php
+    	View: resources/views/livewire/client-screen.blade.php <br>
+	    office_id: {{$office_id}}
 	</div>
 	@endif
     <div>
@@ -12,7 +13,6 @@
             </div>
         @endif
     </div>
-    office_id: {{$office_id}}
     <div class="card-header" align="center">
 	    <h1>Hora: {{ $custom_time }}</h1>
     </div>
@@ -35,12 +35,15 @@
 			    		<div align="center">{{ $key }}</div>
 			    		@foreach($horario_office['horarios'] as $franja)
 							<div align="center">
-								{{$franja['ini']}} - {{$franja['fin']}}
-							</div>
+								{{-- {{$franja['ini']}} - {{$franja['fin']}} --}}
 							{{-- id: {{$horario_office['id'][0]}} --}}
-							@if($franja['ini'] <= \Carbon\Carbon::now()->format('H:m') && $franja['fin'] >= \Carbon\Carbon::now()->format('H:m'))
-								<button class="btn-success" wire:click="setOfficeId({{$horario_office['id'][0]}})">Ingresar</button>
-							@endif
+							{{-- @if($franja['ini'] <= \Carbon\Carbon::now()->format('H:m') && $franja['fin'] >= \Carbon\Carbon::now()->format('H:m')) --}}
+								@if($franja['ini'] <= $custom_time && $franja['fin'] >= $custom_time)
+									<button class="btn btn-success mb-3" wire:click="setOfficeId({{$horario_office['id'][0]}})">{{$franja['ini']}} - {{$franja['fin']}} Ingresar</button>
+								@else
+									<button class="btn btn-warning mb-3" disabled>{{$franja['ini']}} - {{$franja['fin']}} Espere al horario</button>
+								@endif
+							</div>
 				    	@endforeach
 			    	@endforeach
 		    	</div>
@@ -99,7 +102,7 @@
 		</div>
 		<div>
 			@if($status == '')
-				<button wire:click="wait" class="btn btn-large btn-warning">Poner en Cola</button>
+				<button wire:click="wait" class="btn btn-large btn-success">Poner en Cola</button>
 			@endif
 			@if($status == 'Llamando')
 				<button wire:click="answer" class="btn btn-large btn-success">Responder</button>

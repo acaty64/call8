@@ -17,7 +17,10 @@ class SearchHost extends Component
 
     public function mount()
     {
-    	$this->hosts = User::where('id', '<', 4)->get();
+    	// $this->hosts = User::where('id', '<', 4)->get();
+        $this->hosts = User::all()->filter(function($model){
+                return $model->is_host == true;
+            });
     	$this->selectedHost = '';
     }
 

@@ -266,6 +266,8 @@ class Trait_WindowTest extends TestCase
 
         $this->assertTrue($user->is_host);
 
+        $response = $this->window_out();
+
         $this->assertDatabaseHas('windows', [
             'id' => $response['id'],
             'host_id' => null,

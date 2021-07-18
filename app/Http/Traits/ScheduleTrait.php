@@ -135,8 +135,7 @@ trait ScheduleTrait
     public function checkScheduleEdit(Schedule $data)
     {
         $schedules = Schedule::where('host_id', $data->host_id)
-                    ->where('office_id', '<=', $data->office_id)
-                    ->where('day', '<=', $data->day)
+                    ->where('day', '==', $data->day)
                     ->where('id', '!=', $data->id)
                     ->get();
 
@@ -152,10 +151,8 @@ trait ScheduleTrait
                         ($data->hour_start >= $value->hour_start && 
                         $data->hour_start <= $value->hour_end))
                 {
-                    if($data->day == $value->day)
-                    {
-                        $error[] = $value;
-                    }                }
+                    $error[] = $value;
+                }
             }
         }
 

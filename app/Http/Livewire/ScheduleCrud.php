@@ -125,7 +125,8 @@ class ScheduleCrud extends Component
 
     public function export()
     {
-        $rowSelect = $this->schedules->keys();
+        // $rowSelect = $this->schedules->filter(function($p) => $p)->keys();
+        $rowSelect = $this->schedules->select('id');
 
         $now = CarbonImmutable::now()->format('Y_m_d_H_i_s');
         $file_out =  'Schedules_' . $now . '.xlsx';

@@ -89,6 +89,39 @@ Route::get('/comments/index', [
 	'uses' => 'CommentController@index'
 ]);
 
+//////////// DOCUMENTS
 
+Route::get('/documents/index', [
+	'as' => 'documents.index',
+	'uses' => 'DocumentController@index'
+]);
 
+Route::get('/document/create', [
+	'as' => 'document.create',
+	'uses' => 'DocumentController@create'
+]);
 
+Route::post('/document/store', [
+	'as' => 'document.store',
+	'uses' => 'DocumentController@store'
+]);
+
+Route::get('/document/{id}/edit', [
+	'as' => 'document.edit',
+	'uses' => 'DocumentController@edit'
+]);
+
+Route::post('/document/update', [
+	'as' => 'document.update',
+	'uses' => 'DocumentController@update'
+]);
+
+Route::get('/document/{id}/show', [
+	'as' => 'document.show',
+	'uses' => 'DocumentController@show'
+]);
+
+Route::get('/document/destroy/{id}', [
+	'as' => 'document.destroy',
+	'uses' => 'DocumentController@destroy'
+]);

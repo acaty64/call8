@@ -136,4 +136,27 @@ class AdminRoutesTest extends TestCase
     }
 
 
+//////////////////////////////////////////////////////
+    /** @test */
+    public function an_admin_user_can_view_document_index()
+    {
+        $admin = User::find(2);
+        $this->assertTrue($admin->is_admin);
+        $this->assertFalse($admin->is_master);
+        $this->actingAs($admin);
+        $response = $this->get(route('documents.index'));
+        $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function non_admin_user_cannot_view_document_index()
+    {
+        $host = User::find(3);
+        $this->assertFalse($host->is_admin);
+        $this->actingAs($host);
+        $response = $this->get(route('documents.index'));
+        $response->assertStatus(403);
+    }
+
+
 }

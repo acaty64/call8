@@ -27,7 +27,7 @@ class UsersSeeder extends Seeder
 
         if(env('APP_DEBUG'))
         {
-            User::factory(6)->create();
+            User::factory(3)->create();
 
             $user = User::find(2);
             $user->email = 'host2@ucss.edu.pe';
@@ -37,21 +37,14 @@ class UsersSeeder extends Seeder
             $user->email = 'host3@ucss.edu.pe';
             $user->save();
 
-            $user = User::find(4);
-            $user->email = 'client1@ucss.edu.pe';
-            $user->save();
+            $users = User::factory(50)->create();
 
-            $user = User::find(5);
-            $user->email = 'client2@ucss.pe';
-            $user->save();
+            foreach ($users as $item) {
+                $user = User::find($item->id);
+                $user->email = 'client' . $item->id . '@ucss.pe';
+                $user->save();
+            }
 
-            $user = User::find(6);
-            $user->email = 'client3@ucss.pe';
-            $user->save();
-
-            $user = User::find(7);
-            $user->email = 'client4@ucss.pe';
-            $user->save();
         }
     }
 }

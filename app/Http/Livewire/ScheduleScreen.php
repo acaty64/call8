@@ -47,7 +47,10 @@ class ScheduleScreen extends Component
         $this->inicio = $inicio_new->format('Y-m-d');
     	$this->fin = $inicio_new->addDays(6)->format('Y-m-d');
 
-        $users = Schedule::where('office_id', $this->selectedOffice)->pluck('host_id')->unique();
+        $users = Schedule::where('office_id', $this->selectedOffice)
+                    ->where('date_start', '<=', $this->inicio)
+                    ->where('date_end', '>=', $this->fin)
+                    ->pluck('host_id')->unique();
 
         $this->hosts = User::whereIn('id', $users)->get();
 

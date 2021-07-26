@@ -24,7 +24,7 @@
 					<th>
 						<b>Office</b>
 						<select wire:model="selectedOffice" class="form-control">
-							<option value="" selected>Office</option>
+							<option value="" selected>Todos</option>
 							@foreach($offices as $office)
 								<option value="{{ $office->id }}">{{ $office->code }}</option>
 							@endforeach
@@ -33,7 +33,7 @@
 					<th>
 						<b>Host</b>
 						<select wire:model="selectedHost" class="form-control">
-							<option value="" selected>Host</option>
+							<option value="" selected>Todos</option>
 							@foreach($hosts as $host)
 								<option value="{{ $host->id }}">{{ $host->name }}</option>
 							@endforeach
@@ -42,7 +42,7 @@
 					<th>
 						<b>Dia</b>
 						<select wire:model="selectedDay" class="form-control">
-							<option value="" selected>Día</option>
+							<option value="" selected>Todos</option>
 							@foreach($days as $key => $day)
 								<option value="{{ $key }}">{{ $day }}</option>
 							@endforeach
@@ -61,7 +61,7 @@
 					<td>{{ $schedule->id }}</td>
 					<td>{{ $schedule->office->code }}</td>
 					<td>{{ $schedule->host->name }}</td>
-					<td>{{ $schedule->day }}</td>
+					<td>{{ $semana[$schedule->day] }}</td>
 					<td>{{ $schedule->hour_start }}</td>
 					<td>{{ $schedule->hour_end }}</td>
 					<td>{{ $schedule->date_start }}</td>

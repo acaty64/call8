@@ -23,6 +23,7 @@ class ScheduleCrud extends Component
     public $selectedHost;
     public $selectedDay;
     public $schedule_id;
+    public $semana;
 
     protected $listeners = ['setStatus'];
 
@@ -37,6 +38,15 @@ class ScheduleCrud extends Component
     	$this->statuses = ['index', 'create'];
         $this->selectedOffice = '';
         $this->getData();
+        $this->semana = [
+            '0' => 'Domingo',
+            '1' => 'Lunes',
+            '2' => 'Martes',
+            '3' => 'Miércoles',
+            '4' => 'Jueves',
+            '5' => 'Viernes',
+            '6' => 'Sábado',
+        ];
     }
 
     public function getData()

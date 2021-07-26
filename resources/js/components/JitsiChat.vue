@@ -52,8 +52,15 @@
     <template v-if="is_host">
       <div class="container">
         <div class="card-header">
-          <div class="col-md-12">Agregar Consulta y Respuesta actual</div>
-          <button @click="saveComments()" class="btn btn-large btn-success">Grabar textos</button>
+          <div class="row">
+            <h1>CONSULTAS DEL ESTUDIANTE</h1>
+          </div>
+          <div class="row">
+            <div class="col-md-6">Agregar Consulta y Respuesta actual</div>
+            <div class="col-md-6">
+              <button @click="saveComments()" class="btn btn-large btn-success">Grabar textos</button>
+            </div>
+          </div>
         </div>
         <div class="card-body">
           <div class="input-group mb-3">
@@ -93,6 +100,22 @@
             </div>
           </div>
         </div>
+        <div class="card-header">
+          <div class="col-md-12"><h1>DOCUMENTOS DE REFERENCIA</h1></div>
+        </div>
+        <div class="card">
+          <div class="container">
+            <div v-for="doc in documents">
+              <div class="col-md-6">
+                <a @click="change_link(doc)" class="form-control">{{ doc['name'] }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body" v-if="link != null">
+          <h1>{{link_name}}</h1>
+          <iframe :src="link" type="application/pdf" style="width: 100%; height:50vw; position: relative; allowfullscreen;display:block; width:100%; border:none; "></iframe>
+        </div>
       </div>
     </template>
   </div>
@@ -101,7 +124,7 @@
 import Pusher from 'pusher-js';
 import Peer from 'simple-peer';
 export default {
-  props: ['user', 'other', 'call'],
+  props: ['user', 'other', 'call', 'documents'],
   data() {
     return {
       channel: null,
@@ -119,6 +142,8 @@ export default {
       domain: 'meet.jit.si',
       host_name: "",
       client_name: "",
+      link: null,
+      link_name: null,
     }
   },
   mounted() {
@@ -137,9 +162,14 @@ export default {
           console.log('watch channel this.channel not exist');
         }
       }
-    }
+    },
   },
   methods: {
+    change_link(doc){
+      this.link = doc['link'];
+      this.link_name = doc['name'];
+    },
+
     getData(){
       this.room = 'ucss_' + this.window.id + '_' + this.call_id;
       this.options = {

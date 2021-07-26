@@ -52,6 +52,7 @@ class DocumentController extends Controller
         $link = '/storage/docs/' . basename($item->link); 
         return view('app.document.show', [
             'item' => [
+                'name' => $item->name,
                 'src' => $link,
                 'filename' => $item->filename,
             ]
@@ -60,7 +61,7 @@ class DocumentController extends Controller
 
     public function edit($id)
     {
-        $item = Document::findOrFail($id);
+        $item = Document::findOrFail($id)->toArray();
         return view('app.document.edit')->with('item', $item);
     }
 
@@ -68,11 +69,11 @@ class DocumentController extends Controller
     {
         $validate = $request->validate([
             'name' => 'required',
-            'file' => 'required',
             'order' => 'required',
+            'active' => 'required',
         ]);
 
-        $active_check = ($request->active == "on") ? true : false;
+        $active_check = ($request->active == 'true') ? 1 : 0;
         $document = Document::findOrFail($request->id);
 
         $document->order = $request->order;

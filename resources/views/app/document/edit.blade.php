@@ -31,7 +31,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1" >Descripción:  </span>
                 </div>
-                <input name="name" value="{{ old($item['name']) }}" type="text" class="form-control" placeholder="Ingrese la descripción" aria-label="name" aria-describedby="basic-addon1">
+                <input name="name" value="{{ $item['name'] }}" type="text" class="form-control" placeholder="Ingrese la descripción" aria-label="name" aria-describedby="basic-addon1">
               </div>
 
               <div class="input-group mb-3">
@@ -44,24 +44,24 @@
               <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">Orden</span>
-                    <input type="number" value="order" min="1" class="form-control" >
+                    <input type="number" name="order" value="{{ $item['order'] }}" min="1" class="form-control" >
                     @error('order') <span class="error">{{ $message }}</span> @enderror
                   </div>
               </div>
 
 
               <div class="input-group mb-3">
-                  <div class="input-group-prepend form-check">
-                    {{-- <div class="input-group-text"> --}}
-                    <span class="input-group-text" id="basic-addon1">Activo ?</span>
-                    <input type="checkbox" value="{{ old($item['active']) }}" name="active" id="active" class="form-check-input" >
-                    {{-- </div> --}}
-                  </div>
-
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">Activo ?</span>
+                    <select class="form-select" name="active" aria-label="Default select example">
+                      <option value=true {{$item['active'] == 1 ? "selected" : ""}}>Activo</option>
+                      <option value=false {{$item['active'] == 0 ? "selected" : ""}}>Inactivo</option>
+                    </select>
+                </div>
               </div>
               <div class="form-group">
                 <div class="col-md-6 col-md-offset-4">
-                  <button type="submit" class="btn btn-primary">Grabar</button>
+                  <button type="submit" class="btn btn-primary btn-lg">Grabar</button>
                 </div>
               </div>
           </form>

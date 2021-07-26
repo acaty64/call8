@@ -198,7 +198,7 @@ class CRUD_DocumentTest extends TestCase
 
         $document = Document::all()->first();
 
-        $response = $this->delete(route('document.destroy' , $document->id));
+        $response = $this->get(route('document.destroy' , $document->id));
 
         $response->assertStatus(302);
 

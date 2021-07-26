@@ -16,9 +16,13 @@
           </div>
         </div>
         <div class="card-header">
-
+          <h2>{{$item['name']}}</h2>
+        </div>
+        <div class="card-header">
           <p>{{$item['filename']}}</p>
-
+        </div>
+        <div class="card-body">
+          <a href="{{$item['src']}}" target="_blank" >Abrir en otra pestaña</a>
         </div>
         <div class="card-body">
           @if (session('status'))

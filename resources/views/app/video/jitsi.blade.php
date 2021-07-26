@@ -10,7 +10,8 @@
     <jitsi-chat
     	:user="{{ $user }}"
     	:other="{{ $other }}"
-    	:call="{{ $call }}">
+    	:call="{{ $call }}"
+    	:documents="{{ $documents }}">
     </jitsi-chat>
 </div>
 

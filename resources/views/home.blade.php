@@ -16,6 +16,7 @@
                     <ul>
                         <li><a href="{{ env('APP_URL') . '/laravel-websockets'}}">Laravel Websockets</a></li>
                         <li><a href="{{ env('APP_URL') . '/master/menu'}}">Master</a></li>
+                        <li><a href="{{ env('APP_URL') . '/admin/menu'}}">Administrador</a></li>
                         <li><a href="{{ env('APP_URL') . '/call/client'}}">Cliente</a></li>
                         <li><a href="{{ env('APP_URL') . '/test/vue'}}">Test Vue JS</a></li>
                         <li><a href="{{ env('APP_URL') . '/test/livewire'}}">Test Livewire</a></li>

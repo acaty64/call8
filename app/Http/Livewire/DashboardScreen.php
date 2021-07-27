@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Traits\CallTrait;
 use App\Http\Traits\WindowTrait;
 use App\Models\Call;
 use App\Models\Office;
@@ -15,6 +16,7 @@ class DashboardScreen extends Component
 {
 
   use WindowTrait;
+  use CallTrait;
 
 	public $hosts;
 	public $clients_now;
@@ -94,6 +96,13 @@ class DashboardScreen extends Component
   {
     $window = Window::findOrFail($window_id);
     $this->window_out($window->host_id);
+    $this->getData();
+  }
+
+  public function closeCall($call_id)
+  {
+    // $call = Call::findOrFail($call_id);
+    $this->call_out($call_id);
     $this->getData();
   }
 

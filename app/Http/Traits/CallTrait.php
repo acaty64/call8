@@ -85,7 +85,6 @@ trait CallTrait
 
     public function call_close()
     {
-
         $client = \Auth::user();
 
         $status_closed = Status::where('status', 'Cerrado')->first();
@@ -104,7 +103,7 @@ trait CallTrait
             $window->call_id = null;
             $window->save();
         }else{
-            $call = Call::where('id', $client->id)
+            $call = Call::where('client_id', $client->id)
                     ->where('status_id','!=', $status_closed)
                     ->first();
             $call->status_id = $status_closed->id;
@@ -124,7 +123,43 @@ trait CallTrait
         if(!$check){
             return 'Error';
         }
+        return true;
 
     }
 
+    public function call_out($call_id)
+    {
+        $call = Call::findOrFail($call_id);
+
+        $status_closed = Status::where('status', 'Cerrado')->first();
+
+        $call->status_id = $status_closed->id;
+        $call->save();
+
+        if($call->window){
+            $window = $call->window;
+            $window->message = 'Llamada terminada por usuario ' . \Auth::user()->name;
+            $window->call_id = null;
+            $window->save();
+        }
+
+        $data_event = [
+            'window_id' => null,
+            'host_id' => \Auth::user()->id,
+            'client_id' => $call->user_id,
+            'call_id' => $call->id,
+            'message' => 'Llamada terminada por usuario ' . \Auth::user()->name
+            ];
+
+        $response = broadcast(new Ring2Event($data_event));
+        $check = Trace::new_call($call);
+
+        if(!$check){
+            return 'Error';
+        }
+
+        return true;
+
+    }
 }
+

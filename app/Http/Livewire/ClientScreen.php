@@ -44,6 +44,8 @@ class ClientScreen extends Component
     public $links;
     public $custom_time;
 
+    public $f_message;
+
     protected $listeners = [
         'echo-private:channel-ring,Ring2Event' => 'ring',
         'echo-presence:presence-ring,here' => 'here',
@@ -64,6 +66,7 @@ class ClientScreen extends Component
         $this->horario = [];
         $this->getHorarios();
         $this->links = Link::where('active', 1)->orderBy('order')->get();
+        $this->f_message = "mount()";
     }
 
     public function watch()
@@ -117,6 +120,7 @@ class ClientScreen extends Component
                 $this->status = $status->status;
                 $this->message = $status->status;
             }
+            $this->f_message = "start()";
         }
     }
 
@@ -132,16 +136,21 @@ class ClientScreen extends Component
                 ];
                 return redirect('/video_chat/' . $users['user']->id . '/' . $users['other']->id . '/'. $data['call_id']);
             }
+            $this->f_message = "watch() connecting";
         }
 
         if($this->call_id > 0){
             $call = Call::find($this->call_id);
             $this->status = $call->status->status;
+            $this->f_message = "watch() call_id>0";
+        // }
+
+        // if($data['call_id'] == $this->call_id && !is_null($data['call_id'])){
+            $this->message = $data['message'];
+            // $this->message = $call->window->mensaje;
+            $this->f_message = "watch() data[call_id] == this->call_id";
         }
 
-        if($data['call_id'] == $this->call_id && !is_null($data['call_id'])){
-            $this->message = $call->window->mensaje;
-        }
         $window = new Window;
         $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;
@@ -155,6 +164,7 @@ class ClientScreen extends Component
         $response = $this->call_open($this->office_id);
         $this->call_id = $response['id'];
         $this->message = 'Está en cola';
+        $this->f_message = "wait()";
     }
 
     public function answer()
@@ -163,7 +173,7 @@ class ClientScreen extends Component
         $this->message = 'Conectando ...., espere.';
         $response = $this->call_answer($this->call_id);
         $this->status = $response['status'];
-
+        $this->f_message = "answer()";
     }
 
     public function stop()
@@ -173,6 +183,7 @@ class ClientScreen extends Component
         $response = $this->call_close();
         $this->status = 'Cerrado';
         $this->message = 'Desconectado';
+        $this->f_message = "stop()";
 
     }
 
@@ -218,6 +229,7 @@ class ClientScreen extends Component
 
         if($array['today']['offices'] == []){
             $this->message = 'No hay operadores programados, revise los horarios de atención.';
+            $this->f_message = "getHorarios()";
         }
 
 
@@ -248,3 +260,4 @@ class ClientScreen extends Component
         $this->office_id = $value;
     }
 }
+

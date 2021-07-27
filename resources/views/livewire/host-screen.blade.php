@@ -13,42 +13,43 @@
         @endif
     </div>
     @if($screen == 'open')
-	    <div class="container">
-	    	<div><h1>{{ $window['office']['name']  }}</h1></div>
+	    <div class="card-header">
 		    <div class="row">
+		    	@if($status!="")
+					<div class=col-sm>
+						<button type="button" class="btn btn-primary btn-large">Estado:<span class="badge badge-light">{{ $status }}</span></button>
+					</div>
+				@endif
 				<div class=col-sm>
-					Estado: {{ $status }}
+					<button type="button" class="btn btn-warning btn-large">Esperando:<span class="badge badge-light">{{ $qclients }}</span></button>
 				</div>
 				<div class=col-sm>
-					Esperando: {{ $qclients }}
-				</div>
-				<div class=col-sm>
-					Atendiendo: {{ $qwindows }}
+					<button type="button" class="btn btn-success btn-large">Atendiendo:<span class="badge badge-light">{{ $qwindows }}</span></button>
 				</div>
 		    </div>
-	    </div>
-		<div>
+		</div>
+		<div class="card-body mt-1">
 			@if($status == 'Atendiendo')
-				<button wire:click="connect" class="btn btn-large btn-success">Conectar</button>
+				<button wire:click="connect" class="btn btn-lg btn-success">Conectar</button>
 			@endif
 			@if($status == 'Cerrado')
-				<button wire:click="free" class="btn btn-large btn-primary">Libre</button>
-				<button wire:click="pauseWindow" class="btn btn-large btn-warning">En Pausa</button>
-				<button wire:click="outWindow" class="btn btn-large btn-danger">Salir</button>
+				<button wire:click="free" class="btn btn-lg btn-primary">Libre</button>
+				<button wire:click="pauseWindow" class="btn btn-lg btn-warning">En Pausa</button>
+				<button wire:click="outWindow" class="btn btn-lg btn-danger">Salir</button>
 			@endif
 			@if($status == 'En Pausa')
-				<button wire:click="free" class="btn btn-large btn-primary">Libre</button>
-				<button wire:click="outWindow" class="btn btn-large btn-danger">Salir</button>
+				<button wire:click="free" class="btn btn-lg btn-primary">Libre</button>
+				<button wire:click="outWindow" class="btn btn-lg btn-danger">Salir</button>
 			@endif
 			@if($status == 'Libre')
 				@if($qclients > 0)
-					<button wire:click="startWindow" class="btn btn-large btn-success">Llamar</button>
+					<button wire:click="startWindow" class="btn btn-lg btn-success">Llamar</button>
 				@endif
-				<button wire:click="pauseWindow" class="btn btn-large btn-warning">En Pausa</button>
-				<button wire:click="outWindow" class="btn btn-large btn-danger">Salir</button>
+				<button wire:click="pauseWindow" class="btn btn-lg btn-warning">En Pausa</button>
+				<button wire:click="outWindow" class="btn btn-lg btn-danger">Salir</button>
 			@endif
 			@if($status == 'Llamando' || $status == 'Atendiendo' )
-				<button wire:click="stopWindow" class="btn btn-large btn-danger">Colgar</button>
+				<button wire:click="stopWindow" class="btn btn-lg btn-danger">Colgar</button>
 			@endif
 		</div>
 	@else

@@ -55,7 +55,7 @@
 					<tr class="row">
 						<th class='col col-sm'>Número</th>
 						<th class='col col-sm'>Usuario</th>
-						<th class='col col-sm'>En Pausa</th>
+						<th class='col col-sm'>Esperando</th>
 						<th class='col col-sm'>Cerrar</th>
 					</tr>
 				</thead>
@@ -65,7 +65,7 @@
 						<td class='col col-sm'>{{ $call->number }}</td>
 						<td class='col col-sm'>{{ $call->user['name'] }}</td>
 						<td class='col col-sm'>{{ $call->time_paused }}</td>
-						<td class='col col-sm'><button class="btn-danger">Cerrar - pdte</button></td>
+						<td class='col col-sm'><button class="btn-danger" wire:click="closeCall({{$call->id}})">Cerrar - pdte</button></td>
 					</tr>
 					@endforeach
 				</tbody>

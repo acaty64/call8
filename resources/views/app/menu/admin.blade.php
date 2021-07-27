@@ -9,8 +9,8 @@
                 </div>
                 <div class="card">
                     <div class="row justify-content-center mt-2">
-                        <a href="{{route('call.host')}}" class="btn btn-success ml-2 mb-2 col-2" role='button'>Acceder como Operador</a>
-                        <a href="{{route('call.client')}}" class="btn btn-success ml-2 mb-2 col-2" role='button'>Acceder como Usuario</a>
+                        <a href="{{route('call.host')}}" class="btn btn-success ml-2 mb-2 col-4" role='button'>Acceder como Operador</a>
+                        {{-- <a href="{{route('call.client')}}" class="btn btn-success ml-2 mb-2 col-2" role='button'>Acceder como Usuario</a> --}}
                     </div>
                     <div class="row justify-content-center">
                         <a href="{{route('dashboard')}}" class="btn btn-success ml-2 mb-2 col-2" role='button'>Dashboard</a>

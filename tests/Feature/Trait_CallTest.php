@@ -128,6 +128,38 @@ class Trait_CallTest extends TestCase
 
     }
 
+    public function test_close_the_call_from_dashboard()
+    {
+        $host = User::findOrFail(2);
+        $this->assertTrue($host->is_admin);
+
+        $client = User::findOrFail(6);
+
+        $status_paused = Status::where('status', 'En Pausa')->first();
+
+        $call = Call::where('client_id', $client->id)->first();
+        $call->status_id = $status_paused->id;
+        $call->save();
+
+        $status_closed = Status::where('status', 'Cerrado')->first();
+
+        $this->actingAs($host);
+        $response = $this->call_out($call->id);
+
+        $this->assertDatabaseHas('calls', [
+            'client_id' => $client->id,
+            'number' => $call->id,
+            'status_id' => $status_closed->id,
+        ]);
+
+        $this->assertDatabaseHas('traces', [
+            'client_id' => $client->id,
+            'call_id' => $call->id,
+            'status_id' => $status_closed->id
+        ]);
+
+    }
+
 
 }
 

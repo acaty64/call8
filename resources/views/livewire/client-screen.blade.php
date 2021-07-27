@@ -1,12 +1,12 @@
 <div>
 	@if(env('APP_DEBUG'))
-	<div>
-    	View: resources/views/livewire/client-screen.blade.php <br>
-	    office_id: {{$office_id}}
-	</div>
+		<div>
+	    	View: resources/views/livewire/client-screen.blade.php <br>
+		    office_id: {{$office_id}}
+		</div>
+	    <div>{{ $f_message }}</div>
 	@endif
     <div>
-        {{-- @if (session()->has('message')) --}}
         @if ($message)
             <div class="alert alert-warning">
                 {{ $message }}
@@ -35,9 +35,6 @@
 			    		<div align="center">{{ $key }}</div>
 			    		@foreach($horario_office['horarios'] as $franja)
 							<div align="center">
-								{{-- {{$franja['ini']}} - {{$franja['fin']}} --}}
-							{{-- id: {{$horario_office['id'][0]}} --}}
-							{{-- @if($franja['ini'] <= \Carbon\Carbon::now()->format('H:m') && $franja['fin'] >= \Carbon\Carbon::now()->format('H:m')) --}}
 								@if($franja['ini'] <= $custom_time && $franja['fin'] >= $custom_time)
 									<button class="btn btn-success mb-3" wire:click="setOfficeId({{$horario_office['id'][0]}})">{{$franja['ini']}} - {{$franja['fin']}} Ingresar</button>
 								@else
@@ -71,7 +68,7 @@
     @endif
     @if( $office_id != '' )
 	    <div class="container">
-	    	El horario de atención de hoy en {{ $office['name'] }} es:
+	    	{{-- El horario de atención de hoy en {{ $office['name'] }} es: --}}
 	    	@foreach($horario as $hora)
 		    <div class="row">
 				<div class=col-sm-2>
@@ -82,33 +79,35 @@
 			</div>
 	    	@endforeach
 		</div>
-	    <div class="container">
+	    <div class="card-header">
 		    <div class="row">
+		    	@if($status!="")
+					<div class=col-sm>
+						<button type="button" class="btn btn-primary btn-large">Estado:<span class="badge badge-light">{{ $status }}</span></button>
+					</div>
+				@endif
 				<div class=col-sm>
-					Estado: {{ $status }}
+					<button type="button" class="btn btn-warning btn-large">Esperando:<span class="badge badge-light">{{ $qclients }}</span></button>
 				</div>
 				<div class=col-sm>
-					Esperando: {{ $qclients }}
-				</div>
-				<div class=col-sm>
-					Atendiendo: {{ $qwindows }}
+					<button type="button" class="btn btn-success btn-large">Atendiendo:<span class="badge badge-light">{{ $qwindows }}</span></button>
 				</div>
 		    </div>
 		</div>
-		<div class="container" align="center">
-			@if($status == 'Atendiendo')
+		@if($status == 'Atendiendo')
+			<div class="card-body mt-1" align="center">
 				<h1>Espere, conectándose ....</h1>
-			@endif
-		</div>
-		<div>
+			</div>
+		@endif
+		<div class="card-body mt-1">
 			@if($status == '')
-				<button wire:click="wait" class="btn btn-large btn-success">Poner en Cola</button>
+				<button wire:click="wait" class="btn btn-lg btn-success">Poner en Cola</button>
 			@endif
 			@if($status == 'Llamando')
-				<button wire:click="answer" class="btn btn-large btn-success">Responder</button>
+				<button wire:click="answer" class="btn btn-lg btn-success">Responder</button>
 			@endif
 			@if($status == 'Atendiendo')
-				<button wire:click="stop" class="btn btn-large btn-danger">Colgar</button>
+				<button wire:click="stop" class="btn btn-lg btn-danger">Colgar</button>
 			@endif
 		</div>
     @endif

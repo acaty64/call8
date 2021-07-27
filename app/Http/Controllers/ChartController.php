@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Charts\SampleChart;
 use App\Http\Traits\ReportScheduleTrait;
+use App\Models\Office;
 use App\Models\Trace;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
@@ -12,8 +13,26 @@ class ChartController extends Controller
 {
 	use ReportScheduleTrait;
 
-	public function statistics()
+
+	public function index(){
+
+		$offices = Office::all();
+
+		return view('statistics.dashboard', [
+				'offices' => $offices,
+			]);
+	}
+
+
+	public function statistics(Request $request)
 	{
+        $validate = $request->validate([
+            'office_id' => 'required',
+        ]);
+
+		$office_id = $request->office_id;
+		$office = Office::findOrFail($office_id);
+
 		$date_start = CarbonImmutable::now()->subDays(6);
 		$date_end = CarbonImmutable::now();
 
@@ -22,9 +41,13 @@ class ChartController extends Controller
 		$h_attentions = [];
 		foreach ($fechas as $key => $value) {
 			$_value = substr($value, 0, 10);
-			$hosts[] = Trace::whereDate('created_at', $_value)->where('host_id', '!=', null)->pluck('host_id')->unique()->count();
+			$hosts[] = Trace::whereDate('created_at', $_value)
+						->where('host_id', '!=', null)
+						->where('office_id', $office_id)
+						->pluck('host_id')->unique()->count();
 			$h_attentions[] = Trace::whereDate('created_at', $_value)
 							->where('host_id', '!=', null)
+							->where('office_id', $office_id)
 							->where('status_id', 4)
 							->count();
 		}
@@ -60,9 +83,13 @@ class ChartController extends Controller
 		$clients = [];
 		$c_attentions = [];
 		foreach ($fechas as $key => $value) {
-			$clients[] = Trace::whereDate('created_at', $value)->where('client_id', '!=', null)->pluck('client_id')->unique()->count();
+			$clients[] = Trace::whereDate('created_at', $value)
+						->where('client_id', '!=', null)
+						->where('office_id', $office_id)
+						->pluck('client_id')->unique()->count();
 			$c_attentions[] = Trace::whereDate('created_at', $value)
 							->where('client_id', '!=', null)
+							->where('office_id', $office_id)
 							->where('status_id', 4)
 							->count();
 		}
@@ -72,7 +99,11 @@ class ChartController extends Controller
 		$chart1->dataset('Usuarios', 'line', $clients)->options($options_color1);
 		$chart1->dataset('Atenciones', 'line', $c_attentions)->options($options_color2);
 
-		return view('statistics.dashboard', ['chart' => $chart, 'chart1' => $chart1]);
+		return view('statistics.chart', [
+				'chart' => $chart, 
+				'chart1' => $chart1,
+				'office' => $office,
+			]);
 
 	}
 

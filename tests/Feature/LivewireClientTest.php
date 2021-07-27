@@ -58,7 +58,7 @@ class LivewireClientTest extends TestCase
         Livewire::actingAs($user)
             ->test(ClientScreen::class)
             ->set('office_id', '1')
-            ->assertSeeHtml('El horario de atención de hoy en Oficina de Asuntos Académicos es:')
+            // ->assertSeeHtml('El horario de atención de hoy en Oficina de Asuntos Académicos es:')
             ->assertSeeHtml('Poner en Cola');
     }
 

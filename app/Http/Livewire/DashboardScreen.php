@@ -16,14 +16,14 @@ class DashboardScreen extends Component
 
   use WindowTrait;
 
-	public $hosts_now;
+	public $hosts;
 	public $clients_now;
 	public $window_today;
 	public $client_today;
   public $offices;
   public $office_id;
   public $schedules;
-  public $selectedOffice;
+  public $selected_office;
 
   protected $listeners = [
       'echo-private:channel-ring,Ring2Event' => 'ring',
@@ -39,9 +39,10 @@ class DashboardScreen extends Component
 
  	public function mount()
  	{
-    $this->getData();
+    $this->hosts=[];
     $this->offices = Office::all();
-    $this->selectedOffice = 1;
+    $this->selected_office = 1;
+    $this->getData();
  	}
 
   public function ring()
@@ -54,9 +55,18 @@ class DashboardScreen extends Component
     $this->getData();
   }
 
+  public function updated($field, $value)
+  {
+      if($field == 'selected_office')
+      {
+        $this->hosts = Window::where('host_id', '!=', null)->where('office_id', $this->selected_office)->get();
+      }
+  }
+
   public function getData()
   {
-    $this->hosts_now = Window::where('host_id', '!=', null)->get();
+    $this->hosts = Window::where('host_id', '!=', null)->where('office_id', $this->selected_office)->get();
+
     $status_paused = Status::where('status', 'En Pausa')->first()->id;
     $this->clients_now = Call::where('status_id',  $status_paused)->get();
 
@@ -65,7 +75,7 @@ class DashboardScreen extends Component
     $this->hour_now = CarbonImmutable::now()->format('H:i');
 
     $arrayWhere = [
-      ['office_id', $this->selectedOffice],
+      ['office_id', $this->selected_office],
       ['date_start', '<=', $this->now],
       ['date_end', '>=', $this->now],
       ['hour_start', '<=', $this->hour_now ],

@@ -75,6 +75,8 @@ class Window extends Model
             $startTime = Carbon::parse($this->updated_at);
             $finishTime = Carbon::parse(date('Y-m-d H:i:s'));
             $totalDuration = $finishTime->diffInSeconds($startTime);
+return Carbon::parse($startTime)->shortRelativeToNowDiffForHumans(now());
+// return Carbon::parse($startTime)->diffForHumans(now());
             return gmdate('H:i:s', $totalDuration);
         }
         return "";
@@ -87,6 +89,8 @@ class Window extends Model
             $startTime = Carbon::parse($this->updated_at);
             $finishTime = Carbon::parse(date('Y-m-d H:i:s'));
             $totalDuration = $finishTime->diffInSeconds($startTime);
+return Carbon::parse($startTime)->shortRelativeToNowDiffForHumans(now());
+// return Carbon::parse($startTime)->diffForHumans(now());
             return gmdate('H:i:s', $totalDuration);
         }
         return "";
@@ -99,6 +103,8 @@ class Window extends Model
             $startTime = Carbon::parse($this->updated_at);
             $finishTime = Carbon::parse(date('Y-m-d H:i:s'));
             $totalDuration = $finishTime->diffInSeconds($startTime);
+// return Carbon::parse($startTime)->longAbsoluteDiffForHumans(now());
+return Carbon::parse($startTime)->shortRelativeToNowDiffForHumans(now());
             return gmdate('H:i:s', $totalDuration);
         }
         return "";

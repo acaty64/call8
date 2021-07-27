@@ -1,7 +1,8 @@
 <div>
 	<div class="container">
 		<div class="card-header pb-0">
-			<h3 align="center">OPERADORES ACTIVOS (pdte Hace xx minutos)</h3>
+			<h3 align="center">OPERADORES ACTIVOS</h3>
+			<h3 align="center">selected_office: {{ $selected_office }}</h3>
 		</div>
 		<div class="card-body pt-0">
 			<div class="input-group mt-3">
@@ -9,7 +10,7 @@
 					<span class="input-group-text" id="basic-addon0">Office</span>
 				</div>
 				<div class="col-md-8 pl-0">
-					<select wire:model="selectedOffice" class="form-control">
+					<select wire:model="selected_office" class="form-control">
 						<option value="" selected>Choose office</option>
 						@foreach($offices as $office)
 							<option value="{{ $office->id }}">{{ $office->name }}</option>
@@ -20,18 +21,18 @@
 			<table class="table table-striped pt-0">
 				<thead>
 					<tr class="row">
-							<th class='col col-sm'>Módulo</th>
-							<th class='col col-sm'>Operador</th>
-							<th class='col col-sm'>Usuario</th>
-							<th class='col col-sm'>Estado</th>
-							<th class='col col-sm'>Atendiendo</th>
-							<th class='col col-sm'>En Pausa</th>
-							<th class='col col-sm'>Libre</th>
-							<th class='col col-sm'>Cerrar</th>
+						<th class='col col-sm'>Módulo</th>
+						<th class='col col-sm'>Operador</th>
+						<th class='col col-sm'>Usuario</th>
+						<th class='col col-sm'>Estado</th>
+						<th class='col col-sm'>Atendiendo</th>
+						<th class='col col-sm'>En Pausa</th>
+						<th class='col col-sm'>Libre</th>
+						<th class='col col-sm'>Cerrar</th>
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($hosts_now as $window)
+					@foreach($this->hosts as $window)
 						<tr class="row">
 							<td class='col col-sm'>{{ $window->window }}</td>
 							<td class='col col-sm'>{{ $window->host->name }}</td>

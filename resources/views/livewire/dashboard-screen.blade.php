@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="card-header pb-0">
 			<h3 align="center">OPERADORES ACTIVOS</h3>
-			<h3 align="center">selected_office: {{ $selected_office }}</h3>
+			{{-- <h3 align="center">selected_office: {{ $selected_office }}</h3> --}}
 		</div>
 		<div class="card-body pt-0">
 			<div class="input-group mt-3">

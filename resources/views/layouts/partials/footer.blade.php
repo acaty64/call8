@@ -20,7 +20,9 @@
 			@auth
 				<span  class="nav navbar-nav list-group-item list-inline" style="color:blue; font-size:75%">
 					<div>User Id: "{{ \Auth::user()->id }}"</div>
-					{{-- <div>Tipo: "{{ \Auth::user()->tuser }}"</div> --}}
+					<div>is_master: "{{ \Auth::user()->is_master }}"</div>
+					<div>is_admin: "{{ \Auth::user()->is_admin }}"</div>
+					<div>is_hostr: "{{ \Auth::user()->is_host }}"</div>
 				</span>	
 			@endif
 			<div class="row">

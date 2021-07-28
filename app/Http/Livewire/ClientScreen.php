@@ -258,6 +258,7 @@ class ClientScreen extends Component
     {
         $this->watch();
         $this->office_id = $value;
+        $this->message = "Póngase en cola y espere a ser llamado.";
     }
 }
 

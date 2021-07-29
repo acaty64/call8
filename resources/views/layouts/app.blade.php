@@ -74,9 +74,9 @@
                 </div>
             </div>
         </nav>
-        @if(env('APP_DEBUG'))
+{{--         @if(env('APP_DEBUG'))
             {{ App\Models\User::all() }}
-        @endif
+        @endif --}}
         <div>
             @if (session()->has('message'))
                 <div class="alert alert-success">
@@ -91,6 +91,6 @@
         @include('layouts.partials.footer')
     </div>
     @livewireScripts
-    {{-- @yield('script') --}}
+    @yield('script')
 </body>
 </html>

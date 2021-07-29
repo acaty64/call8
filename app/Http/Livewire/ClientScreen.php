@@ -129,6 +129,7 @@ class ClientScreen extends Component
         $this->watch();
         if($data['message']){
             if($data['message'] == 'Connecting'){
+                $this->f_message = "watch() connecting";
                 $this->host = User::find($data['host_id']);
                 $users = [
                     'user' => $this->client,
@@ -136,7 +137,6 @@ class ClientScreen extends Component
                 ];
                 return redirect('/video_chat/' . $users['user']->id . '/' . $users['other']->id . '/'. $data['call_id']);
             }
-            $this->f_message = "watch() connecting";
         }
 
         if($this->call_id > 0){
@@ -149,6 +149,10 @@ class ClientScreen extends Component
             $this->message = $data['message'];
             // $this->message = $call->window->mensaje;
             $this->f_message = "watch() data[call_id] == this->call_id";
+        }
+
+        if($this->status == 'Llamando'){
+            $this->sound(true);
         }
 
         $window = new Window;
@@ -169,6 +173,7 @@ class ClientScreen extends Component
 
     public function answer()
     {
+        $this->sound(false);
         $this->watch();
         $this->message = 'Conectando ...., espere.';
         $response = $this->call_answer($this->call_id);
@@ -260,5 +265,12 @@ class ClientScreen extends Component
         $this->office_id = $value;
         $this->message = "Póngase en cola y espere a ser llamado.";
     }
+
+    public function sound($switch)
+    {
+        // $this->emit('sound_play');
+        $this->emit('sound_play', $switch);
+    }
+
 }
 

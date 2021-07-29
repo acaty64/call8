@@ -155,6 +155,10 @@ class ClientScreen extends Component
             $this->sound(true);
         }
 
+        if($this->status == 'Cerrado'){
+            $this->sound(false);
+        }
+
         $window = new Window;
         $this->qclients = $window->qclients;
         $this->qwindows = $window->qwindows;

@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginGoogleController;
+use App\Models\Call;
+use App\Models\Trace;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('/', function () {
 	if(env('APP_DEBUG')){
@@ -69,7 +70,10 @@ Route::group(['middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], fu
 		'as' => 'call.client',
 		'uses' => 'CallController@client'
 	]);
-
+	Route::get('/stop/call', [
+		'as' => 'stop.call',
+		'uses' => 'CallController@stop'
+	]);
 });
 /////////////////// END CALL ROUTES //////////////////
 

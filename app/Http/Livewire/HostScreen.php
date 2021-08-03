@@ -5,9 +5,12 @@ namespace App\Http\Livewire;
 use App\Events\Ring2Event;
 use App\Events\RingEvent;
 use App\Http\Traits\WindowTrait;
+use App\Models\Call;
+use App\Models\Office;
 use App\Models\Schedule;
 use App\Models\User;
 use App\Models\Window;
+use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Livewire\Component;
 
@@ -22,45 +25,94 @@ class HostScreen extends Component
     public $qclients;
 	public $status;
     public $window;
-    public $link;
+    public $call_id;
     public $data_test;
     public $message;
     public $client;
     public $host;
     public $program;
+    public $custom_time;
+    public $office;
+    public $channelName;
 
-    protected $listeners = [
+    // protected $listeners = [
 
-        'echo-private:channel-ring,Ring2Event' => 'ring',
-        'echo-presence:presence-ring,here' => 'here',
-        'echo-presence:presence-ring,joining' => 'joining',
-        'echo-presence:presence-ring,leaving' => 'leaving',
-    ];
+    //     'echo-private:channel-ring-' . $this->call_id . ',Ring2Event' => 'ring',
+    //     'echo-presence:presence-ring,here' => 'here',
+    //     'echo-presence:presence-ring,joining' => 'joining',
+    //     'echo-presence:presence-ring,leaving' => 'leaving',
+    // ];
+
+    public function getListeners()
+    {
+        $this->channelName = "echo:channel-ring-{$this->call_id}";
+        return [
+            "echo:channel-ring-{$this->call_id},Ring2Event" => 'ring',
+            "echo:channel-data,RingEvent" => 'channelData',
+        ];
+            // "echo:channel-data,here" => 'here',
+            // "echo:channel-data,joining" => 'joining',
+            // "echo:channel-data,leaving" => 'leaving',
+    }
+
+    public function test_channel(){
+        $call = Call::all()->sortByDesc('id')->first();
+        $response = broadcast(new Ring2Event([
+            'window_id'=> null,
+            'host_id' => null,
+            'client_id' => null,
+            'call_id' => $call->id,
+            'office_id' => null,
+            'message' => 'Test Channel.'
+        ]));
+    }
+
+    public function channelData($data)
+    {
+        $this->watch();
+    }
+
 
     public function mount()
     {
-        $window = new Window;
-        $this->office_id = "";
+        // $window = new Window;
+        $this->office_id = null;
+        $this->call_id = null;
         $this->data_test = "";
-        $this->qclients = $window->qclients;
-        $this->qwindows = $window->qwindows;
         $this->status = "";
-        $this->link = "";
+        // $this->link = "";
         $this->message = "";
         $this->window = [];
         $this->screen = 'close';
         $this->openWindow();
         $this->getProgram();
+        $this->getListeners();
+    }
+
+    public function watch()
+    {
+        $this->custom_time = Carbon::now()->format('H:i:s');
+        $w = new Window;
+        if($this->office_id){
+            $this->qclients = $w->qclients($this->office_id);
+            $this->qwindows = $w->qwindows($this->office_id);
+            $this->office = Office::findOrFail($this->office_id);
+        }else{
+            $this->qclients = $w->qclients();
+            $this->qwindows = $w->qwindows();
+        }
     }
 
     public function render()
     {
         $this->host = \Auth::user();
+        $this->watch();
         return view('livewire.host-screen');
     }
 
     public function here()
     {
+        $this->watch();
         // $this->message = 'here';
     }
 
@@ -89,32 +141,30 @@ class HostScreen extends Component
 
     public function joining()
     {
-        $window = new Window;
-        $this->qclients = $window->qclients;
-        $this->qwindows = $window->qwindows;
+        $this->watch();
     }
 
     public function leaving($data)
     {
-// dd($data);
-        $window = new Window;
-        $this->qclients = $window->qclients;
-        $this->qwindows = $window->qwindows;
+        $this->watch();
     }
 
     public function ring($data)
     {
-        $window = Window::find(\Auth::user()->id);
-        $this->window = $window;
-        $this->status = $window->status->status;
-        $this->message = $window->mensaje;
-        $this->link = $window->link;
-        $this->qclients = $window->qclients;
-        $this->qwindows = $window->qwindows;
+        // if($data['call_id'] == $this->window->call_id)
+        // {
+            $window = Window::where('host_id', \Auth::user()->id)->first();
+            $this->window = $window;
+            $this->status = $window->status->status;
+            $this->message = $window->mensaje;
+            // $this->link = $window->link;
+        // }
+        $this->watch();
     }
 
     public function openWindow()
     {
+        $this->watch();
         $this->data_test = 'function openWindow';
 
         $window = $this->window_open();
@@ -125,6 +175,7 @@ class HostScreen extends Component
             $this->status = $window->status->status;
             $this->message = $this->status;
             $this->office_id = $window->office_id;
+            $this->call_id = $window->call_id;
             $this->screen = 'open';
 
             return true;
@@ -138,12 +189,16 @@ class HostScreen extends Component
         $response = $this->window_start();
         $this->window = $response;
         $this->status = $response->status->status;
-        $this->link = $response->link;
-        if(!$response->client_id){
-            $this->message = $response->link;
-        }else{
+        // $this->link = $response->link;
+        // if(!$response->client_id){
+        //     $this->message = $response->link;
+        // }else{
+        if($response->client_id){
             $this->message = "Llamando a " . $response->client->given_name;
             $this->client = User::find($response->client->id);
+            $this->call_id = $response->call_id;
+            // $this->getListeners();
+            return redirect()->to(route('call.host'));
         }
     }
 
@@ -153,7 +208,7 @@ class HostScreen extends Component
         $response = $this->window_free();
         $this->window = $response;
         $this->status = $response->status->status;
-        $this->link = $response->link;
+        // $this->link = $response->link;
         $this->message = $this->status;
     }
 
@@ -164,7 +219,7 @@ class HostScreen extends Component
         $response = $this->window_stop($this->host->id);
         $this->window = $response;
         $this->status = $response->status->status;
-        $this->link = $response->link;
+        // $this->link = $response->link;
         $this->message = $this->status;
     }
 
@@ -174,7 +229,7 @@ class HostScreen extends Component
         $response = $this->window_paused();
         $this->window = $response;
         $this->status = $response->status->status;
-        $this->link = $response->link;
+        // $this->link = $response->link;
         $this->message = $this->status;
     }
 
@@ -185,8 +240,11 @@ class HostScreen extends Component
         $response = $this->window_out();
         $this->window = $response;
         $this->status = $response->status->status;
-        $this->link = $response->link;
+        // $this->link = $response->link;
         $this->message = $this->status;
+
+        return redirect('/stop/host');
+
     }
 
     public function getProgram()
@@ -205,10 +263,10 @@ class HostScreen extends Component
             $dia = CarbonImmutable::create($day);
             $diaSemana = $dia->dayOfWeek;
             $schedules = Schedule::where('date_start', '<=', $day )
-                                    ->where('date_end', '>=', $day)
-                                    ->where('day', $diaSemana)
-                                    ->where('host_id', \Auth::user()->id)
-                                    ->get();
+                        ->where('date_end', '>=', $day)
+                        ->where('day', $diaSemana)
+                        ->where('host_id', \Auth::user()->id)
+                        ->get();
             foreach ($schedules as $schedule) {
                 $program[] = [
                     'fecha' => $dia->isoformat('dddd') . ' ' . $dia->format('d-m-Y'),

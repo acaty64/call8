@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Events\Ring2Event;
 use App\Events\RingEvent;
 use App\Http\Traits\CallTrait;
 use App\Http\Traits\ScheduleTrait;
@@ -45,18 +46,46 @@ class ClientScreen extends Component
     public $custom_time;
 
     public $f_message;
+    public $channelName;
 
-    protected $listeners = [
-        'echo-private:channel-ring,Ring2Event' => 'ring',
-        'echo-presence:presence-ring,here' => 'here',
-        'echo-presence:presence-ring,joining' => 'joining',
-        'echo-presence:presence-ring,leaving' => 'leaving',
-    ];
+    // protected $listeners = [
+    //     'echo-private:channel-ring,Ring2Event' => 'ring',
+    //     'echo-presence:presence-ring,here' => 'here',
+    //     'echo-presence:presence-ring,joining' => 'joining',
+    //     'echo-presence:presence-ring,leaving' => 'leaving',
+    // ];
+
+    public function getListeners()
+    {
+        $this->channelName = "echo:channel-ring-{$this->call_id}";
+        return [
+            "echo:channel-ring-{$this->call_id},Ring2Event" => 'ring',
+            "echo:channel-data,RingEvent" => 'channelData',
+        ];
+            // "echo-private:channel-ring,Ring2Event" => 'ring',
+            // "echo:channel-data,here" => 'here',
+            // "echo:channel-data,joining" => 'joining',
+            // "echo:channel-data,leaving" => 'leaving',
+
+            // "echo-private:orders.{$this->orderId},OrderShipped" => 'notifyNewOrder',
+            // // Or:
+            // "echo-presence:orders.{$this->orderId},OrderShipped" => 'notifyNewOrder',
+    }
+    public function test_channel(){
+        $response = broadcast(new Ring2Event([
+            'window_id'=> null,
+            'host_id' => null,
+            'client_id' => $this->client->id,
+            'call_id' => $this->call_id,
+            'office_id' => null,
+            'message' => 'Test Channel.'
+        ]));
+    }
 
     public function mount()
     {
         $this->screen = "welcome";
-        $this->office_id = "";
+        $this->office_id = null;
         $this->data_test = "";
         $this->status = "";
         $this->message = "Bienvenido, seleccione la oficina con la que desea comunicarse.";
@@ -67,11 +96,21 @@ class ClientScreen extends Component
         $this->getHorarios();
         $this->links = Link::where('active', 1)->orderBy('order')->get();
         $this->f_message = "mount()";
+        $this->getListeners();
     }
 
     public function watch()
     {
         $this->custom_time = Carbon::now()->format('H:i:s');
+        $w = new Window;
+        if($this->office_id){
+            $this->qclients = $w->qclients($this->office_id);
+            $this->qwindows = $w->qwindows($this->office_id);
+            $this->office = Office::findOrFail($this->office_id);
+        }else{
+            $this->qclients = $w->qclients();
+            $this->qwindows = $w->qwindows();
+        }
     }
 
     public function render()
@@ -83,35 +122,29 @@ class ClientScreen extends Component
     public function here()
     {
         $this->watch();
-        $window = new Window;
-        $this->qclients = $window->qclients;
-        $this->qwindows = $window->qwindows;
     }
 
     public function joining()
     {
         $this->watch();
-        $window = new Window;
-        $this->qclients = $window->qclients;
-        $this->qwindows = $window->qwindows;
     }
 
     public function leaving($data)
     {
         $this->watch();
-        $window = new Window;
-        $this->qclients = $window->qclients;
-        $this->qwindows = $window->qwindows;
     }
 
     public function start()
     {
         $this->watch();
-        $call = Call::where('client_id', \Auth::user()->id)->where('status_id', '>', 1)->first();
+        $call = Call::whereDate('created_at', now())
+                    ->where('client_id', \Auth::user()->id)
+                    ->where('status_id', '>', 1)->first();
         if($call){
             $this->call_id = $call->id;
             $this->office_id = $call->office_id;
             if($call->window){
+                $this->window = $call->window;
                 $this->message = $call->window->mensaje;
                 $this->status = $call->window->status->status;
                 $this->host = $call->window->host;
@@ -124,11 +157,16 @@ class ClientScreen extends Component
         }
     }
 
+    public function channelData($data)
+    {
+        $this->watch();
+    }
+
     public function ring($data)
     {
         $this->watch();
-        if($data['message']){
-            if($data['message'] == 'Connecting'){
+        // if( $data['call_id'] == $this->call_id ){
+            if( $data['message'] == 'Connecting' ){
                 $this->f_message = "watch() connecting";
                 $this->host = User::find($data['host_id']);
                 $users = [
@@ -137,32 +175,25 @@ class ClientScreen extends Component
                 ];
                 return redirect('/video_chat/' . $users['user']->id . '/' . $users['other']->id . '/'. $data['call_id']);
             }
-        }
 
-        if($this->call_id > 0){
-            $call = Call::find($this->call_id);
-            $this->status = $call->status->status;
-            $this->f_message = "watch() call_id>0";
+            if( !is_null($data['call_id']) ){
+                $call = Call::find($this->call_id);
+                $this->status = $call->status->status;
+                $this->f_message = "watch() call_id>0";
+
+                $this->message = $data['message'];
+
+                if($this->status == 'Llamando'){
+                    $this->sound(true);
+                }
+
+                if($this->status == 'Cerrado'){
+                    $this->sound(false);
+                }
+            }
         // }
 
-        // if($data['call_id'] == $this->call_id && !is_null($data['call_id'])){
-            $this->message = $data['message'];
-            // $this->message = $call->window->mensaje;
-            $this->f_message = "watch() data[call_id] == this->call_id";
-        }
-
-        if($this->status == 'Llamando'){
-            $this->sound(true);
-        }
-
-        if($this->status == 'Cerrado'){
-            $this->sound(false);
-        }
-
-        $window = new Window;
-        $this->qclients = $window->qclients;
-        $this->qwindows = $window->qwindows;
-
+        $this->watch();
     }
 
     public function wait()
@@ -173,6 +204,8 @@ class ClientScreen extends Component
         $this->call_id = $response['id'];
         $this->message = 'Está en cola';
         $this->f_message = "wait()";
+
+        return redirect()->to(route('call.client'));
     }
 
     public function answer()
@@ -201,7 +234,7 @@ class ClientScreen extends Component
         $this->watch();
         if($variable == 'office_id')
         {
-            $this->office = Office::find($value);
+            $this->office = Office::findOrFail($value);
             $this->horary = $this->horary(1);
         }
 
@@ -272,9 +305,7 @@ class ClientScreen extends Component
 
     public function sound($switch)
     {
-        // $this->emit('sound_play');
         $this->emit('sound_play', $switch);
     }
 
 }
-

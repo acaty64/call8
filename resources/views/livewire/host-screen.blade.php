@@ -12,6 +12,17 @@
             </div>
         @endif
     </div>
+    <h1>{{ $office['name'] }}</h1>
+    @if($window)
+	    <h1>Ventanilla: {{ $window['id'] }}</h1>
+	    <h1>Call: {{ $window['call_id'] }}</h1>
+	    <h1>ChannelName: {{ $channelName }}</h1>
+	    <button wire:click="test_channel()">Test Channel</button>
+    @endif
+    <div class="card-header" align="center">
+	    <h1>Hora: {{ $custom_time }}</h1>
+    </div>
+    <br>
     @if($screen == 'open')
 	    <div class="card-header">
 		    <div class="row">

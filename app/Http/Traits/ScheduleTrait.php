@@ -106,9 +106,9 @@ trait ScheduleTrait
     public function checkSchedule(Schedule $data)
     {
         $schedules = Schedule::where('host_id', $data->host_id)
-                    ->where('office_id', '<=', $data->office_id)
-                    ->where('day', '<=', $data->day)
+                    ->where('day', $data->day)
                     ->get();
+                    // ->where('office_id', '<=', $data->office_id)
 
         $error = [];
         foreach ($schedules as $value) {
@@ -135,7 +135,7 @@ trait ScheduleTrait
     public function checkScheduleEdit(Schedule $data)
     {
         $schedules = Schedule::where('host_id', $data->host_id)
-                    ->where('day', '==', $data->day)
+                    ->where('day', $data->day)
                     ->where('id', '!=', $data->id)
                     ->get();
 

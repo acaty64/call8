@@ -145,7 +145,8 @@ class LivewireHostTest extends TestCase
         Livewire::actingAs($host)
             ->test(HostScreen::class)
             ->call('startWindow')
-            ->assertSeeHtml('Colgar');
+            ->assertRedirect(route('call.host'));
+//            ->assertSeeHtml('Colgar');
     }
 
     /** @test */
@@ -211,7 +212,9 @@ class LivewireHostTest extends TestCase
         Livewire::actingAs($host)
             ->test(HostScreen::class)
             ->call('outWindow')
-            ->assertSeeHtml('Cerrado');
+            ->assertRedirect(route('stop.host'));
+
+            // ->assertSeeHtml('Cerrado');
     }
 
 

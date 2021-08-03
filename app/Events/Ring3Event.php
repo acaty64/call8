@@ -59,6 +59,6 @@ class Ring3Event implements ShouldBroadcastNow
 
     public function broadcastOn()
     {
-        return new PresenceChannel('presence-ring');
+        return new Channel('presence-ring-' . $this->call_id);
     }
 }

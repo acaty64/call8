@@ -2,6 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/report/test', [
+	'as' => 'report.test',
+	'uses' => 'ReportController@test'
+]);
+
+Route::get('/report/average/{type}', [
+	'as' => 'report.average',
+	'uses' => 'ReportController@average'
+]);
+
 Route::get('/admin/menu', [
 	'as' => 'admin.menu',
 	'uses' => 'MenuController@admin'

@@ -6,7 +6,8 @@ use App\Models\Call;
 use App\Models\Status;
 use App\Models\Window;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\Channel;
+// use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -36,7 +37,7 @@ class Ring2Event implements ShouldBroadcastNow
                 'client' => null,
                 'client_id' => null,
                 'link' => null,
-                'call_id' => null,
+                'call_id' => $this->call_id,
                 'office_id' => null,
                 'message' => $this->message,
                 'window' => null,
@@ -59,6 +60,6 @@ class Ring2Event implements ShouldBroadcastNow
 
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-ring');
+        return new Channel('channel-ring-' . $this->call_id);
     }
 }

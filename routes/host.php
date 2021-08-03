@@ -7,4 +7,9 @@ Route::get('/call/host', [
 	'uses' => 'CallController@host'
 ]);
 
+Route::get('/stop/host', [
+	'as' => 'stop.host',
+	'uses' => 'WindowController@stop'
+]);
+
 

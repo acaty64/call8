@@ -22,8 +22,8 @@ class Window extends Model
     ];
 
     protected $appends = [
-        'qclients',
-        'qwindows',
+        // 'qclients',
+        // 'qwindows',
         'time_busy',
         'time_paused',
         'time_free',
@@ -135,15 +135,29 @@ return Carbon::parse($startTime)->shortRelativeToNowDiffForHumans(now());
         return $this->belongsTo(Status::class, 'status_id', 'id');
     }
 
-    public function getQclientsAttribute()
+    public function qclients($office_id=null)
     {
         $status_paused = Status::where('status', 'En Pausa')->first();
-        return Call::where('status_id', $status_paused->id)->count();
+        if(is_null($office_id)){
+            $qcalls = Call::where('status_id', $status_paused->id)->count();
+        }else{
+            $qcalls = Call::where('status_id', $status_paused->id)
+                ->where('office_id', $office_id)
+                ->count();
+        }
+        return $qcalls;
     }
 
-    public function getQwindowsAttribute()
+    public function qwindows($office_id=null)
     {
-        return Window::where('host_id', '!=', null)->count();
+        if(is_null($office_id)){
+            $qwindows = Window::where('host_id', '!=', null)->count();
+        }else{
+            $qwindows = Window::where('host_id', '!=', null)
+                        ->where('office_id', $office_id)
+                        ->count();
+        }
+        return $qwindows;
     }
 
 }

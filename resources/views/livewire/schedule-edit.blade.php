@@ -3,7 +3,8 @@
 		<div class="card-body">
 			<div class="row">
 			    <div class="col-md-6">
-					<h3>SCHEDULE CREATE</h3>
+					<h3>SCHEDULE EDIT</h3>
+					<h4>Id: {{ $schedule_id }}</h4>
 			    </div>
 			    <div class="col-md-2">
 			        <button wire:click="$emit('setStatus', 'index')" class="btn-warning mb-3 btn-lg">Regresar</button>

@@ -20,7 +20,7 @@ class CallSeeder extends Seeder
 		Call::create([
 			'number' => 2,
 			'client_id' => 5,
-			'status_id' => 4,
+			'status_id' => 5,
 			'office_id' => 1,
 		]);
 

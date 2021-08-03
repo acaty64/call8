@@ -20,4 +20,13 @@
 </div>
 @endsection
 
+@section('script')
+<script type="text/javascript">
+    var audio = new Audio("/sounds/llamando.mp3");
+    Livewire.on('sound_play', () => {
+            audio.play();
+    })
+</script>
+@endsection
+
 @section('view','app/host/screen.blade.php')

@@ -83,19 +83,18 @@ class ScheduleEdit extends Component
     public function save()
     {
         $this->validate();
-        $data = [
-            'host_id' => $this->host_id,
-            'office_id' => $this->selectedOffice,
-            'day' => $this->selectedDay,
-            'hour_start' => $this->hour_start,
-            'hour_end' => $this->hour_end,
-            'date_start' => $this->date_start,
-            'date_end' => $this->date_end,
-        ];
+        $data = new Schedule;
+        $data->host_id = $this->host_id;
+        $data->office_id = $this->selectedOffice;
+        $data->day = $this->selectedDay;
+        $data->hour_start = $this->hour_start;
+        $data->hour_end = $this->hour_end;
+        $data->date_start = $this->date_start;
+        $data->date_end = $this->date_end;
+
+        $response = $this->checkScheduleEdit($data);
 
         $schedule = Schedule::find($this->schedule_id);
-
-        $response = $this->checkScheduleEdit($schedule);
 
         if($response == []){
             $schedule->office_id = $this->selectedOffice;

@@ -3,6 +3,7 @@
 namespace App\Http\Traits;
 
 use App\Events\Ring2Event;
+use App\Events\RingEvent;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\Trace;
@@ -35,12 +36,15 @@ trait CallTrait
 
         $check = Trace::new_call($call);
 
-        $response = broadcast(new Ring2Event([
-            'window_id'=> null,
-            'host_id' => null,
-            'client_id' => null,
-            'call_id' => null,
-            'office_id' => $office_id,
+        // $response = broadcast(new Ring2Event([
+        //     'window_id'=> null,
+        //     'host_id' => null,
+        //     'client_id' => $client->id,
+        //     'call_id' => $call->id,
+        //     'office_id' => $office_id,
+        //     'message' => 'Usuario en Espera.'
+        // ]));
+        $response = broadcast(new RingEvent([
             'message' => 'Usuario en Espera.'
         ]));
 
@@ -144,7 +148,7 @@ trait CallTrait
         }
 
         $data_event = [
-            'window_id' => null,
+            'window_id' => ($call->window) ? $window->id : null,
             'host_id' => \Auth::user()->id,
             'client_id' => $call->user_id,
             'call_id' => $call->id,

@@ -42,9 +42,9 @@ class LivewireClientTest extends TestCase
         $user = User::find(7);
         Livewire::actingAs($user)
             ->test(ClientScreen::class)
-            ->set('office_id', '')
             ->assertSeeHtml('HORARIOS DE ATENCIÓN')
             ->assertSeeHtml('seleccione la oficina con la que desea comunicarse.');
+            // ->set('office_id', null)
     }
 
     /** @test */

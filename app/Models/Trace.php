@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Call;
 use App\Models\Status;
 use App\Models\User;
+use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -75,5 +76,58 @@ class Trace extends Model
         ]);
         return true;
     }
+
+    public function attend_time($call_id)
+    {
+        $status_attend_id = Status::where('status', 'Atendiendo')->first()->id;
+        $status_close_id = Status::where('status', 'Cerrado')->first()->id;
+
+        $call_start = Trace::where('call_id', $call_id)
+                    ->where('host_id', null)
+                    ->where('status_id', $status_attend_id)
+                    ->first();
+        if($call_start){
+            $startTime = Carbon::parse($call_start->created_at);
+        }
+        $call_stop = Trace::where('call_id', $call_id)
+                    ->where('status_id', $status_close_id)
+                    ->first();
+        if($call_stop){
+            $stopTime = Carbon::parse($call_stop->created_at);
+        }
+
+        if($call_start && $call_stop){
+            return $stopTime->diffInSeconds($startTime);
+        }else{
+            return null;
+        }
+    }
+
+    public function paused_time($call_id)
+    {
+        $status_paused_id = Status::where('status', 'En Pausa')->first()->id;
+        $status_attend_id = Status::where('status', 'Atendiendo')->first()->id;
+
+        $call_start = Trace::where('call_id', $call_id)
+                    ->where('host_id', null)
+                    ->where('status_id', $status_paused_id)
+                    ->first();
+        if($call_start){
+            $startTime = Carbon::parse($call_start->created_at);
+        }
+        $call_stop = Trace::where('call_id', $call_id)
+                    ->where('status_id', $status_attend_id)
+                    ->first();
+        if($call_stop){
+            $stopTime = Carbon::parse($call_stop->created_at);
+        }
+
+        if($call_start && $call_stop){
+            return $stopTime->diffInSeconds($startTime);
+        }else{
+            return null;
+        }
+    }
+
 
 }

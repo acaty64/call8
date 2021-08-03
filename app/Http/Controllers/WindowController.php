@@ -14,5 +14,10 @@ class WindowController extends Controller
         return view('app.window.index');
     }
 
+    public function stop()
+    {
+        return view('app.host.stop');
+    }
+
 
 }

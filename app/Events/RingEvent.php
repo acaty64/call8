@@ -38,8 +38,8 @@ class RingEvent implements ShouldBroadcastNow
                 'client_id' => null,
                 'link' => null,
                 'message' => $this->message,
-                'qclients' => $window->qclients,
-                'qwindows' => $window->qwindows,
+                'qclients' => $window->qclients(),
+                'qwindows' => $window->qwindows(),
             ];
         }
         return [
@@ -51,13 +51,13 @@ class RingEvent implements ShouldBroadcastNow
             'link' => $window->link,
             'message' => $window->mensaje,
             // 'message' => $this->message,
-            'qclients' => $window->qclients,
-            'qwindows' => $window->qwindows,
+            'qclients' => $window->qclients(),
+            'qwindows' => $window->qwindows(),
         ];
     }
 
     public function broadcastOn()
     {
-        return new Channel('channel-ring');
+        return new Channel('channel-data');
     }
 }

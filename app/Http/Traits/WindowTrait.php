@@ -60,7 +60,9 @@ trait WindowTrait {
         $host_id = $host->id;
 
         $status_paused = Status::where('status', 'En Pausa')->first()->id;
-        $call = Call::where('status_id', $status_paused)->first();
+        $call = Call::where('status_id', $status_paused)
+                    ->where('office_id', $host->window->office_id)
+                    ->first();
         if(!$call){
             $window = $host->window;
             $window->mensaje = 'No hay llamadas en espera.' ;

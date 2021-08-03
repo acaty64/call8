@@ -46,7 +46,7 @@ class ChartController extends Controller
 						->where('office_id', $office_id)
 						->pluck('host_id')->unique()->count();
 			$h_attentions[] = Trace::whereDate('created_at', $_value)
-							->where('host_id', '!=', null)
+							->where('client_id', '!=', null)
 							->where('office_id', $office_id)
 							->where('status_id', 4)
 							->count();
@@ -55,7 +55,8 @@ class ChartController extends Controller
 
 		$options_color1 = [
             'backgroundColor'           => 'rgb(127,156,245, 0.4)',
-            'borderColor'               => '#7F9CF5',
+            'borderColor'               => '#2234d6',
+            // 'borderColor'               => '#7F9CF5',
             'pointBackgroundColor'      => 'rgb(255, 255, 255, 0)',
             'pointBorderColor'          => 'rgb(255, 255, 255, 0)',
             'pointHoverBackgroundColor' => '#7F9CF5',

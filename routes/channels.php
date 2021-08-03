@@ -19,9 +19,9 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 
 
 // Verifica si el usuario esta logueado (Private)
-// Broadcast::channel('channel-ring', function ($user) {
-//      return true;
-// });
+Broadcast::channel('channel-ring', function ($user) {
+     return true;
+});
 
 // Verifica si el usuario esta logueado (Presence)
 Broadcast::channel('presence-ring', function ($user) {

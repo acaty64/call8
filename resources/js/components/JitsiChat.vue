@@ -34,7 +34,7 @@
             </div>
           </div>
           <div class="card">
-            <div>Call_id: {{ $call_id }}</div>
+            <div>Call.id: {{ call.id }}</div>
           </div>
           <div class="card">
             <div class="video-container" id="meet"></div>
@@ -187,16 +187,19 @@ export default {
       };
     },
     getListeners(){
-      if(!this.is_host){
-        window.Echo.channel("channel-ring-" + this.call_id).listen("Ring2Event", e => {
-          console.log('getListeners Pusher', e);
-          console.log('this.call', this.call);
-          if(substr(e.message,0,17) == 'Llamada terminada')
+        window.Echo.channel("channel-ring-" + this.call.id).listen("Ring2Event", e => {
+          // console.log('getListeners Pusher', e);
+          // console.log('this.call', this.call);
+          // console.log('e.message', e.message);
+          if(e.message.substring(0,17) == 'Llamada terminada')
           {
+            if(this.is_host){
+              window.location.href = '/call/host';
+            }else{
               window.location.href = '/call/client';
+            }
           }
         });
-      }
     },
     async startVideoChat() {
       const api = new JitsiMeetExternalAPI(this.domain, this.options);

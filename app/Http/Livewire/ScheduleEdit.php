@@ -14,6 +14,7 @@ class ScheduleEdit extends Component
     use ScheduleTrait;
 
     public $schedule_id;
+    public $schedule;
     public $errores;
     public $hosts;
 	public $offices;
@@ -83,7 +84,7 @@ class ScheduleEdit extends Component
     public function save()
     {
         $this->validate();
-        $data = new Schedule;
+        $data = $this->schedule;
         $data->host_id = $this->host_id;
         $data->office_id = $this->selectedOffice;
         $data->day = $this->selectedDay;

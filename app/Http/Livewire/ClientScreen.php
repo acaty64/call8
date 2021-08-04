@@ -48,12 +48,6 @@ class ClientScreen extends Component
     public $f_message;
     public $channelName;
 
-    // protected $listeners = [
-    //     'echo-private:channel-ring,Ring2Event' => 'ring',
-    //     'echo-presence:presence-ring,here' => 'here',
-    //     'echo-presence:presence-ring,joining' => 'joining',
-    //     'echo-presence:presence-ring,leaving' => 'leaving',
-    // ];
 
     public function getListeners()
     {
@@ -61,16 +55,12 @@ class ClientScreen extends Component
         return [
             "echo:channel-ring-{$this->call_id},Ring2Event" => 'ring',
             "echo:channel-data,RingEvent" => 'channelData',
+            "echo:channel-data,here" => 'here',
+            "echo:channel-data,joining" => 'joining',
+            "echo:channel-data,leaving" => 'leaving',
         ];
-            // "echo-private:channel-ring,Ring2Event" => 'ring',
-            // "echo:channel-data,here" => 'here',
-            // "echo:channel-data,joining" => 'joining',
-            // "echo:channel-data,leaving" => 'leaving',
-
-            // "echo-private:orders.{$this->orderId},OrderShipped" => 'notifyNewOrder',
-            // // Or:
-            // "echo-presence:orders.{$this->orderId},OrderShipped" => 'notifyNewOrder',
     }
+
     public function test_channel(){
         $response = broadcast(new Ring2Event([
             'window_id'=> null,
@@ -221,12 +211,13 @@ class ClientScreen extends Component
     public function stop()
     {
         $this->watch();
+        $this->sound(false);
         $this->message = 'Desconectando ....';
         $response = $this->call_close();
         $this->status = 'Cerrado';
         $this->message = 'Desconectado';
         $this->f_message = "stop()";
-
+        $this->redirect(route('stop.call'));
     }
 
     public function updated($variable, $value)

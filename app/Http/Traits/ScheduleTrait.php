@@ -134,11 +134,10 @@ trait ScheduleTrait
 
     public function checkScheduleEdit(Schedule $data)
     {
-        $schedules = Schedule::where('host_id', $data->host_id)
+        $schedules = Schedule::where('id', '!=', $data->id)
+                    ->where('host_id', $data->host_id)
                     ->where('day', $data->day)
-                    ->where('id', '!=', $data->id)
                     ->get();
-
         $error = [];
         foreach ($schedules as $value) {
             if(($data->date_start <= $value->date_start && 

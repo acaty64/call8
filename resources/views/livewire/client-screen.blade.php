@@ -118,11 +118,12 @@
 		<div class="card-body mt-1">
 			@if($status == '')
 				<button wire:click="wait" class="btn btn-lg btn-success">Poner en Cola</button>
+				<button wire:click="stop" class="btn btn-lg btn-danger">Salir</button>
 			@endif
 			@if($status == 'Llamando')
 				<button wire:click="answer" class="btn btn-lg btn-success">Responder</button>
 			@endif
-			@if($status == 'Atendiendo')
+			@if($status == 'Llamando' || $status == 'Atendiendo')
 				<button wire:click="stop" class="btn btn-lg btn-danger">Colgar</button>
 			@endif
 		</div>

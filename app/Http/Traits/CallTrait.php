@@ -99,6 +99,7 @@ trait CallTrait
             $call = Call::findOrFail($client->window->call_id);
             $call->status_id = $status_closed->id;
             $call->save();
+            $call_id = $call->id;
 
             $window = Window::where('client_id', $client->id)->first();
             $window->status_id = $status_paused->id;
@@ -110,6 +111,7 @@ trait CallTrait
             $call = Call::where('client_id', $client->id)
                     ->where('status_id','!=', $status_closed)
                     ->first();
+            $call_id = $call->id;
             $call->status_id = $status_closed->id;
             $call->save();
             $window_id = null;
@@ -119,7 +121,7 @@ trait CallTrait
             'window_id' => $window->id,
             'host_id' => $window->host_id,
             'client_id' => $window->client_id,
-            'call_id' => $window->call_id,
+            'call_id' => $call_id,
             'message' => 'Llamada terminada por usuario ' . $client->name
             ]));
         $check = Trace::new_call($call);

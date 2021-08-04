@@ -35,13 +35,6 @@ class HostScreen extends Component
     public $office;
     public $channelName;
 
-    // protected $listeners = [
-
-    //     'echo-private:channel-ring-' . $this->call_id . ',Ring2Event' => 'ring',
-    //     'echo-presence:presence-ring,here' => 'here',
-    //     'echo-presence:presence-ring,joining' => 'joining',
-    //     'echo-presence:presence-ring,leaving' => 'leaving',
-    // ];
 
     public function getListeners()
     {
@@ -49,10 +42,10 @@ class HostScreen extends Component
         return [
             "echo:channel-ring-{$this->call_id},Ring2Event" => 'ring',
             "echo:channel-data,RingEvent" => 'channelData',
+            "echo:channel-data,here" => 'here',
+            "echo:channel-data,joining" => 'joining',
+            "echo:channel-data,leaving" => 'leaving',
         ];
-            // "echo:channel-data,here" => 'here',
-            // "echo:channel-data,joining" => 'joining',
-            // "echo:channel-data,leaving" => 'leaving',
     }
 
     public function test_channel(){

@@ -91,5 +91,27 @@
 			</table>
 		</div>
 	</div>
+	<div class="card">
+		<div class="card-header" align="center">
+			<h2>Documentos de Referencia</h2>
+		</div>
+        <div class="card">
+          <div class="container row">
+          	@foreach($documents as $doc)
+              <div class="col-md-6">
+                <a class="btn bt-sm btn-success mt-2" wire:click="change_link({{ $doc }})" class="form-control">{{ $doc['name'] }}</a>
+              </div>
+            @endforeach
+          </div>
+        </div>
+        @if(!is_null($link))
+	        <div class="card-body" v-if="link != null">
+	          <h1>{{$link_name}}</h1>
+	          <a href="{{$link}}" target="_blank" >Abrir en otra pestaña</a>
+	          <iframe src="{{ $link }}" type="application/pdf" style="width: 100%; height:50vw; position: relative; allowfullscreen;display:block; width:100%; border:none; "></iframe>
+	        </div>
+        @endif
+      </div>
+	</div>
 
 </div>

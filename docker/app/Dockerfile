@@ -56,6 +56,10 @@ COPY php.ini /etc/php/7.3/fpm/php.ini
 
 COPY default /etc/nginx/sites-available/default
 
+COPY local.ini /etc/php/7.3/fpm/conf.d/local.ini
+
+COPY nginx.conf /etc/nginx/nginx.conf
+
 COPY policy.xml /etc/ImageMagick-6/policy.xml
 
 COPY php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf

@@ -18,6 +18,7 @@
                         <a href="{{route('users.index')}}" class="btn btn-success ml-2 mb-2 col-2" role='button'>Usuarios</a>
                         <a href="{{route('access.index')}}" class="btn btn-success ml-2 mb-2 col-2" role='button'>Accesos</a>
                         <a href="{{route('office.index')}}" class="btn btn-success ml-2 mb-2 col-2" role='button'>Oficinas</a>
+                        <a href="{{route('documents.index')}}" class="btn btn-success ml-2 mb-2 col-2" role='button'>Referencias</a>
                     </div>
                 </div>
             </div>

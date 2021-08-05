@@ -6,6 +6,7 @@ use App\Events\Ring2Event;
 use App\Events\RingEvent;
 use App\Http\Traits\WindowTrait;
 use App\Models\Call;
+use App\Models\Document;
 use App\Models\Office;
 use App\Models\Schedule;
 use App\Models\User;
@@ -26,15 +27,19 @@ class HostScreen extends Component
 	public $status;
     public $window;
     public $call_id;
-    public $data_test;
     public $message;
     public $client;
     public $host;
     public $program;
     public $custom_time;
     public $office;
-    public $channelName;
+    public $documents;
+    public $link;
+    public $link_name;
 
+    // APP_DEBUG
+    public $channelName;
+    public $data_test;
 
     public function getListeners()
     {
@@ -47,6 +52,14 @@ class HostScreen extends Component
             "echo:channel-data,leaving" => 'leaving',
         ];
     }
+
+    public function change_link($doc){
+// dd('doc:', $doc['name']);
+        $this->link_name = $doc['name'];
+        $this->link = '/storage/docs/' . basename($doc['link']);
+        // $this->link = env('APP_URL') . '/storage/docs/' . basename($doc['link']);
+    }
+
 
     public function test_channel(){
         $call = Call::all()->sortByDesc('id')->first();
@@ -80,6 +93,8 @@ class HostScreen extends Component
         $this->openWindow();
         $this->getProgram();
         $this->getListeners();
+        $this->documents = Document::where('active', true)->orderBy('order')->get();
+        $this->link = null;
     }
 
     public function watch()

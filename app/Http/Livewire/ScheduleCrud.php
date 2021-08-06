@@ -77,6 +77,7 @@ class ScheduleCrud extends Component
 
     public function setStatus($value)
     {
+        $this->schedules = Schedule::all();
         $this->status = $value;
     }
 

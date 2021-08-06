@@ -105,22 +105,26 @@ class ScheduleCreate extends Component
 
         if($response == []){
             Schedule::create($data);
-            $this->errors = [];
-            // session()->flash('message', 'Registro grabado.');
+            $this->errores = null;
+            session()->flash('message', 'Registro grabado.');
+
             $this->emit('setStatus', 'index');
         }
         $this->errores = $response;
         session()->flash('message', 'Error, revise las fechas y horas.');
     }
 
-    public function newHost($host_id)
-    {
-        $this->selectedHost = $host_id;
-    }
+    // public function newHost($host_id)
+    // {
+    //     $this->selectedHost = $host_id;
+    // }
 
     public function updated($field, $value)
     {
         $this->errores = [];
+        if($field == 'selectedHost'){
+            $this->host_id = $value;
+        }
         if($field == 'hour_start'){
             $new = [];
             foreach ($this->hours() as $key => $val) {

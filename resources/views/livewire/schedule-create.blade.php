@@ -91,9 +91,10 @@
 			<div class="col-sm-4">
 				<div class="input-group mb">
 					<div class="input-group-prepend">
-						<span class="input-group-text" id="basic-addon0">Hora de Fin</span>
+						<span class="input-group-text" id="basic-addon0">Hora Fin</span>
 					</div>
 					<div class="col-md-8 pl-0">
+{{-- {{ $this->hours_end }} --}}
 						<select wire:model="hour_end" class="form-control">
 							<option value="" selected>Choose hour end</option>
 							@foreach($hours_end as $kh2 => $hour2)

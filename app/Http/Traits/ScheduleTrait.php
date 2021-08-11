@@ -57,7 +57,7 @@ trait ScheduleTrait
     public function scheduleFilter($fecha, $hora, $host_id=null, $office_id=null)
     {
         $h1 = $hora;
-        $m = substr($h1, 3,2) + 29;
+        $m = substr($h1, 3, 2) + 29;
         $h2 = str_pad(substr($h1,0,2), 2, "00", STR_PAD_LEFT) . ":" . $m ;
         if(is_null($host_id))
         {
@@ -235,7 +235,6 @@ trait ScheduleTrait
                         ->pluck('host_id');
 
         $horas = $this->hours();
-
         $schedule = [];
         foreach ($hosts as $key => $host_id) {
             $horario = $this->horario($now, $host_id, $office_id);
@@ -253,7 +252,7 @@ trait ScheduleTrait
                 }
             }
         }
-// dd($schedule);
+
         $horary = [];
         $horary[0]['ini'] = '';
         $horary[0]['fin'] = '';
@@ -265,7 +264,11 @@ trait ScheduleTrait
                 if($horary[$n]['ini'] == '')
                 {
                     $horary[$n]['ini'] = $schedule[$key][0];
-                    $horary[$n]['fin'] = '';
+                    // $horary[$n]['fin'] = '';
+                    $h = substr($schedule[$key][0],0,2);
+                    $m = substr($schedule[$key][0],3,2) + 29;
+                    $fin = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m, 2, "00", STR_PAD_LEFT);
+                    $horary[$n]['fin'] = $fin;
                 }else{
                     // if($schedule[$key-1][$today + 1] == 1)
                     if($schedule[$key-1][$today + 1] > 0)
@@ -286,7 +289,6 @@ trait ScheduleTrait
         {
             return null;
         }
-
         return $horary;
 
     }

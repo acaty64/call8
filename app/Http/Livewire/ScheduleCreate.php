@@ -76,14 +76,30 @@ class ScheduleCreate extends Component
         $this->day = null;
         $this->selectedDay = '';
         $this->hours_start = $this->hours();
-        $this->hour_start = null;
-        $this->hours_end = $this->hours();
-        $this->hour_end = null;
+        $this->hour_start = $this->hours_start[0];
+        $this->hours_end = $this->_hours_end();
+        $this->hour_end = $this->hours_end[0];
         $this->date_start = CarbonImmutable::now()->format('Y-m-d');
         $this->date_end = CarbonImmutable::now()->format('Y-m-d');
         $this->min_date_start = CarbonImmutable::now()->format('Y-m-d');
         $this->min_date_end = CarbonImmutable::now()->format('Y-m-d');
 
+    }
+
+    public function _hours_end(){
+        $hours = $this->hours();
+
+        $new = [];
+
+        foreach($hours as $key => $hour){
+            if($hour >= $this->hour_start){
+                $h = substr($hour, 0, 2);
+                $m = substr($hour, 3, 2);
+                $new[] = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m + 29, 2, "00", STR_PAD_LEFT);;
+            }
+        }
+
+        return $new;
     }
 
     public function save()
@@ -114,11 +130,6 @@ class ScheduleCreate extends Component
         session()->flash('message', 'Error, revise las fechas y horas.');
     }
 
-    // public function newHost($host_id)
-    // {
-    //     $this->selectedHost = $host_id;
-    // }
-
     public function updated($field, $value)
     {
         $this->errores = [];
@@ -126,13 +137,7 @@ class ScheduleCreate extends Component
             $this->host_id = $value;
         }
         if($field == 'hour_start'){
-            $new = [];
-            foreach ($this->hours() as $key => $val) {
-                if($val > $value){
-                    $new[] = $val;
-                }
-            }
-            $this->hours_end = $new;
+            $this->hours_end = $this->_hours_end();
         }
         if($field == 'date_start'){
             $this->date_end = $value;

@@ -74,7 +74,7 @@ class LivewireScheduleTest extends TestCase
             'office_id' => 1,
             'day' => 1,
             'hour_start' => '08:00',
-            'hour_end' => '09:00',
+            'hour_end' => '08:59',
             'date_start' => '2021-05-20',
             'date_end' => '2021-05-30',
         ];
@@ -157,7 +157,7 @@ class LivewireScheduleTest extends TestCase
             'office_id' => 3,
             'day' => 1,
             'hour_start' => '10:00',
-            'hour_end' => '14:00',
+            'hour_end' => '13:59',
             'date_start' => '2021-05-20',
             'date_end' => '2021-05-30',
         ];
@@ -192,17 +192,17 @@ class LivewireScheduleTest extends TestCase
             'host_id' => $host->id,
             'day' => $today,
             'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
-            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':00',
+            'hour_end' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':59',
             'date_start' => $now->subDays(2)->format('Y-m-d'),
             'date_end' => $now->addDays(2)->format('Y-m-d'),
         ]);
 
-        $m = substr($schedule->hour_end, 3, 2) + 59;
+        // $m = substr($schedule->hour_end, 3, 2) + 59;
+        $m = 59;
 
         $vhour_end = str_pad(substr($schedule->hour_start, 0, 2), 2, "00", STR_PAD_LEFT) . ':' . $m;
 
         $response = $this->horary($schedule->office_id);
-
         if($now->format('H') > 21 || $now->format('H') < 8){
                $this->markTestIncomplete();
         }

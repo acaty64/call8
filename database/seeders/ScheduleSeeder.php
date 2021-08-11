@@ -16,7 +16,7 @@ class ScheduleSeeder extends Seeder
     		'host_id' => 1,
     		'day' => 1,
     		'hour_start' => '08:30',
-    		'hour_end' => '12:30',
+    		'hour_end' => '12:29',
     		'date_start' => CarbonImmutable::now()->sub(10, 'day'),
     		'date_end' => CarbonImmutable::now()->add(12, 'day'),
 		]);
@@ -26,7 +26,7 @@ class ScheduleSeeder extends Seeder
     		'host_id' => 1,
     		'day' => 1,
     		'hour_start' => '14:30',
-    		'hour_end' => '16:30',
+    		'hour_end' => '16:29',
             'date_start' => CarbonImmutable::now()->sub(10, 'day'),
             'date_end' => CarbonImmutable::now()->add(12, 'day'),
 		]);
@@ -36,7 +36,7 @@ class ScheduleSeeder extends Seeder
     		'host_id' => 1,
     		'day' => 2,
     		'hour_start' => '08:30',
-    		'hour_end' => '12:30',
+    		'hour_end' => '12:29',
             'date_start' => CarbonImmutable::now()->sub(10, 'day'),
             'date_end' => CarbonImmutable::now()->add(12, 'day'),
 		]);
@@ -46,7 +46,7 @@ class ScheduleSeeder extends Seeder
     		'host_id' => 1,
     		'day' => 2,
     		'hour_start' => '14:30',
-    		'hour_end' => '16:30',
+    		'hour_end' => '16:29',
             'date_start' => CarbonImmutable::now()->sub(10, 'day'),
             'date_end' => CarbonImmutable::now()->add(12, 'day'),
 		]);
@@ -56,7 +56,7 @@ class ScheduleSeeder extends Seeder
             'host_id' => 2,
             'day' => 1,
             'hour_start' => '14:30',
-            'hour_end' => '16:30',
+            'hour_end' => '16:29',
             'date_start' => CarbonImmutable::now()->sub(10, 'day'),
             'date_end' => CarbonImmutable::now()->add(12, 'day'),
         ]);
@@ -66,7 +66,7 @@ class ScheduleSeeder extends Seeder
             'host_id' => 2,
             'day' => 0,         // Domingo
             'hour_start' => '08:30',
-            'hour_end' => '10:30',
+            'hour_end' => '10:29',
             'date_start' => CarbonImmutable::now()->sub(10, 'day'),
             'date_end' => CarbonImmutable::now()->add(12, 'day'),
         ]);

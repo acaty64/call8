@@ -28,17 +28,23 @@ class LivewireClientTest extends TestCase
 
         $now = CarbonImmutable::now();
 
+        $h_end = $now->format('H');
+        if($now->format('m') > 30){
+            $m_end = 59;
+        }else{
+            $m_end = 29;
+        }
         $schedule = Schedule::create([
             'office_id' => 1,
             'host_id' => 1,
             'day' => $now->dayOfWeek,
             'hour_start' => $now->format('H:00'),
-            'hour_end' => $now->addHour(1)->format('H:00'),
+            'hour_end' => $h_end . ":" . $m_end,
+            // 'hour_end' => $now->format('H:59'),
+            // 'hour_end' => $now->addHour(1)->format('H:00'),
             'date_start' => $now->format('Y-m-d'),
             'date_end' => $now->addDays(1)->format('Y-m-d'),
-
         ]);
-
         $user = User::find(7);
         Livewire::actingAs($user)
             ->test(ClientScreen::class)

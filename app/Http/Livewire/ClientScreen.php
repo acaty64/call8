@@ -10,6 +10,7 @@ use App\Http\Traits\WindowTrait;
 use App\Models\Call;
 use App\Models\Link;
 use App\Models\Office;
+use App\Models\Schedule;
 use App\Models\Status;
 use App\Models\Trace;
 use App\Models\User;

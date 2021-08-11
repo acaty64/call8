@@ -73,7 +73,7 @@ class ScheduleEdit extends Component
         $this->selectedDay = $this->day;
         $this->hours_start = $this->hours();
         $this->hour_start = $this->schedule->hour_start;
-        $this->hours_end = $this->hours();
+        $this->hours_end = $this->_hours_end();
         $this->hour_end = $this->schedule->hour_end;
         $this->date_start = $this->schedule->date_start;
         $this->date_end = $this->schedule->date_end;
@@ -118,18 +118,28 @@ class ScheduleEdit extends Component
     {
         $this->errores = [];
         if($field == 'hour_start'){
-            $new = [];
-            foreach ($this->hours() as $key => $val) {
-                if($val > $value){
-                    $new[] = $val;
-                }
-            }
-            $this->hours_end = $new;
+            $this->hours_end = $this->_hours_end();
         }
         if($field == 'date_start'){
             $this->date_end = $value;
             $this->min_date_end = $value;
         }
+    }
+
+    public function _hours_end(){
+        $hours = $this->hours();
+
+        $new = [];
+
+        foreach($hours as $key => $hour){
+            if($hour >= $this->hour_start){
+                $h = substr($hour, 0, 2);
+                $m = substr($hour, 3, 2);
+                $new[] = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m + 29, 2, "00", STR_PAD_LEFT);;
+            }
+        }
+
+        return $new;
     }
 
 }

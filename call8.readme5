@@ -20,4 +20,5 @@ cd ~/code/traefik
 
 ./dock restart
 ./dock art config:clear
+./dock art storage:link
 

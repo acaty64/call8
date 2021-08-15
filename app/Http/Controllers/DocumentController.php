@@ -94,6 +94,11 @@ class DocumentController extends Controller
     {
         $document = Document::findOrFail($id);
         $document->delete();
+
+        $delete_file = storage_path('app/public/docs/' . basename($document->link));
+
+        unlink($delete_file);
+
         return redirect(route('documents.index'));
 
     }

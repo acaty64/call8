@@ -280,7 +280,13 @@ trait ScheduleTrait
                     }else{
                         $n++;
                         $horary[$n]['ini'] = $schedule[$key][0];
-                        $horary[$n]['fin'] = '';
+
+                        $h = substr($schedule[$key][0],0,2);
+                        $m = substr($schedule[$key][0],3,2) + 29;
+                        $fin = str_pad($h, 2, "00", STR_PAD_LEFT)  . ":" . str_pad($m, 2, "00", STR_PAD_LEFT);
+                        $horary[$n]['fin'] = $fin;
+
+                        // $horary[$n]['fin'] = '';
                     }
                 }
             }

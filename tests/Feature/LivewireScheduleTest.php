@@ -179,37 +179,94 @@ class LivewireScheduleTest extends TestCase
     }
 
 
-    /** @test  CHECK TIME BEFORE 21:00 ///////*/
-    public function attention_horary()
+    /** @test */
+    public function attention_horary_one_time_zone()
     {
+        Carbon::setTestNow();
+        $now = CarbonImmutable::now();
+        $mockHour = '08';
+        $mockMinute = '00';
+        $knownDate = Carbon::create($now->format('Y'), $now->format('m'), $now->format('d'), $mockHour, $mockMinute);
+        Carbon::setTestNow($knownDate);
+
         $host = User::find(3);
         $this->assertTrue($host->is_host);
-        $now = CarbonImmutable::now();
+        $now = $knownDate;
         $today = $now->dayOfWeek;
+
+        $m = 59;
+        $schedule = Schedule::create([
+            'office_id' => 3,
+            'host_id' => $host->id,
+            'day' => $today,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':' . $mockMinute,
+            'hour_end' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':' . $m,
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
+
+
+        $vhour_end = str_pad(substr($schedule->hour_start, 0, 2), 2, "00", STR_PAD_LEFT) . ':' . $m;
+
+        $response = $this->horary($schedule->office_id);
+
+        $check = [
+            [
+                "ini" => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+                "fin" => $vhour_end,
+            ],
+
+        ];
+
+        $this->assertTrue($response == $check);
+    }
+
+    /** @test */
+    public function attention_horary_two_times_zone()
+    {
+        Carbon::setTestNow();
+        $now = CarbonImmutable::now();
+        $mockHour = '08';
+        $mockMinute = '00';
+        $knownDate = Carbon::create($now->format('Y'), $now->format('m'), $now->format('d'), $mockHour, $mockMinute);
+        Carbon::setTestNow($knownDate);
+
+        $host = User::find(3);
+        $this->assertTrue($host->is_host);
+        $now = $knownDate;
+        $today = $now->dayOfWeek;
+
+        $m = 59;
+        $schedule = Schedule::create([
+            'office_id' => 3,
+            'host_id' => $host->id,
+            'day' => $today,
+            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':' . $mockMinute,
+            'hour_end' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':' . $m,
+            'date_start' => $now->subDays(2)->format('Y-m-d'),
+            'date_end' => $now->addDays(2)->format('Y-m-d'),
+        ]);
+
+        $vhour_init = $schedule->hour_start;
 
         $schedule = Schedule::create([
             'office_id' => 3,
             'host_id' => $host->id,
             'day' => $today,
-            'hour_start' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
-            'hour_end' => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':59',
+            'hour_start' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':' . $mockMinute,
+            'hour_end' => str_pad($now->hour + 1, 2, "00", STR_PAD_LEFT) . ':' . $m,
             'date_start' => $now->subDays(2)->format('Y-m-d'),
             'date_end' => $now->addDays(2)->format('Y-m-d'),
         ]);
 
-        // $m = substr($schedule->hour_end, 3, 2) + 59;
-        $m = 59;
-
-        $vhour_end = str_pad(substr($schedule->hour_start, 0, 2), 2, "00", STR_PAD_LEFT) . ':' . $m;
+        $vhour_end = $schedule->hour_end;
+        // $vhour_end = str_pad(substr($schedule->hour_start, 0, 2), 2, "00", STR_PAD_LEFT) . ':' . $m;
 
         $response = $this->horary($schedule->office_id);
-        if($now->format('H') > 21 || $now->format('H') < 8){
-               $this->markTestIncomplete();
-        }
 
         $check = [
             [
-                "ini" => str_pad($now->hour, 2, "00", STR_PAD_LEFT) . ':00',
+                "ini" => $vhour_init,
                 "fin" => $vhour_end,
             ],
 

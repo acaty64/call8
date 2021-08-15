@@ -9,6 +9,7 @@ use App\Models\Status;
 use App\Models\User;
 use App\Models\Window;
 use Carbon\CarbonImmutable;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -19,38 +20,165 @@ class LivewireClientTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function client_creation_page_contains_livewire_component()
+    public function client_creation_page_contains_livewire_component_0800()
+    {
+        Carbon::setTestNow();
+        $now = CarbonImmutable::now();
+        $mockHour = 8;
+        $mockMinute = 0;
+        $knownDate = Carbon::create($now->format('Y'), $now->format('m'), $now->format('d'), $mockHour, $mockMinute);
+        Carbon::setTestNow($knownDate);
+        $check = $this->client_see_schedules_buttons($knownDate);
+        $this->assertTrue($check);
+    }
+
+    /** @test */
+    public function client_creation_page_contains_livewire_component_0830()
+    {
+        Carbon::setTestNow();
+        $now = CarbonImmutable::now();
+        $mockHour = 8;
+        $mockMinute = 30;
+        $knownDate = Carbon::create($now->format('Y'), $now->format('m'), $now->format('d'), $mockHour, $mockMinute);
+        $now = Carbon::setTestNow($knownDate);
+        $check = $this->client_see_schedules_buttons($knownDate);
+        $this->assertTrue($check);
+    }
+
+    /** @test */
+    public function client_creation_page_contains_livewire_component_0829()
+    {
+        Carbon::setTestNow();
+        $now = CarbonImmutable::now();
+        $mockHour = '08';
+        $mockMinute = '29';
+        $knownDate = Carbon::create($now->format('Y'), $now->format('m'), $now->format('d'), $mockHour, $mockMinute);
+        Carbon::setTestNow($knownDate);
+        $check = $this->client_see_schedules_buttons($knownDate);
+        $this->assertTrue($check);
+
+    }
+
+    /** @test */
+    public function client_creation_page_contains_livewire_component_0900()
+    {
+        Carbon::setTestNow();
+        $now = CarbonImmutable::now();
+        $mockHour = '09';
+        $mockMinute = '00';
+        $knownDate = Carbon::create($now->format('Y'), $now->format('m'), $now->format('d'), $mockHour, $mockMinute);
+        Carbon::setTestNow($knownDate);
+        $check = $this->client_see_schedules_buttons($knownDate);
+        $this->assertTrue($check);
+
+    }
+
+    /** @test */
+    public function client_creation_page_contains_livewire_component_2030()
+    {
+        Carbon::setTestNow();
+        $now = CarbonImmutable::now();
+        $mockHour = '20';
+        $mockMinute = '30';
+        $knownDate = Carbon::create($now->format('Y'), $now->format('m'), $now->format('d'), $mockHour, $mockMinute);
+        Carbon::setTestNow($knownDate);
+        $check = $this->client_see_schedules_buttons($knownDate);
+        $this->assertTrue($check);
+
+    }
+
+    /** @test */
+    public function client_creation_page_contains_livewire_component_2059()
+    {
+        Carbon::setTestNow();
+        $now = CarbonImmutable::now();
+        $mockHour = '20';
+        $mockMinute = '59';
+        $knownDate = Carbon::create($now->format('Y'), $now->format('m'), $now->format('d'), $mockHour, $mockMinute);
+        Carbon::setTestNow($knownDate);
+        $check = $this->client_see_schedules_buttons($knownDate);
+        $this->assertTrue($check);
+
+    }
+
+    /** @test */
+    public function client_creation_page_contains_livewire_component_2100_is_false()
+    {
+        Carbon::setTestNow();
+        $now = CarbonImmutable::now();
+        $mockHour = '21';
+        $mockMinute = '00';
+        $knownDate = Carbon::create($now->format('Y'), $now->format('m'), $now->format('d'), $mockHour, $mockMinute);
+        Carbon::setTestNow($knownDate);
+        $check = $this->client_dont_see_schedules_buttons($knownDate);
+        $this->assertTrue($check);
+
+    }
+
+    public function client_see_schedules_buttons($knownDate)
     {
 
-        if(CarbonImmutable::now()->format('H') > 21){
-               $this->markTestIncomplete();
-        }
-
-        $now = CarbonImmutable::now();
+        $now = $knownDate;
 
         $h_end = $now->format('H');
-        if($now->format('m') > 30){
+        if($now->format('i') > 29){
+            $m_init = 30;
             $m_end = 59;
         }else{
+            $m_init = 00;
             $m_end = 29;
         }
         $schedule = Schedule::create([
             'office_id' => 1,
             'host_id' => 1,
             'day' => $now->dayOfWeek,
-            'hour_start' => $now->format('H:00'),
+            'hour_start' => $now->format('H') . ":" . $m_init,
             'hour_end' => $h_end . ":" . $m_end,
-            // 'hour_end' => $now->format('H:59'),
-            // 'hour_end' => $now->addHour(1)->format('H:00'),
             'date_start' => $now->format('Y-m-d'),
-            'date_end' => $now->addDays(1)->format('Y-m-d'),
+            'date_end' => Carbon::create($now->format('Y'), $now->format('m'), $now->format('d')+1)->format('Y-m-d'),
         ]);
+
         $user = User::find(7);
-        Livewire::actingAs($user)
+        $xx = Livewire::actingAs($user)
             ->test(ClientScreen::class)
             ->assertSeeHtml('HORARIOS DE ATENCIÓN')
             ->assertSeeHtml('seleccione la oficina con la que desea comunicarse.');
             // ->set('office_id', null)
+        return true;
+
+    }
+
+    public function client_dont_see_schedules_buttons($knownDate)
+    {
+
+        $now = $knownDate;
+
+        $h_end = $now->format('H');
+        if($now->format('i') > 29){
+            $m_init = 30;
+            $m_end = 59;
+        }else{
+            $m_init = 00;
+            $m_end = 29;
+        }
+        $schedule = Schedule::create([
+            'office_id' => 1,
+            'host_id' => 1,
+            'day' => $now->dayOfWeek,
+            'hour_start' => $now->format('H') . ":" . $m_init,
+            'hour_end' => $h_end . ":" . $m_end,
+            'date_start' => $now->format('Y-m-d'),
+            'date_end' => Carbon::create($now->format('Y'), $now->format('m'), $now->format('d')+1)->format('Y-m-d'),
+        ]);
+
+        $user = User::find(7);
+        $xx = Livewire::actingAs($user)
+            ->test(ClientScreen::class)
+            ->assertSeeHtml('HORARIOS DE ATENCIÓN')
+            ->assertSeeHtml('No hay operadores programados, revise los horarios de atención.');
+            // ->set('office_id', null)
+        return true;
+
     }
 
     /** @test */

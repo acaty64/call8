@@ -237,11 +237,12 @@ class ClientScreen extends Component
 
         $this->watch();
         $offices = Office::all();
-        $today = CarbonImmutable::now()->dayOfWeek;
-
+        // $today = CarbonImmutable::now()->dayOfWeek;
+        $today = Carbon::now()->dayOfWeek;
         $array = [];
+            // 'date' => CarbonImmutable::now()->isoformat('dddd') . ' ' . CarbonImmutable::now()->format('d-m-Y'),
         $array['today'] = [
-            'date' => CarbonImmutable::now()->isoformat('dddd') . ' ' . CarbonImmutable::now()->format('d-m-Y'),
+            'date' => Carbon::now()->isoformat('dddd') . ' ' . Carbon::now()->format('d-m-Y'),
             'offices' => [],
         ];
         foreach ($offices as $office) {
@@ -266,13 +267,15 @@ class ClientScreen extends Component
             $this->f_message = "getHorarios()";
         }
 
+        // $tomorrow = CarbonImmutable::now()->dayOfWeek + 1;
+        $tomorrow = Carbon::now()->dayOfWeek + 1;
 
-        $tomorrow = CarbonImmutable::now()->dayOfWeek + 1;
-
+            // 'date' => CarbonImmutable::now()->addDays(1)->isoformat('dddd') . ' ' . CarbonImmutable::now()->addDays(1)->format('d-m-Y'),
         $array['tomorrow'] = [
-            'date' => CarbonImmutable::now()->addDays(1)->isoformat('dddd') . ' ' . CarbonImmutable::now()->addDays(1)->format('d-m-Y'),
+            'date' => Carbon::now()->addDays(1)->isoformat('dddd') . ' ' . Carbon::now()->addDays(1)->format('d-m-Y'),
             'offices' => [],
         ];
+
         foreach ($offices as $office) {
             $horary = $this->horary_office($office->id, $tomorrow);
             if($horary){
@@ -286,6 +289,7 @@ class ClientScreen extends Component
         }
 
         $this->horarios = $array;
+
     }
 
     public function setOfficeId($value)

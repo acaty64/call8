@@ -8,6 +8,7 @@ use App\StatusUser;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
@@ -69,6 +70,9 @@ class CRUD_DocumentTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertRedirect(route('documents.index'));
+
+        $document = Document::all()->first();
+        Storage::delete($document->link);
     }
 
     public function test_edit_a_document()
@@ -135,6 +139,9 @@ class CRUD_DocumentTest extends TestCase
         $this->assertDatabaseHas('documents', $data);
         $response->assertStatus(302);
         $response->assertRedirect(route('documents.index'));
+        
+        $document = Document::all()->first();
+        Storage::delete($document->link);        
     }
 
     public function test_view_a_document()
@@ -167,6 +174,9 @@ class CRUD_DocumentTest extends TestCase
         $document = Document::all()->first();
         $response = $this->get('/document/' . $document->id . '/show');
         $response->assertStatus(200);
+
+        $document = Document::all()->first();
+        Storage::delete($document->link);
     }
 
     public function test_delete_a_document()
@@ -205,6 +215,8 @@ class CRUD_DocumentTest extends TestCase
         $this->assertDatabaseMissing('documents', [
                 'id' => $document->id,
             ]);
+
+        $this->assertFalse(file_exists(storage_path($document->link)));
 
     }
 

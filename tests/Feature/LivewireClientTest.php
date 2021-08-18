@@ -306,5 +306,14 @@ class LivewireClientTest extends TestCase
 
     }
 
+    /** @test */
+    public function client_click_salir(){
+        $client = User::findOrFail(20);
+        $this->actingAs($client);
+        Livewire::actingAs($client)
+            ->test(ClientScreen::class)
+            ->call('stop');        
+    }
+
 
 }

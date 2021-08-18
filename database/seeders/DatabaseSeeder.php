@@ -18,11 +18,11 @@ class DatabaseSeeder extends Seeder
         $this->call(StatusSeeder::class);
         $this->call(OfficeSeeder::class);
         $this->call(AccessSeeder::class);
-        $this->call(LinkSeeder::class);
+        $this->call(WindowSeeder::class);
         if(env('APP_DEBUG'))
         {
+            $this->call(LinkSeeder::class);
             $this->call(CallSeeder::class);
-            $this->call(WindowSeeder::class);
             $this->call(TraceSeeder::class);
             $this->call(ScheduleSeeder::class);
             $this->call(CommentSeeder::class);

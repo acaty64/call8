@@ -17,19 +17,19 @@ class WindowSeeder extends Seeder
     {
         Window::create([
         	'window' => 'A01',
-        	'host_id' => 1,
-            'client_id' => 4,
-        	'status_id' => 4,
-            'call_id' => 1,
-            'office_id' => 1,
+            'host_id' => null,
+            'client_id' => null,
+            'status_id' => 1,
+            'call_id' => null,
+            'office_id' => null,
         ]);
         Window::create([
         	'window' => 'A02',
-        	'host_id' => 2,
+            'host_id' => null,
             'client_id' => null,
-        	'status_id' => 5,
+            'status_id' => 1,
             'call_id' => null,
-            'office_id' => 1,
+            'office_id' => null,
         ]);
         Window::create([
         	'window' => 'A03',

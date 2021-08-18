@@ -211,13 +211,15 @@ class ClientScreen extends Component
 
     public function stop()
     {
-        $this->watch();
-        $this->sound(false);
-        $this->message = 'Desconectando ....';
-        $response = $this->call_close();
-        $this->status = 'Cerrado';
-        $this->message = 'Desconectado';
-        $this->f_message = "stop()";
+        if($this->call_id){
+            $this->watch();
+            $this->sound(false);
+            $this->message = 'Desconectando ....';
+            $response = $this->call_close();
+            $this->status = 'Cerrado';
+            $this->message = 'Desconectado';
+            $this->f_message = "stop()";
+        }
         $this->redirect(route('stop.call'));
     }
 
